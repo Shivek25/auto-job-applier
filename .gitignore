@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Environment & Credentials
+.env
+*.env
+
+# Local runtime databases & artifacts
+storage/*.db
+storage/receipts/*
+storage/tailored_resumes/*
+!storage/receipts/.gitkeep
+!storage/tailored_resumes/.gitkeep
+
+# Personal configuration containing credentials/PII
+config/master_profile.json
+!config/master_profile.example.json
+
+# Playwright & Testing
+.playwright/
+test-results/
+.pytest_cache/
+
+# IDE & OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
