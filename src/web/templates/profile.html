@@ -1,0 +1,37 @@
+<!-- src/web/templates/profile.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="header-row">
+  <div>
+    <h2>Profile Studio</h2>
+    <div style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Manage your Master Profile, skills taxonomy, and ATS resume template.</div>
+  </div>
+  <div>
+    <a href="/profile/preview-pdf" target="_blank" class="btn btn-secondary">📄 Preview Compiled ATS PDF</a>
+  </div>
+</div>
+
+<div class="form-card" style="margin-bottom: 32px; border: 1px dashed var(--accent-cyan);">
+  <h3 style="margin-top: 0;">🚀 Ingest Existing CV</h3>
+  <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+    Upload your current resume (.pdf). Our Gemini parser will automatically extract your contact info, summary, skills, experience, and projects into structured JSON.
+  </p>
+  <form action="/profile/upload" method="post" enctype="multipart/form-data" style="display: flex; gap: 16px; align-items: center;">
+    <input type="file" name="file" accept=".pdf" required style="background: transparent; color: var(--text-primary);">
+    <button type="submit" class="btn">⚡ Auto-Ingest CV</button>
+  </form>
+</div>
+
+<div class="form-card">
+  <h3 style="margin-top: 0;">Master Profile JSON</h3>
+  <p style="color: var(--text-secondary); font-size: 14px;">
+    This structured master profile is dynamically tailored against target Job Descriptions on the fly.
+  </p>
+  <form action="/profile/save" method="post">
+    <div class="form-group">
+      <textarea name="profile_json" style="min-height: 480px; font-family: 'Consolas', monospace; font-size: 13px; line-height: 1.5;">{{ profile_json }}</textarea>
+    </div>
+    <button type="submit" class="btn">💾 Save Master Profile</button>
+  </form>
+</div>
+{% endblock %}

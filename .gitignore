@@ -23,6 +23,8 @@ storage/tailored_resumes/*
 # Personal configuration containing credentials/PII
 config/master_profile.json
 !config/master_profile.example.json
+config/config.yaml
+!config/config.example.yaml
 
 # Playwright & Testing
 .playwright/

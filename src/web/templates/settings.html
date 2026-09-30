@@ -1,0 +1,67 @@
+<!-- src/web/templates/settings.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="header-row">
+  <div>
+    <h2>System & Search Settings</h2>
+    <div style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Configure application limits, target job titles, locations, and LLM providers.</div>
+  </div>
+</div>
+
+<form action="/settings/save" method="post">
+  <div class="form-card">
+    <h3 style="margin-top: 0;">Application Safeguards</h3>
+    <div class="form-group">
+      <label>Autonomy Mode</label>
+      <select name="mode">
+        <option value="auto" {% if config.app.mode == "auto" %}selected{% endif %}>Full Autopilot (Automatically submits and captures proof)</option>
+        <option value="review" {% if config.app.mode == "review" %}selected{% endif %}>Review Mode (Pauses 15s on final screen for verification)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Daily Application Limit (Cap to avoid bans)</label>
+      <input type="number" name="daily_limit" value="{{ config.app.daily_application_limit }}" min="1" max="100">
+    </div>
+    <div class="form-group">
+      <label>Minimum AI Match Threshold (%)</label>
+      <input type="number" name="min_score" value="{{ config.app.min_match_score }}" min="0" max="100">
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="margin-top: 0;">Job Discovery Query</h3>
+    <div class="form-group">
+      <label>Target Job Titles (Comma-separated)</label>
+      <input type="text" name="job_titles" value="{{ config.search.job_titles | join(', ') }}">
+    </div>
+    <div class="form-group">
+      <label>Target Locations (Comma-separated)</label>
+      <input type="text" name="locations" value="{{ config.search.locations | join(', ') }}">
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="is_remote" value="true" {% if config.search.is_remote %}checked{% endif %}>
+        Include Remote Jobs
+      </label>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="margin-top: 0;">AI Engine (LLM)</h3>
+    <div class="form-group">
+      <label>Provider</label>
+      <select name="llm_provider">
+        <option value="gemini" {% if config.llm.provider == "gemini" %}selected{% endif %}>Google Gemini Flash (Free Tier)</option>
+        <option value="groq" {% if config.llm.provider == "groq" %}selected{% endif %}>Groq Cloud (Free Llama 3.3)</option>
+        <option value="ollama" {% if config.llm.provider == "ollama" %}selected{% endif %}>Local Ollama (100% Offline)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>API Key (Leave empty to use GEMINI_API_KEY environment variable)</label>
+      <input type="text" name="api_key" value="{{ config.llm.api_key or '' }}" placeholder="AIzaSy...">
+    </div>
+  </div>
+
+  <button type="submit" class="btn">💾 Save All Settings</button>
+</form>
+{% endblock %}
