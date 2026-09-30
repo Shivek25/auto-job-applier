@@ -8,9 +8,10 @@ class ResumeTailor:
         self.llm = llm_client
 
     def tailor(self, master_profile: MasterProfile, job_description: str) -> MasterProfile:
-        prompt = RESUME_TAILOR_PROMPT.format(
-            profile_json=master_profile.model_dump_json(),
-            job_description=job_description
+        prompt = (
+            RESUME_TAILOR_PROMPT
+            .replace("{profile_json}", master_profile.model_dump_json(indent=2))
+            .replace("{job_description}", job_description)
         )
         tailored_data = self.llm.generate_json(prompt)
         return MasterProfile(**tailored_data)
