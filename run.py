@@ -1,0 +1,148 @@
+# run.py
+import os
+import sys
+import json
+import asyncio
+import logging
+import argparse
+from pathlib import Path
+
+from src.config_loader import load_config
+from src.storage.database import Database
+from src.storage.verifier import SubmissionVerifier
+from src.ai.llm_client import LLMClient
+from src.resume.models import MasterProfile
+from src.resume.tailor import ResumeTailor
+from src.resume.compiler import ResumeCompiler
+from src.scraper.job_fetcher import JobFetcher
+from src.scraper.matcher import JobMatcher
+from src.applier.browser import BrowserManager
+from src.applier.form_filler import FormFiller
+from src.applier.linkedin import LinkedInApplier
+from src.applier.indeed import IndeedApplier
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("AutoJobForge")
+
+async def main():
+    parser = argparse.ArgumentParser(description="AutoJobForge Autonomous Job Applier")
+    parser.add_argument("--mode", choices=["auto", "review"], default=None, help="Autonomy mode: auto or review")
+    parser.add_argument("--limit", type=int, default=None, help="Daily application limit")
+    parser.add_argument("--platform", choices=["all", "linkedin", "indeed"], default="all", help="Target job platform")
+    args = parser.parse_args()
+
+    config = load_config()
+    mode = args.mode or config.app.mode
+    daily_limit = args.limit or config.app.daily_application_limit
+
+    db = Database()
+    stats = db.get_stats()
+    logger.info(f"Loaded database. Applications today: {stats['today_submitted']} / {daily_limit}")
+    if stats["today_submitted"] >= daily_limit:
+        logger.info(f"Daily limit of {daily_limit} applications already reached today. Exiting.")
+        return
+
+    profile_path = Path("config/master_profile.json")
+    if not profile_path.exists():
+        example_path = Path("config/master_profile.example.json")
+        if example_path.exists():
+            logger.warning("config/master_profile.json not found. Using config/master_profile.example.json for this run.")
+            profile_path = example_path
+        else:
+            logger.error("No master profile found. Please upload your CV via Web Dashboard or create config/master_profile.json.")
+            sys.exit(1)
+
+    with open(profile_path, "r", encoding="utf-8") as f:
+        master_profile = MasterProfile(**json.load(f))
+
+    llm = LLMClient(
+        provider=config.llm.provider,
+        model=config.llm.model,
+        api_key=config.llm.api_key,
+        ollama_base_url=config.llm.ollama_base_url
+    )
+    matcher = JobMatcher(llm, min_score=config.app.min_match_score)
+    tailor = ResumeTailor(llm)
+    compiler = ResumeCompiler()
+    verifier = SubmissionVerifier()
+    bm = BrowserManager(
+        headless=config.browser.headless,
+        user_data_dir=config.browser.chrome_user_data_dir,
+        profile_name=config.browser.chrome_profile_name
+    )
+
+    fetcher = JobFetcher(db)
+    logger.info("Searching for fresh job postings on LinkedIn and Indeed...")
+    jobs = fetcher.fetch_jobs(
+        search_terms=config.search.job_titles,
+        locations=config.search.locations,
+        results_wanted=config.search.results_wanted,
+        is_remote=config.search.is_remote
+    )
+    logger.info(f"Discovered {len(jobs)} candidate jobs across platforms.")
+
+    filler = FormFiller(llm, master_profile)
+    linkedin_applier = LinkedInApplier(bm, filler, verifier, db, mode=mode)
+    indeed_applier = IndeedApplier(bm, filler, verifier, db, mode=mode)
+
+    submitted_count = stats["today_submitted"]
+    for job in jobs:
+        if submitted_count >= daily_limit:
+            logger.info("Reached daily application limit. Stopping batch.")
+            break
+
+        job_id = job["job_id"]
+        site = job["site"].lower()
+
+        if args.platform != "all" and args.platform not in site:
+            continue
+
+        # AI Match Scoring
+        try:
+            eval_result = matcher.evaluate(master_profile, job["description"])
+        except Exception as e:
+            logger.warning(f"Could not score match for {job['company']}: {e}")
+            eval_result = {"is_match": True, "match_score": 75}
+
+        if not eval_result["is_match"]:
+            logger.info(f"Skipping {job['company']} - Match score: {eval_result['match_score']}% (below {config.app.min_match_score}% threshold)")
+            db.add_application(
+                job_id=job_id,
+                platform=job["site"],
+                title=job["title"],
+                company=job["company"],
+                location=job["location"],
+                job_url=job["job_url"],
+                match_score=eval_result["match_score"],
+                status="SKIPPED",
+                error_message=f"Score below threshold: {eval_result.get('summary_reason', '')}"
+            )
+            continue
+
+        logger.info(f"Eligible Match ({eval_result['match_score']}%)! Tailoring resume for {job['company']}...")
+        try:
+            tailored_profile = tailor.tailor(master_profile, job["description"])
+        except Exception as e:
+            logger.warning(f"Tailoring fallback to base profile: {e}")
+            tailored_profile = master_profile
+
+        pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
+        compiler.compile_pdf(tailored_profile, pdf_path)
+
+        # Apply based on platform
+        success = False
+        if "linkedin" in site and config.platforms.linkedin:
+            success = await linkedin_applier.apply(job, pdf_path)
+        elif "indeed" in site and config.platforms.indeed:
+            success = await indeed_applier.apply(job, pdf_path)
+
+        if success:
+            submitted_count += 1
+            logger.info(f"Progress today: {submitted_count}/{daily_limit} submitted.")
+            await bm.random_delay(config.app.delay_between_applications_min, config.app.delay_between_applications_max)
+
+    await bm.close()
+    logger.info("Job application run completed successfully.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
