@@ -1,0 +1,61 @@
+{
+  "personal_info": {
+    "name": "Alex Mercer",
+    "email": "alex.mercer@example.com",
+    "phone": "+1 (555) 019-2834",
+    "location": "San Francisco, CA",
+    "linkedin_url": "https://linkedin.com/in/alex-mercer",
+    "github_url": "https://github.com/alexmercer",
+    "portfolio_url": "https://alexmercer.dev"
+  },
+  "summary": "Full Stack Engineer with 3+ years of experience designing robust Python and React services.",
+  "skills": {
+    "languages": ["Python", "TypeScript", "JavaScript", "SQL", "HTML/CSS"],
+    "frameworks": ["FastAPI", "React", "Node.js", "Django", "Next.js"],
+    "tools_and_cloud": ["Docker", "Git", "AWS", "GitHub Actions", "Playwright"],
+    "databases": ["PostgreSQL", "SQLite", "Redis", "MongoDB"]
+  },
+  "work_experience": [
+    {
+      "company": "Nexus Systems",
+      "role": "Software Engineer",
+      "start_date": "06/2023",
+      "end_date": "Present",
+      "location": "Remote",
+      "bullets": [
+        "Architected scalable asynchronous microservices processing 50k+ daily transactions with 99.9% uptime",
+        "Engineered end-to-end automated testing pipelines using Playwright and pytest, decreasing regression bugs by 40%",
+        "Optimized complex PostgreSQL queries, cutting average response latency from 450ms to 85ms"
+      ]
+    },
+    {
+      "company": "Elevate Labs",
+      "role": "Junior Backend Developer",
+      "start_date": "07/2022",
+      "end_date": "05/2023",
+      "location": "San Francisco, CA",
+      "bullets": [
+        "Developed RESTful APIs in FastAPI with comprehensive OpenAPI documentation and schema validation",
+        "Built responsive frontend dashboards in React communicating over WebSockets for real-time status feeds"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "AutoJobForge",
+      "tech_stack": ["Python", "FastAPI", "Playwright", "SQLite", "Typst"],
+      "github_link": "https://github.com/Shivek25/auto-job-applier",
+      "bullets": [
+        "Constructed an autonomous job application copilot integrating stealth Playwright and LLM-driven form filling",
+        "Engineered real-time ATS resume compiler generating vector-clean single-page PDFs dynamically per job posting"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "degree": "B.S. in Computer Science",
+      "graduation_year": "2022"
+    }
+  ]
+}
