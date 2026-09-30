@@ -241,7 +241,7 @@ git commit -m "feat: implement stealth playwright browser session manager"
 - Create: `src/web/templates/settings.html`
 - Create: `src/web/app.py`
 
-- [ ] **Step 1: Create modern dark-mode stylesheet `src/web/static/css/style.css`**
+- [x] **Step 1: Create modern dark-mode stylesheet `src/web/static/css/style.css`**
 
 ```css
 /* src/web/static/css/style.css */
@@ -375,7 +375,7 @@ th {
 }
 ```
 
-- [ ] **Step 2: Implement templates `base.html`, `dashboard.html`, `profile.html`, `settings.html`**
+- [x] **Step 2: Implement templates `base.html`, `dashboard.html`, `profile.html`, `settings.html`**
 
 ```html
 <!-- src/web/templates/base.html -->
@@ -468,7 +468,7 @@ th {
 {% endblock %}
 ```
 
-- [ ] **Step 3: Implement `src/web/app.py` FastAPI server**
+- [x] **Step 3: Implement `src/web/app.py` FastAPI server**
 
 ```python
 # src/web/app.py
@@ -542,7 +542,7 @@ async def trigger_run(background_tasks: BackgroundTasks):
     return RedirectResponse(url="/", status_code=303)
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/web/
