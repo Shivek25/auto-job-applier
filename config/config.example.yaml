@@ -1,0 +1,33 @@
+app:
+  mode: "auto" # "auto" or "review"
+  daily_application_limit: 25
+  min_match_score: 70
+  delay_between_applications_min: 45
+  delay_between_applications_max: 120
+
+search:
+  job_titles:
+    - "Software Engineer"
+    - "Full Stack Developer"
+    - "Python Developer"
+  locations:
+    - "Remote"
+    - "India"
+  distance_miles: 50
+  is_remote: true
+  results_wanted: 25
+
+platforms:
+  linkedin: true
+  indeed: true
+
+llm:
+  provider: "gemini" # gemini, groq, or ollama
+  model: "gemini-2.0-flash"
+  api_key: "YOUR_GEMINI_API_KEY_HERE"
+  ollama_base_url: "http://localhost:11434"
+
+browser:
+  headless: false
+  chrome_user_data_dir: null
+  chrome_profile_name: "Default"
