@@ -76,15 +76,23 @@ class LinkedInApplier:
             # Multi-step wizard traversal
             max_steps = 10
             submitted = False
+            resume_uploaded = False
             for step in range(max_steps):
                 # Detect Resume step
-                is_resume_step = await page.evaluate("""() => {
-                    const text = document.querySelector('.jobs-easy-apply-modal, [data-test-modal], div[role="dialog"]')?.innerText || '';
-                    const hasResumeHeading = /resume/i.test(text) && (/upload/i.test(text) || /doc, docx/i.test(text) || /pdf/i.test(text));
-                    const hasFileInput = !!document.querySelector("input[type='file']");
-                    const hasUploadBtn = !!document.querySelector("label:has-text('Upload resume'), button:has-text('Upload resume'), [aria-label*='Upload resume']");
-                    return hasResumeHeading || hasFileInput || hasUploadBtn;
-                }""")
+                is_resume_step = False
+                if not resume_uploaded:
+                    try:
+                        is_resume_step = await page.evaluate("""() => {
+                            const modal = document.querySelector('.jobs-easy-apply-modal, [data-test-modal], div[role="dialog"]');
+                            const text = (modal ? modal.innerText : document.body.innerText) || '';
+                            const hasResumeHeading = /resume/i.test(text) && (/upload/i.test(text) || /doc, docx/i.test(text) || /pdf/i.test(text));
+                            const hasFileInput = !!document.querySelector("input[type='file']");
+                            const hasUploadBtn = Array.from(document.querySelectorAll('label, button, span')).some(el => /upload resume/i.test(el.innerText || ''));
+                            return hasResumeHeading || hasFileInput || hasUploadBtn;
+                        }""")
+                    except Exception as e:
+                        logger.debug(f"Resume detection note: {e}")
+                        is_resume_step = bool(await page.query_selector("input[type='file']"))
                 
                 if is_resume_step:
                     try:
@@ -179,6 +187,7 @@ class LinkedInApplier:
 
                         if selected_name:
                             logger.info(f"✅ Selected tailored resume card: {selected_name}")
+                            resume_uploaded = True
                         else:
                             logger.warning("Could not explicitly select tailored resume card.")
                     except Exception as e:
