@@ -90,10 +90,12 @@ class LinkedInApplier:
                 await self.bm.random_delay(1, 2)
 
                 # Check for Submit button
-                submit_btn = await page.query_selector("button[aria-label='Submit application']")
+                submit_btn = await page.query_selector(
+                    "button[aria-label='Submit application'], button:has-text('Submit application'), button.artdeco-button--primary:has-text('Submit')"
+                )
                 if submit_btn:
                     if self.mode == "review":
-                        logger.info("Review mode: pausing 15s for user inspection...")
+                        logger.info("Review mode: pausing 15s for user inspection before final submission...")
                         await asyncio.sleep(15)
                     await submit_btn.click()
                     await self.bm.random_delay(3, 5)
@@ -101,12 +103,18 @@ class LinkedInApplier:
 
                 # Otherwise check for Next / Review button
                 next_btn = await page.query_selector(
-                    "button[aria-label='Continue to next step'], button[aria-label='Review your application'], button:has-text('Next'), button:has-text('Review')"
+                    "button[aria-label='Continue to next step'], button[aria-label='Review your application'], button:has-text('Next'), button:has-text('Review'), button.artdeco-button--primary:has-text('Next'), button.artdeco-button--primary:has-text('Review')"
                 )
                 if next_btn:
+                    is_disabled = await next_btn.is_disabled()
+                    if is_disabled:
+                        logger.warning("Next button is disabled. Attempting to re-check fields...")
+                        await self.filler.fill_current_modal(page)
+                        await self.bm.random_delay(1, 2)
                     await next_btn.click()
                     await self.bm.random_delay(2, 3)
                 else:
+                    # No next or submit button, might be done or error
                     break
 
             # Verify submission & capture proof screenshot
@@ -125,4 +133,7 @@ class LinkedInApplier:
             self.db.update_status(job_id=job_id, status="FAILED", error_message=str(e))
             return False
         finally:
-            await page.close()
+            try:
+                await page.close()
+            except Exception:
+                pass

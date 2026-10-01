@@ -112,9 +112,9 @@ async def main():
         if args.platform != "all" and args.platform not in site:
             continue
 
-        # AI Match Scoring
+        # AI & Heuristic Match Scoring
         try:
-            eval_result = matcher.evaluate(master_profile, job["description"])
+            eval_result = matcher.evaluate(master_profile, job.get("description", ""), job_title=job.get("title", ""))
         except Exception as e:
             logger.warning(f"Could not score match for {job['company']}: {e}")
             eval_result = {"is_match": True, "match_score": 75}

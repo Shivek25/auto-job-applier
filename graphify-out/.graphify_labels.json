@@ -4,12 +4,11 @@
   "2": "app.py",
   "3": "Database",
   "4": "LLMClient",
-  "5": "config_loader.py",
   "6": "⚡ AutoJobForge",
   "7": "Tasks",
   "8": "BrowserManager",
   "9": "3. Module Specifications",
-  "10": ".verify_and_capture",
+  "10": "SubmissionVerifier",
   "11": "ai/__init__.py",
   "12": "applier/__init__.py",
   "13": "src/__init__.py",
@@ -21,7 +20,5 @@
   "19": "main.js",
   "20": "test_web_app.py",
   "21": "rules/graphify.md",
-  "22": "workflows/graphify.md",
-  "23": "Page",
-  "24": "BaseModel"
+  "22": "workflows/graphify.md"
 }

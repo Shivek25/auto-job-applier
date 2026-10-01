@@ -13,12 +13,12 @@ class LLMClient:
     def __init__(
         self,
         provider: str = "gemini",
-        model: str = "gemini-3-flash-preview",
+        model: str = "gemini-3.1-flash-lite-preview",
         api_key: Optional[str] = None,
         ollama_base_url: str = "http://localhost:11434"
     ):
         self.provider = provider.lower()
-        self.model = model or "gemini-3-flash-preview"
+        self.model = model or "gemini-3.1-flash-lite-preview"
         self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GROQ_API_KEY")
         self.ollama_base_url = ollama_base_url
 
@@ -52,34 +52,35 @@ class LLMClient:
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
         
-        target_model = self.model or "gemini-3-flash-preview"
-        if "gemini-2.0" in target_model or "gemini-1.5" in target_model:
-            target_model = "gemini-3-flash-preview"
+        target_model = self.model or "gemini-3.1-flash-lite-preview"
+        # Route models to 3.1-flash-lite-preview which provides 500 RPD vs 20 RPD on 3-flash
+        if any(m in target_model for m in ["gemini-3-flash", "gemini-2.0", "gemini-1.5", "gemini-2.5"]):
+            target_model = "gemini-3.1-flash-lite-preview"
 
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
         
         last_resp = None
-        for attempt in range(4):
-            resp = requests.post(url, json=payload, timeout=45)
+        for attempt in range(2):
+            resp = requests.post(url, json=payload, timeout=30)
             last_resp = resp
             
-            # If 404, fallback to gemini-3-flash-preview
-            if resp.status_code == 404 and target_model != "gemini-3-flash-preview":
-                target_model = "gemini-3-flash-preview"
+            # If 404, fallback to gemini-3.1-flash-lite-preview
+            if resp.status_code == 404 and target_model != "gemini-3.1-flash-lite-preview":
+                target_model = "gemini-3.1-flash-lite-preview"
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
-                resp = requests.post(url, json=payload, timeout=45)
+                resp = requests.post(url, json=payload, timeout=30)
                 last_resp = resp
             
             if resp.status_code == 429:
-                wait_time = (attempt + 1) * 5
-                logger.warning(f"Gemini API rate limit (429) hit. Pausing {wait_time}s before retry (attempt {attempt + 1}/4)...")
+                wait_time = (attempt + 1) * 2
+                logger.warning(f"Gemini API rate limit (429) hit. Pausing {wait_time}s before retry (attempt {attempt + 1}/2)...")
                 time.sleep(wait_time)
                 continue
 
             resp.raise_for_status()
             data = resp.json()
-            time.sleep(1.0) # Polite pause to stay within free tier RPM limits
+            time.sleep(0.5) # Polite pause to stay within free tier RPM limits
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
         if last_resp is not None:

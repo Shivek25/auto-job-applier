@@ -4,19 +4,6 @@
   "graph": {},
   "nodes": [
     {
-      "id": "src_applier_browser_browsermanager",
-      "label": "BrowserManager",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": "browsermanager",
-      "source_file": "src/applier/browser.py",
-      "source_location": "L10"
-    },
-    {
       "id": "src_applier_form_filler_formfiller",
       "label": "FormFiller",
       "_callable": true,
@@ -54,6 +41,19 @@
       "norm_label": "linkedinapplier",
       "source_file": "src/applier/linkedin.py",
       "source_location": "L13"
+    },
+    {
+      "id": "src_scraper_job_fetcher_jobfetcher",
+      "label": "JobFetcher",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "jobfetcher",
+      "source_file": "src/scraper/job_fetcher.py",
+      "source_location": "L9"
     },
     {
       "id": "src_storage_verifier_submissionverifier",
@@ -160,17 +160,30 @@
       "source_location": "L20"
     },
     {
-      "id": "src_scraper_job_fetcher_jobfetcher",
-      "label": "JobFetcher",
+      "id": "src_resume_tailor_resumetailor",
+      "label": "ResumeTailor",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
+      "community": 1,
+      "community_name": "MasterProfile",
       "file_type": "code",
-      "norm_label": "jobfetcher",
-      "source_file": "src/scraper/job_fetcher.py",
-      "source_location": "L9"
+      "norm_label": "resumetailor",
+      "source_file": "src/resume/tailor.py",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_scraper_matcher_jobmatcher",
+      "label": "JobMatcher",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": "jobmatcher",
+      "source_file": "src/scraper/matcher.py",
+      "source_location": "L7"
     },
     {
       "id": "src_storage_database_database",
@@ -196,7 +209,7 @@
       "file_type": "code",
       "norm_label": "llmclient",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L11"
+      "source_location": "L12"
     },
     {
       "id": "src_resume_ingestor_cvingestor",
@@ -212,32 +225,6 @@
       "source_location": "L9"
     },
     {
-      "id": "src_resume_tailor_resumetailor",
-      "label": "ResumeTailor",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "resumetailor",
-      "source_file": "src/resume/tailor.py",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_scraper_matcher_jobmatcher",
-      "label": "JobMatcher",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "jobmatcher",
-      "source_file": "src/scraper/matcher.py",
-      "source_location": "L7"
-    },
-    {
       "id": "src_config_loader_appconfig",
       "label": "AppConfig",
       "_callable": true,
@@ -248,7 +235,7 @@
       "file_type": "code",
       "norm_label": "appconfig",
       "source_file": "src/config_loader.py",
-      "source_location": "L35"
+      "source_location": "L37"
     },
     {
       "id": "src_config_loader_appsettings",
@@ -274,7 +261,7 @@
       "file_type": "code",
       "norm_label": "browsersettings",
       "source_file": "src/config_loader.py",
-      "source_location": "L30"
+      "source_location": "L32"
     },
     {
       "id": "src_config_loader_llmsettings",
@@ -287,7 +274,7 @@
       "file_type": "code",
       "norm_label": "llmsettings",
       "source_file": "src/config_loader.py",
-      "source_location": "L24"
+      "source_location": "L26"
     },
     {
       "id": "src_config_loader_platformsettings",
@@ -300,7 +287,7 @@
       "file_type": "code",
       "norm_label": "platformsettings",
       "source_file": "src/config_loader.py",
-      "source_location": "L20"
+      "source_location": "L22"
     },
     {
       "id": "src_config_loader_searchsettings",
@@ -316,6 +303,19 @@
       "source_location": "L13"
     },
     {
+      "id": "src_applier_browser_browsermanager",
+      "label": "BrowserManager",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "browsermanager",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L10"
+    },
+    {
       "id": "run_main",
       "label": "main()",
       "_callable": true,
@@ -328,64 +328,28 @@
       "source_location": "L27"
     },
     {
-      "id": "src_applier_browser_browsermanager_close",
-      "label": ".close()",
+      "id": "src_applier_form_filler_formfiller_answer_question",
+      "label": ".answer_question()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
       "community_name": "run.py",
       "file_type": "code",
-      "norm_label": ".close()",
-      "source_file": "src/applier/browser.py",
-      "source_location": "L62"
-    },
-    {
-      "id": "src_applier_browser_browsermanager_human_type",
-      "label": ".human_type()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": ".human_type()",
-      "source_file": "src/applier/browser.py",
-      "source_location": "L58"
-    },
-    {
-      "id": "src_applier_browser_browsermanager_init",
-      "label": ".__init__()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "src/applier/browser.py",
-      "source_location": "L11"
-    },
-    {
-      "id": "src_applier_browser_browsermanager_random_delay",
-      "label": ".random_delay()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": ".random_delay()",
-      "source_file": "src/applier/browser.py",
-      "source_location": "L55"
-    },
-    {
-      "id": "src_applier_form_filler_formfiller_init",
-      "label": ".__init__()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": ".__init__()",
+      "norm_label": ".answer_question()",
       "source_file": "src/applier/form_filler.py",
-      "source_location": "L12"
+      "source_location": "L16"
+    },
+    {
+      "id": "src_applier_form_filler_formfiller_fill_current_modal",
+      "label": ".fill_current_modal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": ".fill_current_modal()",
+      "source_file": "src/applier/form_filler.py",
+      "source_location": "L28"
     },
     {
       "id": "src_applier_indeed_indeedapplier_apply",
@@ -424,7 +388,19 @@
       "source_location": "L28"
     },
     {
-      "id": "src_applier_linkedin_linkedinapplier_init",
+      "id": "src_scraper_job_fetcher_jobfetcher_fetch_jobs",
+      "label": ".fetch_jobs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": ".fetch_jobs()",
+      "source_file": "src/scraper/job_fetcher.py",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_scraper_job_fetcher_jobfetcher_init",
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
@@ -432,8 +408,8 @@
       "community_name": "run.py",
       "file_type": "code",
       "norm_label": ".__init__()",
-      "source_file": "src/applier/linkedin.py",
-      "source_location": "L14"
+      "source_file": "src/scraper/job_fetcher.py",
+      "source_location": "L10"
     },
     {
       "id": "tests_test_applier_drivers_test_applier_drivers_init",
@@ -446,30 +422,6 @@
       "norm_label": "test_applier_drivers_init()",
       "source_file": "tests/test_applier_drivers.py",
       "source_location": "L6"
-    },
-    {
-      "id": "tests_test_browser_test_browser_manager_init",
-      "label": "test_browser_manager_init()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": "test_browser_manager_init()",
-      "source_file": "tests/test_browser.py",
-      "source_location": "L6"
-    },
-    {
-      "id": "tests_test_browser_test_browser_manager_lifecycle",
-      "label": "test_browser_manager_lifecycle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": "test_browser_manager_lifecycle()",
-      "source_file": "tests/test_browser.py",
-      "source_location": "L17"
     },
     {
       "id": "tests_test_verifier_test_verifier_receipt_path",
@@ -506,6 +458,30 @@
       "norm_label": ".__init__()",
       "source_file": "src/resume/compiler.py",
       "source_location": "L9"
+    },
+    {
+      "id": "src_resume_tailor_resumetailor_tailor",
+      "label": ".tailor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": ".tailor()",
+      "source_file": "src/resume/tailor.py",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_scraper_matcher_jobmatcher_evaluate",
+      "label": ".evaluate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": ".evaluate()",
+      "source_file": "src/scraper/matcher.py",
+      "source_location": "L12"
     },
     {
       "id": "tests_test_compiler_test_typst_resume_compilation",
@@ -566,18 +542,6 @@
       "norm_label": "test_resume_tailor()",
       "source_file": "tests/test_resume_tailor.py",
       "source_location": "L6"
-    },
-    {
-      "id": "tests_test_web_app_test_web_app_routes",
-      "label": "test_web_app_routes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "MasterProfile",
-      "file_type": "code",
-      "norm_label": "test_web_app_routes()",
-      "source_file": "tests/test_web_app.py",
-      "source_location": "L4"
     },
     {
       "id": "src_storage_verifier_submissionverifier_get_receipt_path",
@@ -685,7 +649,7 @@
       "file_type": "code",
       "norm_label": "save_settings()",
       "source_file": "src/web/app.py",
-      "source_location": "L117"
+      "source_location": "L125"
     },
     {
       "id": "src_web_app_settings_page",
@@ -700,6 +664,30 @@
       "source_location": "L112"
     },
     {
+      "id": "src_web_app_trigger_login",
+      "label": "trigger_login()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "app.py",
+      "file_type": "code",
+      "norm_label": "trigger_login()",
+      "source_file": "src/web/app.py",
+      "source_location": "L157"
+    },
+    {
+      "id": "src_web_app_trigger_login_run_login",
+      "label": "run_login()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "app.py",
+      "file_type": "code",
+      "norm_label": "run_login()",
+      "source_file": "src/web/app.py",
+      "source_location": "L158"
+    },
+    {
       "id": "src_web_app_trigger_run",
       "label": "trigger_run()",
       "_callable": true,
@@ -709,7 +697,7 @@
       "file_type": "code",
       "norm_label": "trigger_run()",
       "source_file": "src/web/app.py",
-      "source_location": "L152"
+      "source_location": "L173"
     },
     {
       "id": "src_web_app_trigger_run_run_worker",
@@ -721,7 +709,7 @@
       "file_type": "code",
       "norm_label": "run_worker()",
       "source_file": "src/web/app.py",
-      "source_location": "L153"
+      "source_location": "L174"
     },
     {
       "id": "src_web_app_upload_cv",
@@ -745,7 +733,7 @@
       "file_type": "code",
       "norm_label": "view_receipt()",
       "source_file": "src/web/app.py",
-      "source_location": "L145"
+      "source_location": "L166"
     },
     {
       "id": "tests_test_cli_smoke_test_run_py_help",
@@ -760,52 +748,16 @@
       "source_location": "L5"
     },
     {
-      "id": "src_applier_form_filler_formfiller_answer_question",
-      "label": ".answer_question()",
+      "id": "tests_test_web_app_test_web_app_routes",
+      "label": "test_web_app_routes()",
       "_callable": true,
       "_origin": "ast",
       "community": 20,
-      "community_name": ".answer_question",
+      "community_name": "test_web_app.py",
       "file_type": "code",
-      "norm_label": ".answer_question()",
-      "source_file": "src/applier/form_filler.py",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_applier_form_filler_formfiller_fill_current_modal",
-      "label": ".fill_current_modal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": ".answer_question",
-      "file_type": "code",
-      "norm_label": ".fill_current_modal()",
-      "source_file": "src/applier/form_filler.py",
-      "source_location": "L28"
-    },
-    {
-      "id": "src_scraper_job_fetcher_jobfetcher_fetch_jobs",
-      "label": ".fetch_jobs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
-      "file_type": "code",
-      "norm_label": ".fetch_jobs()",
-      "source_file": "src/scraper/job_fetcher.py",
-      "source_location": "L13"
-    },
-    {
-      "id": "src_scraper_job_fetcher_jobfetcher_init",
-      "label": ".__init__()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
-      "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "src/scraper/job_fetcher.py",
-      "source_location": "L10"
+      "norm_label": "test_web_app_routes()",
+      "source_file": "tests/test_web_app.py",
+      "source_location": "L4"
     },
     {
       "id": "src_storage_database_database_add_application",
@@ -937,7 +889,7 @@
       "file_type": "code",
       "norm_label": "._call_gemini()",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L50"
+      "source_location": "L51"
     },
     {
       "id": "src_ai_llm_client_llmclient_call_groq",
@@ -949,7 +901,7 @@
       "file_type": "code",
       "norm_label": "._call_groq()",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L71"
+      "source_location": "L89"
     },
     {
       "id": "src_ai_llm_client_llmclient_call_ollama",
@@ -961,7 +913,7 @@
       "file_type": "code",
       "norm_label": "._call_ollama()",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L85"
+      "source_location": "L103"
     },
     {
       "id": "src_ai_llm_client_llmclient_generate_json",
@@ -973,7 +925,7 @@
       "file_type": "code",
       "norm_label": ".generate_json()",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L34"
+      "source_location": "L35"
     },
     {
       "id": "src_ai_llm_client_llmclient_generate_text",
@@ -985,7 +937,7 @@
       "file_type": "code",
       "norm_label": ".generate_text()",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L24"
+      "source_location": "L25"
     },
     {
       "id": "src_ai_llm_client_llmclient_init",
@@ -997,6 +949,18 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "src/ai/llm_client.py",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_applier_form_filler_formfiller_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "LLMClient",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "src/applier/form_filler.py",
       "source_location": "L12"
     },
     {
@@ -1048,30 +1012,6 @@
       "source_location": "L7"
     },
     {
-      "id": "src_resume_tailor_resumetailor_tailor",
-      "label": ".tailor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": ".tailor()",
-      "source_file": "src/resume/tailor.py",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_scraper_matcher_jobmatcher_evaluate",
-      "label": ".evaluate()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": ".evaluate()",
-      "source_file": "src/scraper/matcher.py",
-      "source_location": "L12"
-    },
-    {
       "id": "src_scraper_matcher_jobmatcher_init",
       "label": ".__init__()",
       "_callable": true,
@@ -1117,7 +1057,7 @@
       "file_type": "code",
       "norm_label": "load_config()",
       "source_file": "src/config_loader.py",
-      "source_location": "L42"
+      "source_location": "L44"
     },
     {
       "id": "tests_test_config_test_load_config_default",
@@ -1144,16 +1084,76 @@
       "source_location": "L32"
     },
     {
+      "id": "src_applier_browser_browsermanager_close",
+      "label": ".close()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".close()",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L95"
+    },
+    {
+      "id": "src_applier_browser_browsermanager_human_type",
+      "label": ".human_type()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".human_type()",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L91"
+    },
+    {
+      "id": "src_applier_browser_browsermanager_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L11"
+    },
+    {
+      "id": "src_applier_browser_browsermanager_login_wizard",
+      "label": ".login_wizard()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".login_wizard()",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L57"
+    },
+    {
       "id": "src_applier_browser_browsermanager_new_stealth_page",
       "label": ".new_stealth_page()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
-      "community_name": ".new_stealth_page",
+      "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".new_stealth_page()",
       "source_file": "src/applier/browser.py",
-      "source_location": "L45"
+      "source_location": "L78"
+    },
+    {
+      "id": "src_applier_browser_browsermanager_random_delay",
+      "label": ".random_delay()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".random_delay()",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L88"
     },
     {
       "id": "src_applier_browser_browsermanager_start",
@@ -1161,11 +1161,47 @@
       "_callable": true,
       "_origin": "ast",
       "community": 8,
-      "community_name": ".new_stealth_page",
+      "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".start()",
       "source_file": "src/applier/browser.py",
-      "source_location": "L26"
+      "source_location": "L27"
+    },
+    {
+      "id": "src_applier_linkedin_linkedinapplier_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "src/applier/linkedin.py",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_browser_test_browser_manager_init",
+      "label": "test_browser_manager_init()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "test_browser_manager_init()",
+      "source_file": "tests/test_browser.py",
+      "source_location": "L6"
+    },
+    {
+      "id": "tests_test_browser_test_browser_manager_lifecycle",
+      "label": "test_browser_manager_lifecycle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "test_browser_manager_lifecycle()",
+      "source_file": "tests/test_browser.py",
+      "source_location": "L17"
     },
     {
       "id": "run",
@@ -1199,6 +1235,28 @@
       "norm_label": "form_filler.py",
       "source_file": "src/applier/form_filler.py",
       "source_location": "L1"
+    },
+    {
+      "id": "src_applier_form_filler_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "any",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_applier_form_filler_py_page",
+      "label": "Page",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "page",
+      "source_file": "",
+      "source_location": ""
     },
     {
       "id": "src_applier_indeed",
@@ -1245,6 +1303,50 @@
       "source_location": ""
     },
     {
+      "id": "src_scraper_job_fetcher",
+      "label": "job_fetcher.py",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "job_fetcher.py",
+      "source_file": "src/scraper/job_fetcher.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_scraper_job_fetcher_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "any",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_scraper_job_fetcher_py_database",
+      "label": "Database",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "database",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_storage_database",
+      "label": "database.py",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "run.py",
+      "file_type": "code",
+      "norm_label": "database.py",
+      "source_file": "src/storage/database.py",
+      "source_location": "L1"
+    },
+    {
       "id": "src_storage_verifier",
       "label": "verifier.py",
       "_origin": "ast",
@@ -1267,28 +1369,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_browser",
-      "label": "test_browser.py",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": "test_browser.py",
-      "source_file": "tests/test_browser.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_browser_py_asyncio",
-      "label": "asyncio",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "run.py",
-      "file_type": "code",
-      "norm_label": "asyncio",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "tests_test_verifier",
       "label": "test_verifier.py",
       "_origin": "ast",
@@ -1297,6 +1377,17 @@
       "file_type": "code",
       "norm_label": "test_verifier.py",
       "source_file": "tests/test_verifier.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_ai_prompts",
+      "label": "prompts.py",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": "prompts.py",
+      "source_file": "src/ai/prompts.py",
       "source_location": "L1"
     },
     {
@@ -1340,6 +1431,39 @@
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_resume_tailor",
+      "label": "tailor.py",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": "tailor.py",
+      "source_file": "src/resume/tailor.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_scraper_matcher",
+      "label": "matcher.py",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": "matcher.py",
+      "source_file": "src/scraper/matcher.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_scraper_matcher_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "MasterProfile",
+      "file_type": "code",
+      "norm_label": "any",
       "source_file": "",
       "source_location": ""
     },
@@ -1407,17 +1531,6 @@
       "file_type": "code",
       "norm_label": "test_resume_tailor.py",
       "source_file": "tests/test_resume_tailor.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_web_app",
-      "label": "test_web_app.py",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "MasterProfile",
-      "file_type": "code",
-      "norm_label": "test_web_app.py",
-      "source_file": "tests/test_web_app.py",
       "source_location": "L1"
     },
     {
@@ -1707,26 +1820,15 @@
       "source_location": ""
     },
     {
-      "id": "src_applier_form_filler_py_any",
-      "label": "Any",
+      "id": "tests_test_web_app",
+      "label": "test_web_app.py",
       "_origin": "ast",
       "community": 20,
-      "community_name": ".answer_question",
+      "community_name": "test_web_app.py",
       "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_applier_form_filler_py_page",
-      "label": "Page",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": ".answer_question",
-      "file_type": "code",
-      "norm_label": "page",
-      "source_file": "",
-      "source_location": ""
+      "norm_label": "test_web_app.py",
+      "source_file": "tests/test_web_app.py",
+      "source_location": "L1"
     },
     {
       "id": "agents_rules_graphify",
@@ -1785,6 +1887,28 @@
       "source_location": "L6"
     },
     {
+      "id": "src_applier_browser_py_page",
+      "label": "Page",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "Page",
+      "file_type": "code",
+      "norm_label": "page",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_config_loader_py_basemodel",
+      "label": "BaseModel",
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "BaseModel",
+      "file_type": "code",
+      "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
       "id": "connection",
       "label": "Connection",
       "_origin": "ast",
@@ -1794,39 +1918,6 @@
       "norm_label": "connection",
       "source_file": "",
       "source_location": ""
-    },
-    {
-      "id": "src_scraper_job_fetcher",
-      "label": "job_fetcher.py",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
-      "file_type": "code",
-      "norm_label": "job_fetcher.py",
-      "source_file": "src/scraper/job_fetcher.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_scraper_job_fetcher_py_any",
-      "label": "Any",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
-      "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_storage_database",
-      "label": "database.py",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Database",
-      "file_type": "code",
-      "norm_label": "database.py",
-      "source_file": "src/storage/database.py",
-      "source_location": "L1"
     },
     {
       "id": "src_storage_database_py_any",
@@ -1884,17 +1975,6 @@
       "source_location": ""
     },
     {
-      "id": "src_ai_prompts",
-      "label": "prompts.py",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "prompts.py",
-      "source_file": "src/ai/prompts.py",
-      "source_location": "L1"
-    },
-    {
       "id": "src_resume_ingestor",
       "label": "ingestor.py",
       "_origin": "ast",
@@ -1917,39 +1997,6 @@
       "source_location": ""
     },
     {
-      "id": "src_resume_tailor",
-      "label": "tailor.py",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "tailor.py",
-      "source_file": "src/resume/tailor.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_scraper_matcher",
-      "label": "matcher.py",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "matcher.py",
-      "source_file": "src/scraper/matcher.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_scraper_matcher_py_any",
-      "label": "Any",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "LLMClient",
-      "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "tests_test_llm_client",
       "label": "test_llm_client.py",
       "_origin": "ast",
@@ -1961,6 +2008,17 @@
       "source_location": "L1"
     },
     {
+      "id": "basemodel",
+      "label": "BaseModel",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "config_loader.py",
+      "file_type": "code",
+      "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
       "id": "src_config_loader",
       "label": "config_loader.py",
       "_origin": "ast",
@@ -1970,17 +2028,6 @@
       "norm_label": "config_loader.py",
       "source_file": "src/config_loader.py",
       "source_location": "L1"
-    },
-    {
-      "id": "src_config_loader_py_basemodel",
-      "label": "BaseModel",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "config_loader.py",
-      "file_type": "code",
-      "norm_label": "basemodel",
-      "source_file": "",
-      "source_location": ""
     },
     {
       "id": "src_config_loader_py_path",
@@ -2405,20 +2452,75 @@
       "label": "BrowserContext",
       "_origin": "ast",
       "community": 8,
-      "community_name": ".new_stealth_page",
+      "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "browsercontext",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "src_applier_browser_py_page",
+      "id": "formfiller",
+      "label": "FormFiller",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "formfiller",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "page",
       "label": "Page",
       "_origin": "ast",
       "community": 8,
-      "community_name": ".new_stealth_page",
+      "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "page",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_applier_linkedin_py_database",
+      "label": "Database",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "database",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "submissionverifier",
+      "label": "SubmissionVerifier",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "submissionverifier",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "tests_test_browser",
+      "label": "test_browser.py",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "test_browser.py",
+      "source_file": "tests/test_browser.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_browser_py_asyncio",
+      "label": "asyncio",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "BrowserManager",
+      "file_type": "code",
+      "norm_label": "asyncio",
       "source_file": "",
       "source_location": ""
     },
@@ -2615,6 +2717,30 @@
       "type": "external"
     },
     {
+      "id": "datetime",
+      "label": "datetime",
+      "_origin": "semantic",
+      "community": 0,
+      "community_name": "run.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "datetime",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "jobspy",
+      "label": "jobspy",
+      "_origin": "semantic",
+      "community": 0,
+      "community_name": "run.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "jobspy",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "logging",
       "label": "logging",
       "_origin": "semantic",
@@ -2687,14 +2813,26 @@
       "type": "external"
     },
     {
-      "id": "fastapi_testclient",
-      "label": "fastapi_testclient",
+      "id": "sqlite3",
+      "label": "sqlite3",
       "_origin": "semantic",
-      "community": 1,
-      "community_name": "MasterProfile",
+      "community": 0,
+      "community_name": "run.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "fastapi_testclient",
+      "norm_label": "sqlite3",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "typing",
+      "label": "typing",
+      "_origin": "semantic",
+      "community": 0,
+      "community_name": "run.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "typing",
       "source_file": "",
       "type": "external"
     },
@@ -2819,50 +2957,14 @@
       "type": "external"
     },
     {
-      "id": "datetime",
-      "label": "datetime",
+      "id": "fastapi_testclient",
+      "label": "fastapi_testclient",
       "_origin": "semantic",
-      "community": 3,
-      "community_name": "Database",
+      "community": 20,
+      "community_name": "test_web_app.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "datetime",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "jobspy",
-      "label": "jobspy",
-      "_origin": "semantic",
-      "community": 3,
-      "community_name": "Database",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "jobspy",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "sqlite3",
-      "label": "sqlite3",
-      "_origin": "semantic",
-      "community": 3,
-      "community_name": "Database",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "sqlite3",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "typing",
-      "label": "typing",
-      "_origin": "semantic",
-      "community": 3,
-      "community_name": "Database",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "typing",
+      "norm_label": "fastapi_testclient",
       "source_file": "",
       "type": "external"
     },
@@ -2937,141 +3039,20 @@
       "norm_label": "yaml",
       "source_file": "",
       "type": "external"
+    },
+    {
+      "id": "time",
+      "label": "time",
+      "community": 4,
+      "community_name": "LLMClient",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "time",
+      "source_file": "",
+      "type": "external"
     }
   ],
   "links": [
-    {
-      "source": "run_main",
-      "target": "src_config_loader_load_config",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L34",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_storage_database_database",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L38",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_resume_models_masterprofile",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L56",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_ai_llm_client_llmclient",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L58",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_scraper_matcher_jobmatcher",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L64",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_resume_tailor_resumetailor",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L65",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_resume_compiler_resumecompiler",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L66",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_storage_verifier_submissionverifier",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L67",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_applier_browser_browsermanager",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L68",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_scraper_job_fetcher_jobfetcher",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L74",
-      "weight": 1.0
-    },
-    {
-      "source": "run_main",
-      "target": "src_applier_form_filler_formfiller",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "run.py",
-      "source_location": "L84",
-      "weight": 1.0
-    },
     {
       "source": "run_main",
       "target": "src_applier_linkedin_linkedinapplier",
@@ -3081,7 +3062,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run.py",
-      "source_location": "L85",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -3093,7 +3074,139 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run.py",
-      "source_location": "L86",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_config_loader_load_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_applier_browser_browsermanager",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_storage_database_database",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_resume_models_masterprofile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_ai_llm_client_llmclient",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_scraper_matcher_jobmatcher",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_resume_tailor_resumetailor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_resume_compiler_resumecompiler",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_storage_verifier_submissionverifier",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_scraper_job_fetcher_jobfetcher",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "run_main",
+      "target": "src_applier_form_filler_formfiller",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run.py",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -3105,7 +3218,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -3117,7 +3230,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -3129,7 +3242,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -3141,7 +3254,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L30",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "src_applier_browser_browsermanager_login_wizard",
+      "target": "src_applier_browser_browsermanager_new_stealth_page",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/applier/browser.py",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -3153,7 +3278,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/applier/browser.py",
-      "source_location": "L47",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -3177,7 +3302,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/config_loader.py",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -3313,6 +3438,30 @@
       "weight": 1.0
     },
     {
+      "source": "src_web_app_preview_pdf",
+      "target": "src_resume_models_masterprofile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/web/app.py",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "src_web_app_preview_pdf",
+      "target": "src_resume_compiler_resumecompiler",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/web/app.py",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
       "source": "src_web_app_profile_page",
       "target": "src_web_app_get_profile_data",
       "relation": "calls",
@@ -3325,6 +3474,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_web_app_save_profile",
+      "target": "src_resume_models_masterprofile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/web/app.py",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
       "source": "src_web_app_save_settings",
       "target": "src_config_loader_load_config",
       "relation": "calls",
@@ -3333,7 +3494,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/web/app.py",
-      "source_location": "L127",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -3358,6 +3519,18 @@
       "context": "call",
       "source_file": "src/web/app.py",
       "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "src_web_app_upload_cv",
+      "target": "src_resume_ingestor_cvingestor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/web/app.py",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -3717,7 +3890,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "src/web/app.py",
-      "source_location": "L116",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -3733,6 +3906,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_web_app_trigger_login",
+      "target": "post",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "src/web/app.py",
+      "source_location": "L156",
+      "weight": 1.0
+    },
+    {
       "source": "src_web_app_trigger_run",
       "target": "post",
       "relation": "references",
@@ -3741,7 +3926,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "src/web/app.py",
-      "source_location": "L151",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -3765,7 +3950,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "src/web/app.py",
-      "source_location": "L144",
+      "source_location": "L165",
       "weight": 1.0
     },
     {
@@ -3801,7 +3986,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -4118,7 +4303,7 @@
     },
     {
       "source": "src_ai_llm_client",
-      "target": "logging",
+      "target": "time",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -4130,6 +4315,18 @@
     },
     {
       "source": "src_ai_llm_client",
+      "target": "logging",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/ai/llm_client.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_ai_llm_client",
       "target": "requests",
       "relation": "imports",
       "_origin": "ast",
@@ -4137,7 +4334,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -5445,7 +5642,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -6602,6 +6799,18 @@
     },
     {
       "source": "src_applier_linkedin_linkedinapplier_init",
+      "target": "formfiller",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "src/applier/linkedin.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "src_applier_linkedin_linkedinapplier_init",
       "target": "src_applier_browser_browsermanager",
       "relation": "references",
       "_origin": "ast",
@@ -6614,7 +6823,7 @@
     },
     {
       "source": "src_applier_linkedin_linkedinapplier_init",
-      "target": "src_applier_form_filler_formfiller",
+      "target": "src_applier_linkedin_py_database",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6626,19 +6835,7 @@
     },
     {
       "source": "src_applier_linkedin_linkedinapplier_init",
-      "target": "src_storage_database_database",
-      "relation": "references",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "parameter_type",
-      "source_file": "src/applier/linkedin.py",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "src_applier_linkedin_linkedinapplier_init",
-      "target": "src_storage_verifier_submissionverifier",
+      "target": "submissionverifier",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6657,7 +6854,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "src/config_loader.py",
-      "source_location": "L42",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -6734,7 +6931,7 @@
     },
     {
       "source": "src_scraper_job_fetcher_jobfetcher_init",
-      "target": "src_storage_database_database",
+      "target": "src_scraper_job_fetcher_py_database",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6841,6 +7038,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_web_app_trigger_login",
+      "target": "backgroundtasks",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "src/web/app.py",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
       "source": "src_web_app_trigger_run",
       "target": "backgroundtasks",
       "relation": "references",
@@ -6849,7 +7058,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "src/web/app.py",
-      "source_location": "L152",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -6866,14 +7075,14 @@
     },
     {
       "source": "src_applier_browser_browsermanager_new_stealth_page",
-      "target": "src_applier_browser_py_page",
+      "target": "page",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "return_type",
       "source_file": "src/applier/browser.py",
-      "source_location": "L45",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -6885,7 +7094,7 @@
       "confidence_score": 1.0,
       "context": "return_type",
       "source_file": "src/applier/browser.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -7497,7 +7706,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -7563,7 +7772,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -7574,7 +7783,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -7585,7 +7794,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -7596,7 +7805,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -7607,7 +7816,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L42",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -7794,7 +8003,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/web/app.py",
-      "source_location": "L117",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "src_web_app",
+      "target": "src_web_app_trigger_login",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/web/app.py",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -7805,7 +8025,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/web/app.py",
-      "source_location": "L145",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -7816,7 +8036,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/web/app.py",
-      "source_location": "L152",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -8052,18 +8272,18 @@
     },
     {
       "source": "src_config_loader_appconfig",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
       "source": "src_config_loader_appsettings",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -8074,40 +8294,40 @@
     },
     {
       "source": "src_config_loader_browsersettings",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
       "source": "src_config_loader_llmsettings",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
       "source": "src_config_loader_platformsettings",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/config_loader.py",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
       "source": "src_config_loader_searchsettings",
-      "target": "src_config_loader_py_basemodel",
+      "target": "basemodel",
       "relation": "inherits",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -8184,13 +8404,24 @@
     },
     {
       "source": "src_ai_llm_client_llmclient",
+      "target": "src_ai_llm_client_llmclient_call_ollama",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ai/llm_client.py",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "src_ai_llm_client_llmclient",
       "target": "src_ai_llm_client_llmclient_init",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -8201,7 +8432,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -8212,7 +8443,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -8223,7 +8454,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -8234,18 +8465,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ai/llm_client.py",
-      "source_location": "L71",
-      "weight": 1.0
-    },
-    {
-      "source": "src_ai_llm_client_llmclient",
-      "target": "src_ai_llm_client_llmclient_call_ollama",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/ai/llm_client.py",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -8267,7 +8487,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/applier/browser.py",
-      "source_location": "L26",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "src_applier_browser_browsermanager",
+      "target": "src_applier_browser_browsermanager_login_wizard",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/applier/browser.py",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -8278,7 +8509,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/applier/browser.py",
-      "source_location": "L45",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -8289,7 +8520,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/applier/browser.py",
-      "source_location": "L55",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -8300,7 +8531,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/applier/browser.py",
-      "source_location": "L58",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -8311,7 +8542,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/applier/browser.py",
-      "source_location": "L62",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -8733,6 +8964,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_web_app_trigger_login",
+      "target": "src_web_app_trigger_login_run_login",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "argument",
+      "source_file": "src/web/app.py",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
       "source": "src_web_app_trigger_run",
       "target": "src_web_app_trigger_run_run_worker",
       "relation": "indirect_call",
@@ -8741,7 +8984,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/web/app.py",
-      "source_location": "L157",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -8834,39 +9077,6 @@
       "weight": 0.8
     },
     {
-      "source": "src_applier_linkedin_linkedinapplier",
-      "target": "src_applier_form_filler_formfiller",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/applier/linkedin.py",
-      "source_location": "L17",
-      "weight": 0.8
-    },
-    {
-      "source": "src_applier_linkedin_linkedinapplier",
-      "target": "src_storage_verifier_submissionverifier",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/applier/linkedin.py",
-      "source_location": "L18",
-      "weight": 0.8
-    },
-    {
-      "source": "src_applier_linkedin_linkedinapplier",
-      "target": "src_storage_database_database",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/applier/linkedin.py",
-      "source_location": "L19",
-      "weight": 0.8
-    },
-    {
       "source": "src_resume_compiler_resumecompiler",
       "target": "src_resume_models_masterprofile",
       "relation": "uses",
@@ -8922,17 +9132,6 @@
       "weight": 0.8
     },
     {
-      "source": "src_scraper_job_fetcher_jobfetcher",
-      "target": "src_storage_database_database",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/scraper/job_fetcher.py",
-      "source_location": "L10",
-      "weight": 0.8
-    },
-    {
       "source": "src_scraper_matcher_jobmatcher",
       "target": "src_resume_models_masterprofile",
       "relation": "uses",
@@ -8955,39 +9154,6 @@
       "weight": 0.8
     },
     {
-      "source": "src_web_app_preview_pdf",
-      "target": "src_resume_models_masterprofile",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/web/app.py",
-      "source_location": "L105",
-      "weight": 0.8
-    },
-    {
-      "source": "src_web_app_preview_pdf",
-      "target": "src_resume_compiler_resumecompiler",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/web/app.py",
-      "source_location": "L106",
-      "weight": 0.8
-    },
-    {
-      "source": "src_web_app_save_profile",
-      "target": "src_resume_models_masterprofile",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/web/app.py",
-      "source_location": "L76",
-      "weight": 0.8
-    },
-    {
       "source": "src_web_app_upload_cv",
       "target": "src_ai_llm_client_llmclient",
       "relation": "uses",
@@ -8996,17 +9162,6 @@
       "confidence_score": 0.95,
       "source_file": "src/web/app.py",
       "source_location": "L89",
-      "weight": 0.8
-    },
-    {
-      "source": "src_web_app_upload_cv",
-      "target": "src_resume_ingestor_cvingestor",
-      "relation": "uses",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/web/app.py",
-      "source_location": "L90",
       "weight": 0.8
     },
     {
@@ -9088,5 +9243,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2e6cae8fd24ed0a08452620646131ade271fcd0c"
+  "built_at_commit": "9f3474dd11d40610ffafffd7ec44efe507d0ff4a"
 }

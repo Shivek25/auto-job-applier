@@ -15,3 +15,12 @@ async def test_form_filler_answer():
     filler = FormFiller(mock_llm, profile)
     ans = await filler.answer_question("How many years of Python experience do you have?", "number")
     assert ans == "3"
+
+    # Test deterministic solver (0 tokens, no mock call)
+    assert filler.solve_deterministically("Phone number") == "123"
+    assert filler.solve_deterministically("Email address") == "a@a.com"
+    assert filler.solve_deterministically("How many years of experience do you have with Python?", "number") == "2"
+    assert filler.solve_deterministically("Will you require sponsorship?", "text") == "No"
+    assert filler.solve_deterministically("Are you legally authorized to work?", "text") == "Yes"
+    assert filler.solve_deterministically("Notice period", "number") == "15"
+

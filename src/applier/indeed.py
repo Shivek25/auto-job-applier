@@ -77,4 +77,7 @@ class IndeedApplier:
             self.db.update_status(job_id=job_id, status="FAILED", error_message=str(e))
             return False
         finally:
-            await page.close()
+            try:
+                await page.close()
+            except Exception:
+                pass
