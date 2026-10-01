@@ -7,7 +7,7 @@
   "5": "config_loader.py",
   "6": "⚡ AutoJobForge",
   "7": "Tasks",
-  "8": ".new_stealth_page",
+  "8": "BrowserManager",
   "9": "3. Module Specifications",
   "10": ".verify_and_capture",
   "11": "ai/__init__.py",
@@ -19,7 +19,9 @@
   "17": "web/__init__.py",
   "18": "tests/__init__.py",
   "19": "main.js",
-  "20": ".answer_question",
+  "20": "test_web_app.py",
   "21": "rules/graphify.md",
-  "22": "workflows/graphify.md"
+  "22": "workflows/graphify.md",
+  "23": "Page",
+  "24": "BaseModel"
 }

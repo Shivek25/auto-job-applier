@@ -1,15 +1,15 @@
 {
-  "0": "FormFiller",
+  "0": "run.py",
   "1": "MasterProfile",
   "2": "app.py",
   "3": "Database",
   "4": "LLMClient",
   "5": "config_loader.py",
-  "6": "run.py",
-  "7": "Any",
-  "8": "BrowserManager",
-  "9": "BaseModel",
-  "10": "test_web_app.py",
+  "6": "⚡ AutoJobForge",
+  "7": "Tasks",
+  "8": ".new_stealth_page",
+  "9": "3. Module Specifications",
+  "10": ".verify_and_capture",
   "11": "ai/__init__.py",
   "12": "applier/__init__.py",
   "13": "src/__init__.py",
@@ -19,5 +19,7 @@
   "17": "web/__init__.py",
   "18": "tests/__init__.py",
   "19": "main.js",
-  "20": "Path"
+  "20": ".answer_question",
+  "21": "rules/graphify.md",
+  "22": "workflows/graphify.md"
 }
