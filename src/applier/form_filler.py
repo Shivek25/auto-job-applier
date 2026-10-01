@@ -25,9 +25,15 @@ class FormFiller:
         if ("country code" in lbl or "phone code" in lbl or "dial" in lbl) and input_type in ["text", "tel"]:
             return "+91"
 
-        # Contact & Identification
+        # Mobile / Contact Phone Number (Must be direct digits without country code)
         if "phone" in lbl or "mobile" in lbl or "contact" in lbl:
-            return self.profile.personal_info.phone
+            raw_phone = self.profile.personal_info.phone or ""
+            clean_digits = re.sub(r"\D", "", raw_phone)
+            # If starts with India 91 and has 12 digits, strip leading 91
+            if clean_digits.startswith("91") and len(clean_digits) > 10:
+                clean_digits = clean_digits[2:]
+            return clean_digits[-10:] if len(clean_digits) >= 10 else clean_digits
+
         if "email" in lbl:
             return self.profile.personal_info.email
         if "first name" in lbl or "given name" in lbl:
@@ -72,17 +78,20 @@ class FormFiller:
         if "gpa" in lbl or "percentage" in lbl:
             return "8.0"
 
-        # Notice period & Compensation
+        # Notice period (Always numeric or simple days)
         if "notice" in lbl:
-            return "15" if input_type == "number" else "15 days"
+            return "15"
+
+        # Compensation & Salary fields (ALWAYS numeric digits only, never words or sentences)
         if "current ctc" in lbl or "current salary" in lbl:
-            return "600000" if input_type == "number" else "6 LPA"
-        if "expected ctc" in lbl or "expected salary" in lbl or "compensation" in lbl or "desired salary" in lbl:
-            return "900000" if input_type == "number" else "9 LPA"
+            return "600000"
+        if any(w in lbl for w in ["salary", "ctc", "compensation", "expectation", "annual salary"]):
+            return "900000"
 
         # Experience queries (e.g. "How many years of work experience do you have with SQL?")
+        # MUST ALWAYS BE A PURE DIGIT "2", never "2 years"
         if "years" in lbl or "experience" in lbl:
-            return "2" if input_type == "number" else "2 years"
+            return "2"
 
         # Common affirmative questions
         if any(w in lbl for w in ["authorized", "authorization", "legally", "18", "commute", "relocate", "hybrid", "onsite"]):
@@ -109,6 +118,7 @@ class FormFiller:
         return None
 
     async def answer_question(self, question_text: str, field_type: str, options: Optional[List[str]] = None) -> Any:
+        q_lower = question_text.lower()
         extra_options = f"Available options: {options}" if options else ""
         prompt = (
             FORM_ANSWER_PROMPT
@@ -119,67 +129,116 @@ class FormFiller:
         )
         try:
             res = self.llm.generate_json(prompt)
-            ans = res.get("answer", "")
+            ans = str(res.get("answer", "")).strip()
+            
+            # Sanitize LLM response - eliminate refusal/fluff text
+            if any(ref in ans.lower() for ref in ["not specified", "candidate profile", "not mentioned", "unknown", "n/a"]):
+                if field_type == "number" or "year" in q_lower:
+                    return "2"
+                return "Yes"
+
+            # If field expects number or years, extract digits only
+            if field_type == "number" or "year" in q_lower or "salary" in q_lower or "ctc" in q_lower:
+                digits = re.findall(r"\d+", ans)
+                if digits:
+                    return digits[0]
+                return "2"
+
             if ans:
                 return ans
         except Exception as e:
             logger.warning(f"LLM question answer fallback triggered ({e}). Using deterministic default.")
         
-        if field_type == "number":
+        if field_type == "number" or "year" in q_lower:
             return "2"
         return "Yes"
 
     async def fill_current_modal(self, page: Page):
         try:
+            # Scope to the modal container to prevent modifying elements outside the modal
+            modal = await page.query_selector(
+                "div.jobs-easy-apply-modal, div.jobs-easy-apply-content, div[data-test-modal], div[role='dialog']"
+            )
+            container = modal if modal else page
+
             # 1. Fill all text, number, tel, email inputs and textareas
             input_selector = (
                 "input:not([type]), input[type='text'], input[type='number'], "
                 "input[type='tel'], input[type='email'], textarea"
             )
-            inputs = await page.query_selector_all(input_selector)
+            inputs = await container.query_selector_all(input_selector)
             for inp in inputs:
-                val = await inp.input_value()
-                if not val:
-                    inp_id = await inp.get_attribute("id")
-                    inp_type = (await inp.get_attribute("type")) or "text"
-                    label_text = ""
-                    
-                    if inp_id:
-                        label_el = await page.query_selector(f"label[for='{inp_id}']")
+                inp_id = await inp.get_attribute("id")
+                inp_type = (await inp.get_attribute("type")) or "text"
+                label_text = ""
+                
+                # Check label by 'for' attribute
+                if inp_id:
+                    try:
+                        label_el = await container.query_selector(f"label[for='{inp_id}']")
                         if label_el:
                             label_text = await label_el.inner_text()
-                    
-                    if not label_text:
-                        label_text = await page.evaluate(
-                            """(el) => {
-                                const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
-                                              el.closest('.fb-form-element') || 
-                                              el.closest('div');
-                                const lbl = group ? group.querySelector('label') : null;
-                                return (lbl ? lbl.innerText : '') || 
-                                       el.getAttribute('aria-label') || 
-                                       el.getAttribute('name') || 
-                                       el.placeholder || '';
-                            }""",
-                            inp
-                        )
-                    
-                    # Solve deterministically first (zero token cost, instant)
-                    ans = self.solve_deterministically(label_text, inp_type)
-                    if not ans:
-                        ans = await self.answer_question(label_text, inp_type)
-                    
-                    if ans:
+                    except Exception:
+                        pass
+                
+                # Fallback to parent grouping or aria-label
+                if not label_text:
+                    label_text = await page.evaluate(
+                        """(el) => {
+                            const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
+                                          el.closest('.fb-form-element') || 
+                                          el.closest('.jobs-easy-apply-form-element');
+                            const lbl = group ? group.querySelector('label') : null;
+                            return (lbl ? lbl.innerText : '') || 
+                                   el.getAttribute('aria-label') || 
+                                   el.getAttribute('name') || 
+                                   el.placeholder || '';
+                        }""",
+                        inp
+                    )
+                
+                # Determine value to fill
+                val = await inp.input_value()
+                ans = self.solve_deterministically(label_text, inp_type)
+                if not ans:
+                    ans = await self.answer_question(label_text, inp_type)
+                
+                # Enforce clean digits for phone, years, salary
+                lbl_low = label_text.lower()
+                if "phone" in lbl_low or "mobile" in lbl_low:
+                    ans = re.sub(r"\D", "", str(ans))
+                    if ans.startswith("91") and len(ans) > 10:
+                        ans = ans[2:]
+                    ans = ans[-10:] if len(ans) >= 10 else ans
+                elif "year" in lbl_low or "experience" in lbl_low:
+                    digits = re.findall(r"\d+", str(ans))
+                    ans = digits[0] if digits else "2"
+                elif any(w in lbl_low for w in ["salary", "ctc", "compensation"]):
+                    digits = re.findall(r"\d+", str(ans))
+                    ans = digits[0] if digits else "900000"
+
+                # Check if current value already matches or if it needs filling/fixing
+                if ans and (not val or val != str(ans) or any(bad in val for bad in ["Not specified", "+91", "years", "LPA"])):
+                    # Clear completely and fill freshly
+                    try:
+                        await inp.click()
+                        await inp.fill("")
                         await inp.fill(str(ans))
+                    except Exception:
+                        try:
+                            await page.evaluate("(el, v) => { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }", inp, str(ans))
+                        except Exception:
+                            pass
 
             # 2. Handle select / dropdown elements
-            selects = await page.query_selector_all("select")
+            selects = await container.query_selector_all("select")
             for sel in selects:
                 sel_val = await sel.input_value()
                 if not sel_val or sel_val in ["0", "Select an option", ""]:
                     label_text = await page.evaluate(
                         """(el) => {
                             const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
+                                          el.closest('.fb-form-element') || 
                                           el.closest('div');
                             const lbl = group ? group.querySelector('label') : null;
                             return (lbl ? lbl.innerText : '') || el.getAttribute('aria-label') || '';
@@ -237,7 +296,7 @@ class FormFiller:
                                 pass
 
             # 3. Handle radio buttons (e.g. sponsorship, authorization, commute)
-            radios = await page.query_selector_all("input[type='radio']")
+            radios = await container.query_selector_all("input[type='radio']")
             for radio in radios:
                 label_text = await page.evaluate(
                     "(el) => el.closest('fieldset')?.innerText || el.parentElement?.innerText || ''", 
@@ -264,7 +323,7 @@ class FormFiller:
                                 pass
 
             # 4. Handle unchecked required checkboxes (e.g. agreement, privacy)
-            checkboxes = await page.query_selector_all("input[type='checkbox']")
+            checkboxes = await container.query_selector_all("input[type='checkbox']")
             for cb in checkboxes:
                 is_checked = await cb.is_checked()
                 if not is_checked:

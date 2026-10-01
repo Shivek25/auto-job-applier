@@ -340,7 +340,7 @@
       "label": ".answer_question()",
       "file_type": "code",
       "source_file": "src/applier/form_filler.py",
-      "source_location": "L111",
+      "source_location": "L120",
       "id": "applier_form_filler_formfiller_answer_question",
       "community": 3,
       "norm_label": ".answer_question()"
@@ -349,7 +349,7 @@
       "label": ".fill_current_modal()",
       "file_type": "code",
       "source_file": "src/applier/form_filler.py",
-      "source_location": "L132",
+      "source_location": "L156",
       "id": "applier_form_filler_formfiller_fill_current_modal",
       "community": 3,
       "norm_label": ".fill_current_modal()"
@@ -826,7 +826,7 @@
       "label": ".get_application()",
       "file_type": "code",
       "source_file": "src/storage/database.py",
-      "source_location": "L91",
+      "source_location": "L98",
       "id": "storage_database_database_get_application",
       "community": 3,
       "norm_label": ".get_application()"
@@ -835,7 +835,7 @@
       "label": ".get_all_applications()",
       "file_type": "code",
       "source_file": "src/storage/database.py",
-      "source_location": "L98",
+      "source_location": "L105",
       "id": "storage_database_database_get_all_applications",
       "community": 3,
       "norm_label": ".get_all_applications()"
@@ -844,7 +844,7 @@
       "label": ".get_stats()",
       "file_type": "code",
       "source_file": "src/storage/database.py",
-      "source_location": "L104",
+      "source_location": "L111",
       "id": "storage_database_database_get_stats",
       "community": 3,
       "norm_label": ".get_stats()"
@@ -15483,5 +15483,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "47bf4e7262f8a6114f23ca24bb6a36890f41380d"
+  "built_at_commit": "07b69db944bb970e164f003b0034bae7c481d932"
 }

@@ -75,6 +75,7 @@ class LinkedInApplier:
 
             # Multi-step wizard traversal
             max_steps = 10
+            submitted = False
             for step in range(max_steps):
                 # Upload resume if file input present
                 file_input = await page.query_selector("input[type='file']")
@@ -95,10 +96,19 @@ class LinkedInApplier:
                 )
                 if submit_btn:
                     if self.mode == "review":
-                        logger.info("Review mode: pausing 15s for user inspection before final submission...")
+                        logger.info("👉 Review mode: pausing 15s for user inspection before final submission...")
                         await asyncio.sleep(15)
                     await submit_btn.click()
                     await self.bm.random_delay(3, 5)
+                    
+                    # Verify modal closed or dismiss button appears
+                    dismiss_btn = await page.query_selector("button[aria-label='Dismiss'], button:has-text('Done')")
+                    if dismiss_btn:
+                        try:
+                            await dismiss_btn.click()
+                        except Exception:
+                            pass
+                    submitted = True
                     break
 
                 # Otherwise check for Next / Review button
@@ -111,22 +121,43 @@ class LinkedInApplier:
                         logger.warning("Next button is disabled. Attempting to re-check fields...")
                         await self.filler.fill_current_modal(page)
                         await self.bm.random_delay(1, 2)
+                    
+                    # Check for inline error messages on the form
+                    error_el = await page.query_selector(
+                        "span.artdeco-inline-feedback__message, div.artdeco-inline-feedback--error, p.t-12.t-red, .jobs-easy-apply-form-section__error-text"
+                    )
+                    if error_el:
+                        err_text = await error_el.inner_text()
+                        logger.warning(f"Validation error on step {step+1}: '{err_text}'. Re-filling with clean numeric inputs...")
+                        await self.filler.fill_current_modal(page)
+                        await self.bm.random_delay(1, 2)
+
                     await next_btn.click()
                     await self.bm.random_delay(2, 3)
                 else:
-                    # No next or submit button, might be done or error
+                    # No next or submit button, break
                     break
 
-            # Verify submission & capture proof screenshot
             receipt_path = await self.verifier.verify_and_capture(page, company, job_id)
-            self.db.update_status(
-                job_id=job_id,
-                status="SUBMITTED",
-                resume_path=str(tailored_pdf_path),
-                screenshot_path=str(receipt_path)
-            )
-            logger.info(f"Successfully applied to {company} ({job_id}) on LinkedIn!")
-            return True
+            if submitted:
+                self.db.update_status(
+                    job_id=job_id,
+                    status="SUBMITTED",
+                    resume_path=str(tailored_pdf_path),
+                    screenshot_path=str(receipt_path)
+                )
+                logger.info(f"Successfully applied to {company} ({job_id}) on LinkedIn!")
+                return True
+            else:
+                err_msg = "Form had validation errors or was not able to reach the final Submit button"
+                logger.error(f"Application to {company} ({job_id}) failed: {err_msg}")
+                self.db.update_status(
+                    job_id=job_id,
+                    status="FAILED",
+                    error_message=err_msg,
+                    screenshot_path=str(receipt_path)
+                )
+                return False
 
         except Exception as e:
             logger.error(f"Failed applying to {job_id} on LinkedIn: {e}")

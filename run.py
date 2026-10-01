@@ -144,6 +144,18 @@ async def main():
         pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
         compiler.compile_pdf(tailored_profile, pdf_path)
 
+        # Track application as PENDING in database
+        db.add_application(
+            job_id=job_id,
+            platform=job["site"],
+            title=job["title"],
+            company=job["company"],
+            location=job["location"],
+            job_url=job["job_url"],
+            match_score=eval_result["match_score"],
+            status="PENDING"
+        )
+
         # Apply based on platform
         success = False
         if "linkedin" in site and config.platforms.linkedin:

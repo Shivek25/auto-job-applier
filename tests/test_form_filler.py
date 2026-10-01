@@ -24,3 +24,20 @@ async def test_form_filler_answer():
     assert filler.solve_deterministically("Are you legally authorized to work?", "text") == "Yes"
     assert filler.solve_deterministically("Notice period", "number") == "15"
 
+    # Test Indian phone format +91 stripped to 10 digits
+    profile_in = MasterProfile(
+        personal_info=PersonalInfo(name="Shivek", email="s@s.com", phone="+91 9650320446", location="Delhi"),
+        summary="Data Engineer",
+        skills=Skills(languages=["Python"])
+    )
+    filler_in = FormFiller(mock_llm, profile_in)
+    assert filler_in.solve_deterministically("Mobile phone number") == "9650320446"
+    assert filler_in.solve_deterministically("What is your expectations in terms of annual salary?") == "900000"
+    assert filler_in.solve_deterministically("How many years of Hospitals and Health Care experience do you currently have?") == "2"
+
+    # Test LLM refusal sanitization
+    mock_llm.generate_json.return_value = {"answer": "Not specified in the candidate profile"}
+    ans_sanitized = await filler_in.answer_question("Random custom query", "text")
+    assert ans_sanitized == "Yes"
+
+

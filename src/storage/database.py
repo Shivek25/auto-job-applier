@@ -77,7 +77,8 @@ class Database:
         error_message: Optional[str] = None
     ):
         with self._get_connection() as conn:
-            conn.execute("""
+            cursor = conn.cursor()
+            cursor.execute("""
             UPDATE applications
             SET status = ?,
                 resume_path = COALESCE(?, resume_path),
@@ -86,6 +87,12 @@ class Database:
                 applied_at = CURRENT_TIMESTAMP
             WHERE job_id = ?
             """, (status, resume_path, screenshot_path, error_message, job_id))
+            if cursor.rowcount == 0:
+                cursor.execute("""
+                INSERT OR REPLACE INTO applications (
+                    job_id, platform, title, company, location, job_url, match_score, status, resume_path, screenshot_path, error_message, applied_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                """, (job_id, "unknown", "Unknown Title", "Unknown Company", "", "", 0, status, resume_path, screenshot_path, error_message))
             conn.commit()
 
     def get_application(self, job_id: str) -> Optional[Dict[str, Any]]:
