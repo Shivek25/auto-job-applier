@@ -75,6 +75,7 @@ CRITICAL INSTRUCTIONS:
 2. Skills: Re-order the skills in each category (Languages, Frameworks, Tools & Cloud, Databases) so that the specific technologies demanded by the JD appear first.
 3. Work Experience: Refine the bullet points of work experience to emphasize achievements, metrics, and workflows that mirror the JD's requirements (e.g. data modeling, ETL/ELT pipelines, query optimization, analytics) without changing real job titles or dates.
 4. Projects: Select the most relevant 2-3 projects and tailor their descriptions and bullet points to highlight technologies matching the JD.
+5. Formatting: Never use em dashes (—) or en dashes (–) anywhere in the text. Always use standard hyphens (-), colons (:), or commas (,).
 
 Return a pure JSON object matching the Master Profile schema:
 {

@@ -48,3 +48,25 @@ def test_resume_tailor_heuristic_fallback():
     assert tailored.skills.languages[0] == "Python"
     # Summary should mention specialized focus on matched skills
     assert "specialized focus" in tailored.summary.lower()
+
+def test_resume_tailor_sanitizes_em_dashes():
+    mock_llm = MagicMock()
+    mock_llm.generate_json.return_value = {
+        "personal_info": {"name": "Test — User", "email": "t@t.com", "phone": "1", "location": "L"},
+        "summary": "Expert in pipelines — and data modeling.",
+        "skills": {"languages": ["Python — 3.12"]},
+        "work_experience": [],
+        "projects": [],
+        "education": []
+    }
+    tailor = ResumeTailor(mock_llm)
+    profile = MasterProfile(
+        personal_info=PersonalInfo(name="Test", email="t@t.com", phone="1", location="L"),
+        summary="Old",
+        skills=Skills(languages=["Python"])
+    )
+    tailored = tailor.tailor(profile, "JD")
+    assert "—" not in tailored.personal_info.name
+    assert "—" not in tailored.summary
+    assert "—" not in tailored.skills.languages[0]
+    assert "-" in tailored.summary

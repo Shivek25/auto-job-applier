@@ -17,7 +17,7 @@ class ResumeTailor:
                 .replace("{profile_json}", master_profile.model_dump_json(indent=2))
                 .replace("{job_description}", job_description)
             )
-            tailored_data = self.llm.generate_json(prompt)
+            tailored_data = self._clean_dashes(self.llm.generate_json(prompt))
             tailored = MasterProfile(**tailored_data)
             logger.info(f"✨ Resume tailored successfully! Customized Summary: \"{tailored.summary[:90]}...\"")
             return tailored
@@ -48,4 +48,14 @@ class ResumeTailor:
             skill_focus = ", ".join(top_matched)
             data["summary"] = f"{profile.summary.rstrip('.')} with specialized focus on {skill_focus} solutions."
 
-        return MasterProfile(**data)
+        return MasterProfile(**self._clean_dashes(data))
+
+    @staticmethod
+    def _clean_dashes(obj):
+        if isinstance(obj, str):
+            return obj.replace("—", " - ").replace("–", " - ").replace("&mdash;", " - ").replace("&ndash;", " - ")
+        elif isinstance(obj, list):
+            return [ResumeTailor._clean_dashes(i) for i in obj]
+        elif isinstance(obj, dict):
+            return {k: ResumeTailor._clean_dashes(v) for k, v in obj.items()}
+        return obj

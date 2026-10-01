@@ -55,8 +55,8 @@
   #for exp in cv_data.work_experience [
     #grid(
       columns: (1fr, auto),
-      [*#exp.role* -- #exp.company],
-      [#text(9pt, fill: rgb("#6b7280"))[#exp.start_date -- #exp.end_date]]
+      [*#exp.role* - #exp.company],
+      [#text(9pt, fill: rgb("#6b7280"))[#exp.start_date - #exp.end_date]]
     )
     #for bullet in exp.bullets [
       - #bullet
@@ -91,7 +91,7 @@
   #for edu in cv_data.education [
     #grid(
       columns: (1fr, auto),
-      [*#edu.degree* -- #edu.institution],
+      [*#edu.degree* - #edu.institution],
       [#text(9pt, fill: rgb("#6b7280"))[#edu.graduation_year]]
     )
   ]

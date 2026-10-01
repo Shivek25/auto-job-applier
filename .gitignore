@@ -34,9 +34,16 @@ config/config.yaml
 test-results/
 .pytest_cache/
 
-# Graphify local cache
-graphify-out/cache/
-graphify-out/*.lock
+# Knowledge graph & analysis outputs
+graphify-out/
+.graphify/
+
+# Temporary artifacts & scratch
+.system_generated/
+.tempmediaStorage/
+.user_uploaded/
+scratch/
+*.tmp
 
 # IDE & OS files
 .vscode/

@@ -16,10 +16,18 @@ class ResumeCompiler:
         temp_dir.mkdir(parents=True, exist_ok=True)
         
         try:
-            # Write profile data JSON to temp dir
+            # Write profile data JSON to temp dir, replacing any em/en dashes with standard hyphens
             json_file = temp_dir / "profile_data.json"
+            raw_json = profile.model_dump_json(indent=2)
+            clean_json = (
+                raw_json
+                .replace("—", " - ")
+                .replace("–", " - ")
+                .replace("&mdash;", " - ")
+                .replace("&ndash;", " - ")
+            )
             with open(json_file, "w", encoding="utf-8") as f:
-                f.write(profile.model_dump_json(indent=2))
+                f.write(clean_json)
             
             # Copy typst template to temp dir
             typ_file = temp_dir / "resume.typ"
