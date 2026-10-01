@@ -1,6 +1,8 @@
 # run.py
 import os
 import sys
+import re
+import shutil
 import json
 import asyncio
 import logging
@@ -139,14 +141,20 @@ async def main():
             continue
 
         logger.info(f"Eligible Match ({eval_result['match_score']}%)! Tailoring resume for {job['company']}...")
-        try:
-            tailored_profile = tailor.tailor(master_profile, job["description"])
-        except Exception as e:
-            logger.warning(f"Tailoring fallback to base profile: {e}")
-            tailored_profile = master_profile
+        tailored_profile = tailor.tailor(master_profile, job["description"])
 
-        pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
+        # Format professional filename for LinkedIn upload (e.g. Shivek_Sharma_Honasa_Consumer_li-4473593785.pdf)
+        clean_company = re.sub(r"[^a-zA-Z0-9]+", "_", job.get("company", "Company")).strip("_")
+        clean_name = re.sub(r"[^a-zA-Z0-9]+", "_", getattr(master_profile.personal_info, "name", "Resume")).strip("_")
+        clean_name = clean_name or "Resume"
+        prof_filename = f"{clean_name}_{clean_company}_{job_id}.pdf"
+        pdf_path = Path(f"storage/tailored_resumes/{prof_filename}")
         compiler.compile_pdf(tailored_profile, pdf_path)
+
+        # Also maintain job_id.pdf for backward compatibility
+        legacy_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
+        if legacy_path != pdf_path:
+            shutil.copyfile(pdf_path, legacy_path)
 
         # Track application as PENDING in database
         db.add_application(

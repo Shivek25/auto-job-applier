@@ -264,6 +264,21 @@ class FormFiller:
                                     chosen_val = v
                                     break
                         
+                        # Yes / No question dropdown
+                        has_yes = any("yes" in t.lower() for t, _ in opt_texts)
+                        has_no = any("no" in t.lower() for t, _ in opt_texts)
+                        if not chosen_val and (has_yes or has_no):
+                            if any(w in lbl_low for w in ["sponsorship", "visa", "require sponsor"]):
+                                for t, v in opt_texts:
+                                    if "no" in t.lower():
+                                        chosen_val = v
+                                        break
+                            else:
+                                for t, v in opt_texts:
+                                    if "yes" in t.lower():
+                                        chosen_val = v
+                                        break
+
                         # Sponsorship
                         if not chosen_val and any(w in lbl_low for w in ["sponsorship", "visa"]):
                             for t, v in opt_texts:
@@ -295,32 +310,117 @@ class FormFiller:
                             except Exception:
                                 pass
 
-            # 3. Handle radio buttons (e.g. sponsorship, authorization, commute)
-            radios = await container.query_selector_all("input[type='radio']")
-            for radio in radios:
-                label_text = await page.evaluate(
-                    "(el) => el.closest('fieldset')?.innerText || el.parentElement?.innerText || ''", 
-                    radio
-                )
-                if label_text:
-                    lbl_lower = label_text.lower()
-                    radio_val = await page.evaluate(
-                        "(el) => el.parentElement?.innerText?.toLowerCase() || ''", 
-                        radio
+            # 3. Handle radio buttons (e.g. LLM experience, Python experience, sponsorship, etc.)
+            all_radios = await container.query_selector_all("input[type='radio']")
+            
+            # Filter out resume selection radios
+            question_radios = []
+            for r in all_radios:
+                is_resume = await page.evaluate("""(el) => {
+                    if (el.name && el.name.toLowerCase().includes('resume')) return true;
+                    if (el.closest('.jobs-document-upload') || el.closest('[data-test-document-upload-resume]')) return true;
+                    return false;
+                }""", r)
+                if not is_resume:
+                    question_radios.append(r)
+
+            # Group radios by name attribute or fieldset
+            radio_groups = {}
+            for r in question_radios:
+                group_key = await r.get_attribute("name")
+                if not group_key:
+                    group_key = await page.evaluate(
+                        "(el) => el.closest('fieldset')?.id || el.closest('.fb-form-element')?.id || 'group_default'", 
+                        r
                     )
+                radio_groups.setdefault(group_key, []).append(r)
+
+            for g_key, g_radios in radio_groups.items():
+                # Extract question / legend text for this group
+                q_text = await page.evaluate("""(el) => {
+                    const fieldset = el.closest('fieldset');
+                    if (fieldset) {
+                        const legend = fieldset.querySelector('legend');
+                        if (legend) return legend.innerText;
+                        return fieldset.innerText;
+                    }
+                    const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
+                                  el.closest('.fb-form-element') || 
+                                  el.closest('.jobs-easy-apply-form-element') || 
+                                  el.parentElement;
+                    return group ? group.innerText : '';
+                }""", g_radios[0])
+                
+                q_low = q_text.lower()
+                is_sponsorship = any(w in q_low for w in ["sponsorship", "require sponsor", "visa sponsor", "work authorization sponsor"])
+                target_answer = "no" if is_sponsorship else "yes"
+
+                # Check if group already has an answer checked
+                already_checked = None
+                for r in g_radios:
+                    if await r.is_checked():
+                        already_checked = r
+                        break
+
+                # If already checked, ensure sponsorship is NOT checked 'yes'
+                if already_checked:
+                    checked_text = await page.evaluate("(el) => el.parentElement?.innerText?.toLowerCase() || ''", already_checked)
+                    if is_sponsorship and "yes" in checked_text:
+                        # Must switch from yes to no
+                        pass
+                    else:
+                        # Valid existing selection, continue
+                        continue
+
+                # Find radio that matches target_answer
+                target_radio = None
+                for r in g_radios:
+                    opt_text = await page.evaluate("""(el) => {
+                        const val = el.value || '';
+                        let lblText = '';
+                        if (el.id) {
+                            const lbl = document.querySelector(`label[for="${el.id}"]`);
+                            if (lbl) lblText = lbl.innerText;
+                        }
+                        if (!lblText && el.parentElement) {
+                            lblText = el.parentElement.innerText;
+                        }
+                        return (val + ' ' + lblText).toLowerCase();
+                    }""", r)
                     
-                    if "sponsorship" in lbl_lower or "require sponsor" in lbl_lower or "visa" in lbl_lower:
-                        if "no" in radio_val:
-                            try:
-                                await radio.check(force=True)
-                            except Exception:
-                                pass
-                    elif any(w in lbl_lower for w in ["authorized", "commute", "relocate", "comfortable", "degree", "18"]):
-                        if "yes" in radio_val:
-                            try:
-                                await radio.check(force=True)
-                            except Exception:
-                                pass
+                    if target_answer in opt_text:
+                        target_radio = r
+                        break
+
+                # Fallback to first radio in group if target not matched
+                if not target_radio and g_radios:
+                    target_radio = g_radios[0]
+
+                if target_radio:
+                    try:
+                        # 1. Force check on input
+                        await target_radio.check(force=True)
+                        
+                        # 2. Click label
+                        r_id = await target_radio.get_attribute("id")
+                        if r_id:
+                            lbl = await container.query_selector(f"label[for='{r_id}']")
+                            if lbl:
+                                await lbl.click(force=True)
+                        else:
+                            await target_radio.click(force=True)
+
+                        # 3. JavaScript dispatchEvent to guarantee React catches the change
+                        await page.evaluate("""(el) => {
+                            el.checked = true;
+                            el.dispatchEvent(new Event('input', { bubbles: true }));
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                        }""", target_radio)
+                        
+                        short_q = q_text.splitlines()[0] if q_text else g_key
+                        logger.info(f"Radio answered: '{short_q.strip()}' -> '{target_answer}'")
+                    except Exception as e:
+                        logger.warning(f"Could not check radio for {g_key}: {e}")
 
             # 4. Handle unchecked required checkboxes (e.g. agreement, privacy)
             checkboxes = await container.query_selector_all("input[type='checkbox']")

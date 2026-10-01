@@ -111,9 +111,12 @@ async def preview_pdf():
 @app.get("/resumes/{job_id}")
 async def get_tailored_resume(job_id: str):
     pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
-    if not pdf_path.exists():
-        return HTMLResponse("Tailored resume not found for this job ID", status_code=404)
-    return FileResponse(pdf_path, media_type="application/pdf", filename=f"{job_id}_tailored_resume.pdf")
+    if pdf_path.exists():
+        return FileResponse(pdf_path, media_type="application/pdf", filename=pdf_path.name)
+    matches = list(Path("storage/tailored_resumes").glob(f"*{job_id}*.pdf"))
+    if matches:
+        return FileResponse(matches[0], media_type="application/pdf", filename=matches[0].name)
+    return HTMLResponse("Tailored resume not found for this job ID", status_code=404)
 
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request, success: Optional[str] = None, error: Optional[str] = None):
