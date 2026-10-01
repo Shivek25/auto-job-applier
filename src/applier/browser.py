@@ -15,9 +15,10 @@ class BrowserManager:
         profile_name: str = "Default"
     ):
         self.headless = headless
-        # Default to local AppData Chrome User Data if not specified
-        default_chrome_dir = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
-        self.user_data_dir = user_data_dir or default_chrome_dir
+        if not user_data_dir:
+            self.user_data_dir = str(Path("storage/browser_profile").resolve())
+        else:
+            self.user_data_dir = user_data_dir
         self.profile_name = profile_name
         self.playwright = None
         self.context: Optional[BrowserContext] = None
@@ -27,20 +28,52 @@ class BrowserManager:
         if self.context:
             return self.context
         self.playwright = await async_playwright().start()
-        profile_path = Path(self.user_data_dir) / self.profile_name
+        profile_path = Path(self.user_data_dir)
         profile_path.mkdir(parents=True, exist_ok=True)
         
-        self.context = await self.playwright.chromium.launch_persistent_context(
-            user_data_dir=str(profile_path),
-            headless=self.headless,
-            viewport={"width": 1280, "height": 800},
-            args=[
+        launch_kwargs = {
+            "user_data_dir": str(profile_path),
+            "headless": self.headless,
+            "viewport": {"width": 1280, "height": 800},
+            "args": [
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
                 "--disable-infobars"
             ]
-        )
+        }
+        try:
+            # Try launching with real Chrome channel installed on system
+            self.context = await self.playwright.chromium.launch_persistent_context(
+                channel="chrome",
+                **launch_kwargs
+            )
+        except Exception:
+            # Fallback to standard Playwright Chromium
+            self.context = await self.playwright.chromium.launch_persistent_context(
+                **launch_kwargs
+            )
         return self.context
+
+    async def login_wizard(self, platform: str = "linkedin"):
+        self.headless = False
+        page = await self.new_stealth_page()
+        if platform == "linkedin":
+            target_url = "https://www.linkedin.com/login"
+        elif platform == "indeed":
+            target_url = "https://secure.indeed.com/auth"
+        else:
+            target_url = "https://www.google.com"
+
+        await page.goto(target_url)
+        print(f"\n{'='*65}")
+        print(f"🔑 Please sign in to {platform.title()} in the opened Chrome browser window.")
+        print(f"👉 Once you are logged in, press [Enter] here in the console to save your session.")
+        print(f"{'='*65}\n")
+        
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, input)
+        print(f"✅ Session and cookies saved permanently to {self.user_data_dir}!")
+        await page.close()
 
     async def new_stealth_page(self) -> Page:
         if not self.context:

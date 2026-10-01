@@ -60,14 +60,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>automatic_job_apply — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 196 nodes, 479 edges, 20 communities. Commit: 3517183</p>
+<p class="subtitle">Generated from graphify knowledge graph: 248 nodes, 528 edges, 23 communities. Commit: 2e6cae8</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
     <a href="#analysis-clustering">Analysis &amp; Clustering</a>
     <a href="#cli-skills">CLI &amp; Skill Installers</a>
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
-    <a href="#compiler-py">compiler.py</a>
+    <a href="#autojobforge">⚡ AutoJobForge</a>
+    <a href="#tasks">Tasks</a>
+    <a href="#3-module-specifications">3. Module Specifications</a>
     <a href="#new-stealth-page">.new_stealth_page</a>
     <a href="#ai-init-py">ai/__init__.py</a>
     <a href="#applier-init-py">applier/__init__.py</a>
@@ -76,6 +78,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#scraper-init-py">scraper/__init__.py</a>
     <a href="#storage-init-py">storage/__init__.py</a>
     <a href="#web-init-py">web/__init__.py</a>
+    <a href="#other">Other</a>
 </div>
 
 <!-- ====== Architecture Overview ====== -->
@@ -89,10 +92,14 @@ flowchart LR
     class ANALYSIS_CLUSTERING_C79796DA module;
     CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>1 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>161 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>169 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
-    COMPILER_PY_53872CA8("compiler.py<br/><small>7 nodes</small>")
-    class COMPILER_PY_53872CA8 module;
+    AUTOJOBFORGE_D3AA3E1C("⚡ AutoJobForge<br/><small>17 nodes</small>")
+    class AUTOJOBFORGE_D3AA3E1C module;
+    TASKS_55D8727A("Tasks<br/><small>16 nodes</small>")
+    class TASKS_55D8727A module;
+    SECTION_3_MODULE_SPECIFICATIONS_C656FB6A("3. Module Specifications<br/><small>14 nodes</small>")
+    class SECTION_3_MODULE_SPECIFICATIONS_C656FB6A module;
     NEW_STEALTH_PAGE_B0C7103B(".new_stealth_page<br/><small>4 nodes</small>")
     class NEW_STEALTH_PAGE_B0C7103B module;
     AI_INIT_PY_3415250C("ai/__init__.py<br/><small>2 nodes</small>")
@@ -109,10 +116,11 @@ flowchart LR
     class STORAGE_INIT_PY_27C97B4D module;
     WEB_INIT_PY_B3080FEA("web/__init__.py<br/><small>2 nodes</small>")
     class WEB_INIT_PY_B3080FEA module;
-    TESTS_FIXTURES_B84B1DCC -->|imports x9| COMPILER_PY_53872CA8
-    COMPILER_PY_53872CA8 -->|imports x6| TESTS_FIXTURES_B84B1DCC
+    OTHER_D0941E68("Other<br/><small>4 nodes</small>")
+    class OTHER_D0941E68 module;
     TESTS_FIXTURES_B84B1DCC -->|method x5| ANALYSIS_CLUSTERING_C79796DA
     TESTS_FIXTURES_B84B1DCC -->|method x2| NEW_STEALTH_PAGE_B0C7103B
+    SECTION_3_MODULE_SPECIFICATIONS_C656FB6A -->|references| TESTS_FIXTURES_B84B1DCC
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -129,23 +137,23 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Analysis &amp; Clustering</td><td>9</td><td><code>7, 9</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>1</td><td><code>19</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>161</td><td><code>0, 1, 2, 3, 4, 5, 10, 18</code></td></tr><tr><td>compiler.py</td><td>7</td><td><code>6</code></td></tr><tr><td>.new_stealth_page</td><td>4</td><td><code>8</code></td></tr><tr><td>ai/__init__.py</td><td>2</td><td><code>11</code></td></tr><tr><td>applier/__init__.py</td><td>2</td><td><code>12</code></td></tr><tr><td>src/__init__.py</td><td>2</td><td><code>13</code></td></tr><tr><td>resume/__init__.py</td><td>2</td><td><code>14</code></td></tr><tr><td>scraper/__init__.py</td><td>2</td><td><code>15</code></td></tr><tr><td>storage/__init__.py</td><td>2</td><td><code>16</code></td></tr><tr><td>web/__init__.py</td><td>2</td><td><code>17</code></td></tr>
+      <tr><td>Analysis &amp; Clustering</td><td>9</td><td><code>10, 20</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>1</td><td><code>19</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>169</td><td><code>0, 4, 1, 2, 3, 5, 18</code></td></tr><tr><td>⚡ AutoJobForge</td><td>17</td><td><code>6</code></td></tr><tr><td>Tasks</td><td>16</td><td><code>7</code></td></tr><tr><td>3. Module Specifications</td><td>14</td><td><code>9</code></td></tr><tr><td>.new_stealth_page</td><td>4</td><td><code>8</code></td></tr><tr><td>ai/__init__.py</td><td>2</td><td><code>11</code></td></tr><tr><td>applier/__init__.py</td><td>2</td><td><code>12</code></td></tr><tr><td>src/__init__.py</td><td>2</td><td><code>13</code></td></tr><tr><td>resume/__init__.py</td><td>2</td><td><code>14</code></td></tr><tr><td>scraper/__init__.py</td><td>2</td><td><code>15</code></td></tr><tr><td>storage/__init__.py</td><td>2</td><td><code>16</code></td></tr><tr><td>web/__init__.py</td><td>2</td><td><code>17</code></td></tr><tr><td>Other</td><td>4</td><td><code>21, 22</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">CLI &amp; Skill Installers -&gt; Analysis &amp; Clustering -&gt; Tests &amp; Fixtures -&gt; compiler.py -&gt; .new_stealth_page -&gt; ai/__init__.py -&gt; applier/__init__.py</div>
+    <div class="arrow-chain">CLI &amp; Skill Installers -&gt; Analysis &amp; Clustering -&gt; Tests &amp; Fixtures -&gt; .new_stealth_page -&gt; ⚡ AutoJobForge -&gt; Tasks -&gt; 3. Module Specifications</div>
   </div>
 </div>
 <div class="grid">
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>196 nodes · 479 edges · 20 communities (6 shown, 14 thin omitted)</li>
-      <li>Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.95)</li>
+      <li>248 nodes · 528 edges · 23 communities (9 shown, 14 thin omitted)</li>
+      <li>Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.95)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `MasterProfile` - 32 edges</li>
-      <li>2. `LLMClient` - 26 edges</li>
+      <li>2. `LLMClient` - 27 edges</li>
       <li>3. `Database` - 24 edges</li>
     </ul>
   </div>
@@ -354,12 +362,12 @@ flowchart LR
 
 <!-- ====== 4. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">4. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around test, tests, resume, applier, mostly in src/web/app.py, src/storage/database.py, src/ai/llm_client.py. This section covers 161 nodes and 432 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around test, tests, resume, applier, mostly in src/web/app.py, src/storage/database.py, src/ai/llm_client.py. This section covers 169 nodes and 456 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (161 nodes, 432 edges)
+    %% Section: Tests &amp; Fixtures (169 nodes, 456 edges)
     subgraph tests_fixtures_src_applier_browser_py_66535833["src/applier/browser.py"]
         src_applier_browser_browsermanager_cf744c00("BrowserManager<br/><small>src/applier/browser.py</small>")
         src_applier_browser_browsermanager_init_097d71e3("__init__()<br/><small>src/applier/browser.py</small>")
@@ -412,7 +420,7 @@ flowchart LR
     src_applier_linkedin_2118f6d0 -->|imports| src_applier_form_filler_formfiller_9358323b
     src_applier_indeed_indeedapplier_174214b1 -->|uses| src_applier_browser_browsermanager_cf744c00
     src_applier_indeed_indeedapplier_174214b1 -->|uses| src_applier_form_filler_formfiller_9358323b
-    %% Omitted for readability: 143 nodes, 2 edges
+    %% Omitted for readability: 151 nodes, 2 edges
     class src_applier_browser_browsermanager_cf744c00 klass;
     class src_applier_browser_browsermanager_init_097d71e3 function;
     class src_applier_browser_browsermanager_random_delay_b74de5cc function;
@@ -534,6 +542,14 @@ flowchart LR
 </tr>
 <tr>
   <td>11</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FormFiller</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/applier/form_filler.py.</td>
+</tr>
+<tr>
+  <td>12</td>
   <td><code>.apply()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
@@ -541,7 +557,7 @@ flowchart LR
   <td>.apply() node in src/applier/indeed.py.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>13</td>
   <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
@@ -549,7 +565,7 @@ flowchart LR
   <td>.__init__() node in src/applier/indeed.py.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>14</td>
   <td><code>.apply()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
@@ -557,7 +573,7 @@ flowchart LR
   <td>.apply() node in src/applier/linkedin.py.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>15</td>
   <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
@@ -565,7 +581,7 @@ flowchart LR
   <td>.__init__() node in src/applier/linkedin.py.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>16</td>
   <td><code>test_applier_drivers_init()</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -573,7 +589,7 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>17</td>
   <td><code>test_browser_manager_init()</code><br><small style="color:var(--muted)">tests/test_browser.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -581,7 +597,7 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>18</td>
   <td><code>test_browser_manager_lifecycle()</code><br><small style="color:var(--muted)">tests/test_browser.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -589,7 +605,7 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>19</td>
   <td><code>test_verifier_receipt_path()</code><br><small style="color:var(--muted)">tests/test_verifier.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -597,20 +613,12 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>20</td>
   <td><code>run.py</code><br><small style="color:var(--muted)">run.py</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>argparse</code><br><code>asyncio</code><br><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+30 more</td>
   <td>Module file in run.py.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>llm_client.py</code><br><small style="color:var(--muted)">src/ai/llm_client.py</small></td>
-  <td><span class="tag tag-cmd">Entry</span></td>
-  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>form_filler.py</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br><code>ingestor.py</code><br><small style="color:var(--muted)">src/resume/ingestor.py</small><br>+4 more</td>
-  <td><code>json</code><br><code>logging</code><br><code>os</code><br>+2 more</td>
-  <td>Module file in src/ai/llm_client.py.</td>
 </tr>
 <tr>
   <td>21</td>
@@ -711,41 +719,69 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x110, imports x96, calls x55, contains x51. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x118, imports x102, calls x57, contains x52. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
-<!-- ====== 5. compiler.py ====== -->
-<h2 id="compiler-py">5. compiler.py</h2>
-<p>compiler.py groups implementation around compilerpy, resume, resumecompiler, compile, mostly in src/resume/compiler.py. This section covers 7 nodes and 7 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 5. ⚡ AutoJobForge ====== -->
+<h2 id="autojobforge">5. ⚡ AutoJobForge</h2>
+<p>⚡ AutoJobForge groups implementation around readmemd, option, autojobforge, system, mostly in README.md. This section covers 17 nodes and 16 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: compiler.py (7 nodes, 7 edges)
-    subgraph compiler_py_src_resume_compiler_py_51f7fd3a["src/resume/compiler.py"]
-        src_resume_compiler_a01fd010("compiler.py")
-        src_resume_compiler_resumecompiler_0a75e096("ResumeCompiler<br/><small>src/resume/compiler.py</small>")
-        src_resume_compiler_resumecompiler_compile_pdf_abe22bb6("compile_pdf()<br/><small>src/resume/compiler.py</small>")
-        src_resume_compiler_resumecompiler_init_a6f5857d("__init__()<br/><small>src/resume/compiler.py</small>")
-    end
-    subgraph compiler_py_External_generated_c4467b6f["External / generated"]
-        shutil_74870859("shutil")
-        typst_497cec24("typst")
-        src_resume_compiler_py_path_1d73ad02("Path")
-    end
-    src_resume_compiler_resumecompiler_0a75e096 -->|method| src_resume_compiler_resumecompiler_compile_pdf_abe22bb6
-    src_resume_compiler_resumecompiler_0a75e096 -->|method| src_resume_compiler_resumecompiler_init_a6f5857d
-    src_resume_compiler_a01fd010 -->|imports| shutil_74870859
-    src_resume_compiler_a01fd010 -->|imports| typst_497cec24
-    class src_resume_compiler_a01fd010 module;
-    class src_resume_compiler_resumecompiler_0a75e096 klass;
-    class src_resume_compiler_resumecompiler_compile_pdf_abe22bb6 function;
-    class src_resume_compiler_resumecompiler_init_a6f5857d function;
-    class shutil_74870859 function;
-    class typst_497cec24 function;
-    class src_resume_compiler_py_path_1d73ad02 klass;
+    %% Section: ⚡ AutoJobForge (17 nodes, 16 edges)
+    readme_autojobforge_fd968c08("⚡ AutoJobForge<br/><small>README.md</small>")
+    readme_getting_started_7220de94("🚀 Getting Started<br/><small>README.md</small>")
+    readme_running_the_system_b9ecc0f3("🖥️ Running the System<br/><small>README.md</small>")
+    readme_f78a71af("README.md")
+    readme_why_autojobforge_885da953("🌟 Why AutoJobForge?<br/><small>README.md</small>")
+    readme_security_privacy_guarantees_5faae0a9("🔒 Security &amp; Privacy Guarantees<br/><small>README.md</small>")
+    readme_1_prerequisites_bd5e223c("1. Prerequisites<br/><small>README.md</small>")
+    readme_2_installation_cbd73b65("2. Installation<br/><small>README.md</small>")
+    readme_3_configuration_e5333b58("3. Configuration<br/><small>README.md</small>")
+    readme_option_a_the_web_dashboard_recommended_e9aa16fd("Option A: The Web Dashboard (Recommended)<br/><small>README.md</small>")
+    readme_option_b_command_line_cli_24253430("Option B: Command Line (CLI)<br/><small>README.md</small>")
+    readme_option_c_automated_daily_scheduling_windo_19dc6c9e("Option C: Automated Daily Scheduling (W...<br/><small>README.md</small>")
+    readme_core_features_d651b40f("✨ Core Features<br/><small>README.md</small>")
+    readme_system_architecture_4e810723("🏛️ System Architecture<br/><small>README.md</small>")
+    readme_license_edbe4ad9("📄 License<br/><small>README.md</small>")
+    readme_tech_stack_da28f6d0("🛠️ Tech Stack<br/><small>README.md</small>")
+    readme_testing_1f61e34a("🧪 Testing<br/><small>README.md</small>")
+    readme_f78a71af -->|contains| readme_autojobforge_fd968c08
+    readme_autojobforge_fd968c08 -->|contains| readme_running_the_system_b9ecc0f3
+    readme_autojobforge_fd968c08 -->|contains| readme_why_autojobforge_885da953
+    readme_autojobforge_fd968c08 -->|contains| readme_security_privacy_guarantees_5faae0a9
+    readme_autojobforge_fd968c08 -->|contains| readme_testing_1f61e34a
+    readme_autojobforge_fd968c08 -->|contains| readme_license_edbe4ad9
+    readme_autojobforge_fd968c08 -->|contains| readme_system_architecture_4e810723
+    readme_autojobforge_fd968c08 -->|contains| readme_core_features_d651b40f
+    readme_autojobforge_fd968c08 -->|contains| readme_tech_stack_da28f6d0
+    readme_autojobforge_fd968c08 -->|contains| readme_getting_started_7220de94
+    readme_getting_started_7220de94 -->|contains| readme_3_configuration_e5333b58
+    readme_getting_started_7220de94 -->|contains| readme_1_prerequisites_bd5e223c
+    readme_getting_started_7220de94 -->|contains| readme_2_installation_cbd73b65
+    readme_running_the_system_b9ecc0f3 -->|contains| readme_option_a_the_web_dashboard_recommended_e9aa16fd
+    readme_running_the_system_b9ecc0f3 -->|contains| readme_option_b_command_line_cli_24253430
+    readme_running_the_system_b9ecc0f3 -->|contains| readme_option_c_automated_daily_scheduling_windo_19dc6c9e
+    class readme_autojobforge_fd968c08 concept;
+    class readme_getting_started_7220de94 concept;
+    class readme_running_the_system_b9ecc0f3 concept;
+    class readme_f78a71af concept;
+    class readme_why_autojobforge_885da953 concept;
+    class readme_security_privacy_guarantees_5faae0a9 concept;
+    class readme_1_prerequisites_bd5e223c concept;
+    class readme_2_installation_cbd73b65 concept;
+    class readme_3_configuration_e5333b58 concept;
+    class readme_option_a_the_web_dashboard_recommended_e9aa16fd concept;
+    class readme_option_b_command_line_cli_24253430 concept;
+    class readme_option_c_automated_daily_scheduling_windo_19dc6c9e concept;
+    class readme_core_features_d651b40f concept;
+    class readme_system_architecture_4e810723 concept;
+    class readme_license_edbe4ad9 concept;
+    class readme_tech_stack_da28f6d0 concept;
+    class readme_testing_1f61e34a concept;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -769,59 +805,139 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>main()</code><br><small style="color:var(--muted)">run.py</small><br><code>preview_pdf()</code><br><small style="color:var(--muted)">src/web/app.py</small><br>+3 more</td>
-  <td><code>__init__()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small><br><code>compile_pdf()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small><br><code>MasterProfile</code><br><small style="color:var(--muted)">src/resume/models.py</small></td>
-  <td>ResumeCompiler node in src/resume/compiler.py.</td>
+  <td><code>README.md</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README.md.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>.compile_pdf()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><code>1. Prerequisites</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>.compile_pdf() node in src/resume/compiler.py.</td>
+  <td>Documentation node describing 1. Prerequisites.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><code>2. Installation</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>.__init__() node in src/resume/compiler.py.</td>
+  <td>Documentation node describing 2. Installation.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_compiler.py</code><br><small style="color:var(--muted)">tests/test_compiler.py</small></td>
-  <td><code>json</code><br><code>MasterProfile</code><br><small style="color:var(--muted)">src/resume/models.py</small><br><code>models.py</code><br><small style="color:var(--muted)">src/resume/models.py</small><br>+3 more</td>
-  <td>Module file in src/resume/compiler.py.</td>
+  <td><code>3. Configuration</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Configuration.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>Path</code><br><small style="color:var(--muted)"></small></td>
-  <td><span class="tag tag-class">Class</span></td>
+  <td><code>⚡ AutoJobForge</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Path node in project.</td>
+  <td>Documentation node describing ⚡ AutoJobForge.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>shutil</code><br><small style="color:var(--muted)"></small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><code>✨ Core Features</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>shutil node in project.</td>
+  <td>Documentation node describing ✨ Core Features.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>typst</code><br><small style="color:var(--muted)"></small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><code>🚀 Getting Started</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>typst node in project.</td>
+  <td>Documentation node describing 🚀 Getting Started.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>📄 License</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 📄 License.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Option A: The Web Dashboard (Recommended)</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Option A: The Web Dashboard (Recommended).</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Option B: Command Line (CLI)</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Option B: Command Line (CLI).</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Option C: Automated Daily Scheduling (Windows)</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Option C: Automated Daily Scheduling (Windows).</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>🖥️ Running the System</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🖥️ Running the System.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>🔒 Security &amp; Privacy Guarantees</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🔒 Security &amp; Privacy Guarantees.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>🏛️ System Architecture</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🏛️ System Architecture.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>🛠️ Tech Stack</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🛠️ Tech Stack.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>🧪 Testing</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🧪 Testing.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>🌟 Why AutoJobForge?</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 🌟 Why AutoJobForge?.</td>
 </tr>
 </table>
 
@@ -830,18 +946,438 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/resume/compiler.py</code></td><td>4 nodes</td></tr>
+      <tr><td><code>README.md</code></td><td>17 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: method x2, references x2, imports x2, contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x16. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
-<!-- ====== 6. .new_stealth_page ====== -->
-<h2 id="new-stealth-page">6. .new_stealth_page</h2>
+<!-- ====== 6. Tasks ====== -->
+<h2 id="tasks">6. Tasks</h2>
+<p>Tasks groups implementation around 2026, autojobforgemd, docs, superpowers, mostly in superpowers/plans/2026-09-30-autojobforge.md. This section covers 16 nodes and 15 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Tasks (16 nodes, 15 edges)
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7("Tasks<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_a_02de13e8("AutoJobForge Implementation Plan<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_165be70d("2026-09-30-autojobforge.md")
+    docs_superpowers_plans_2026_09_30_autojobforge_f_a3a4ceef("File Structure Map<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_02131824("Task 2: Storage &amp; Database Layer<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_a2d21a38("Task 3: Pluggable AI Client &amp; Prompts<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_cce6c041("Task 10: Headless CLI Orchestrator &amp; Wi...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_62738c57("Task 11: Modern Dark-Mode Web Dashboard<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_4274e04a("Task 12: End-to-End Integration Verific...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_5cb495f1("Task 1: Environment Setup &amp; Project Con...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_b2601a7e("Task 4: Master Profile Schema &amp; CV Inge...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_8d3eeef6("Task 5: Dynamic Resume Tailor &amp; Typst A...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_ff571e40("Task 6: Job Discovery &amp; AI Match Evaluator<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_bc0a0fff("Task 7: Playwright Stealth Browser &amp; Se...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_1c8e2def("Task 8: AI Screening Form-Filler &amp; Subm...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_t_48986eba("Task 9: LinkedIn &amp; Indeed Easy Apply Au...<br/><small>superpowers/plans/2026-09-30-autojobforge.md</small>")
+    docs_superpowers_plans_2026_09_30_autojobforge_165be70d -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_a_02de13e8
+    docs_superpowers_plans_2026_09_30_autojobforge_a_02de13e8 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_f_a3a4ceef
+    docs_superpowers_plans_2026_09_30_autojobforge_a_02de13e8 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_02131824
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_a2d21a38
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_b2601a7e
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_8d3eeef6
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_ff571e40
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_bc0a0fff
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_1c8e2def
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_48986eba
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_cce6c041
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_62738c57
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_4274e04a
+    docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 -->|contains| docs_superpowers_plans_2026_09_30_autojobforge_t_5cb495f1
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_444f93f7 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_a_02de13e8 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_165be70d concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_f_a3a4ceef concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_02131824 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_a2d21a38 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_cce6c041 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_62738c57 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_4274e04a concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_5cb495f1 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_b2601a7e concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_8d3eeef6 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_ff571e40 concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_bc0a0fff concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_1c8e2def concept;
+    class docs_superpowers_plans_2026_09_30_autojobforge_t_48986eba concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>2026-09-30-autojobforge.md</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2026-09-30-autojobforge.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AutoJobForge Implementation Plan</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AutoJobForge Implementation Plan.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>File Structure Map</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing File Structure Map.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Task 10: Headless CLI Orchestrator &amp; Windows Task Scheduler Setup</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 10: Headless CLI Orchestrator &amp; Windows Task Scheduler Setup.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Task 11: Modern Dark-Mode Web Dashboard</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 11: Modern Dark-Mode Web Dashboard.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Task 12: End-to-End Integration Verification &amp; Portfolio README</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 12: End-to-End Integration Verification &amp; Portfolio README.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Task 1: Environment Setup &amp; Project Configuration</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 1: Environment Setup &amp; Project Configuration.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Task 2: Storage &amp; Database Layer</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 2: Storage &amp; Database Layer.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Task 3: Pluggable AI Client &amp; Prompts</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 3: Pluggable AI Client &amp; Prompts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Task 4: Master Profile Schema &amp; CV Ingestion</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 4: Master Profile Schema &amp; CV Ingestion.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Task 5: Dynamic Resume Tailor &amp; Typst ATS PDF Compiler</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 5: Dynamic Resume Tailor &amp; Typst ATS PDF Compiler.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Task 6: Job Discovery &amp; AI Match Evaluator</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 6: Job Discovery &amp; AI Match Evaluator.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Task 7: Playwright Stealth Browser &amp; Session Manager</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 7: Playwright Stealth Browser &amp; Session Manager.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Task 8: AI Screening Form-Filler &amp; Submission Verifier</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 8: AI Screening Form-Filler &amp; Submission Verifier.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Task 9: LinkedIn &amp; Indeed Easy Apply Automators</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 9: LinkedIn &amp; Indeed Easy Apply Automators.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Tasks</code><br><small style="color:var(--muted)">superpowers/plans/2026-09-30-autojobforge.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Tasks.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>superpowers/plans/2026-09-30-autojobforge.md</code></td><td>16 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. 3. Module Specifications ====== -->
+<h2 id="3-module-specifications">7. 3. Module Specifications</h2>
+<p>3. Module Specifications groups implementation around autojobforge, 2026, designmd, docs, mostly in superpowers/specs/2026-09-30-autojobforge-design.md. This section covers 14 nodes and 13 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: 3. Module Specifications (14 nodes, 13 edges)
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62("3. Module Specifications<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3("Design Specification<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_0a0a543b("2026-09-30-autojobforge-design.md")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_81a01cbe("2. Architecture &amp; Tech Stack<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_626d0889("AutoJobForge: Automated Job Application...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_c989f615("Tech Stack<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_276d54b5("1. Overview &amp; Goals<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_3eef3ff2("3.1 Ingestion &amp; ATS Resume Compiler (s...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_5f9c8815("3.2 Job Scraper &amp; Match Scoring (src/s...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9346112c("3.3 Playwright Stealth Applier (src/ap...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_309761b9("3.4 Storage &amp; Verification (src/storag...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_576a1110("3.5 Web Dashboard &amp; CLI (src/web/, r...<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_72114341("4. Anti-Bot &amp; Account Safety Rules<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_0aeda371("5. File Structure<br/><small>superpowers/specs/2026-09-30-autojobforge-design.md</small>")
+    docs_superpowers_specs_2026_09_30_autojobforge_d_0a0a543b -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_626d0889
+    docs_superpowers_specs_2026_09_30_autojobforge_d_81a01cbe -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_c989f615
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_5f9c8815
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_9346112c
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_309761b9
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_576a1110
+    docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_3eef3ff2
+    docs_superpowers_specs_2026_09_30_autojobforge_d_626d0889 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_276d54b5
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_72114341
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_0aeda371
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_81a01cbe
+    docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 -->|contains| docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_9f65bb62 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_6b7332e3 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_0a0a543b concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_81a01cbe concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_626d0889 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_c989f615 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_276d54b5 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_3eef3ff2 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_5f9c8815 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_9346112c concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_309761b9 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_576a1110 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_72114341 concept;
+    class docs_superpowers_specs_2026_09_30_autojobforge_d_0aeda371 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>2026-09-30-autojobforge-design.md</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2026-09-30-autojobforge-design.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>1. Overview &amp; Goals</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. Overview &amp; Goals.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>2. Architecture &amp; Tech Stack</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Architecture &amp; Tech Stack.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>3.1 Ingestion &amp; ATS Resume Compiler (`src/resume/`)</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3.1 Ingestion &amp; ATS Resume Compiler (`src/resume/`).</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>3.2 Job Scraper &amp; Match Scoring (`src/scraper/`)</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3.2 Job Scraper &amp; Match Scoring (`src/scraper/`).</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>3.3 Playwright Stealth Applier (`src/applier/`)</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3.3 Playwright Stealth Applier (`src/applier/`).</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>3.4 Storage &amp; Verification (`src/storage/`)</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3.4 Storage &amp; Verification (`src/storage/`).</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>3.5 Web Dashboard &amp; CLI (`src/web/`, `run.py`)</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3.5 Web Dashboard &amp; CLI (`src/web/`, `run.py`).</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>3. Module Specifications</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Module Specifications.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>4. Anti-Bot &amp; Account Safety Rules</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Anti-Bot &amp; Account Safety Rules.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>5. File Structure</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5. File Structure.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>AutoJobForge: Automated Job Application &amp; Dynamic Resume Tailoring System</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AutoJobForge: Automated Job Application &amp; Dynamic Resume Tailoring System.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Design Specification</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Design Specification.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Tech Stack</code><br><small style="color:var(--muted)">superpowers/specs/2026-09-30-autojobforge-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Tech Stack.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>superpowers/specs/2026-09-30-autojobforge-design.md</code></td><td>14 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x13. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. .new_stealth_page ====== -->
+<h2 id="new-stealth-page">8. .new_stealth_page</h2>
 <p>.new_stealth_page groups implementation around page, applier, browserpy, new, mostly in src/applier/browser.py. This section covers 4 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -931,8 +1467,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 7. ai/__init__.py ====== -->
-<h2 id="ai-init-py">7. ai/__init__.py</h2>
+<!-- ====== 9. ai/__init__.py ====== -->
+<h2 id="ai-init-py">9. ai/__init__.py</h2>
 <p>ai/__init__.py groups implementation around client, prompt, templates, autojobforge, mostly in src/ai/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -998,8 +1534,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 8. applier/__init__.py ====== -->
-<h2 id="applier-init-py">8. applier/__init__.py</h2>
+<!-- ====== 10. applier/__init__.py ====== -->
+<h2 id="applier-init-py">10. applier/__init__.py</h2>
 <p>applier/__init__.py groups implementation around applier, job, application, execution, mostly in src/applier/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1065,8 +1601,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 9. src/__init__.py ====== -->
-<h2 id="src-init-py">9. src/__init__.py</h2>
+<!-- ====== 11. src/__init__.py ====== -->
+<h2 id="src-init-py">11. src/__init__.py</h2>
 <p>src/__init__.py groups implementation around autojobforge, autonomous, job, application, mostly in src/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1132,8 +1668,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 10. resume/__init__.py ====== -->
-<h2 id="resume-init-py">10. resume/__init__.py</h2>
+<!-- ====== 12. resume/__init__.py ====== -->
+<h2 id="resume-init-py">12. resume/__init__.py</h2>
 <p>resume/__init__.py groups implementation around resume, processing, package, autojobforge, mostly in src/resume/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1199,8 +1735,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 11. scraper/__init__.py ====== -->
-<h2 id="scraper-init-py">11. scraper/__init__.py</h2>
+<!-- ====== 13. scraper/__init__.py ====== -->
+<h2 id="scraper-init-py">13. scraper/__init__.py</h2>
 <p>scraper/__init__.py groups implementation around scraper, job, discovery, matching, mostly in src/scraper/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1266,8 +1802,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. storage/__init__.py ====== -->
-<h2 id="storage-init-py">12. storage/__init__.py</h2>
+<!-- ====== 14. storage/__init__.py ====== -->
+<h2 id="storage-init-py">14. storage/__init__.py</h2>
 <p>storage/__init__.py groups implementation around storage, persistence, package, autojobforge, mostly in src/storage/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1333,8 +1869,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. web/__init__.py ====== -->
-<h2 id="web-init-py">13. web/__init__.py</h2>
+<!-- ====== 15. web/__init__.py ====== -->
+<h2 id="web-init-py">15. web/__init__.py</h2>
 <p>web/__init__.py groups implementation around web, dashboard, package, autojobforge, mostly in src/web/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -1400,24 +1936,117 @@ flowchart LR
 </div>
 <hr>
 
+<!-- ====== 16. Other ====== -->
+<h2 id="other">16. Other</h2>
+<p>Other groups implementation around graphifymd, agents, rules, workflows, mostly in .agents/rules/graphify.md, .agents/workflows/graphify.md. This section covers 4 nodes and 2 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Other (4 nodes, 2 edges)
+    subgraph other_agents_rules_graphify_md_46085eba[".agents/rules/graphify.md"]
+        agents_rules_graphify_8193478b("rules/graphify.md")
+        agents_rules_graphify_graphify_dd1d4f66("graphify<br/><small>.agents/rules/graphify.md</small>")
+    end
+    subgraph other_agents_workflows_graphify_md_fa0cc363[".agents/workflows/graphify.md"]
+        agents_workflows_graphify_08a1cc26("workflows/graphify.md")
+        agents_workflows_graphify_workflow_graphify_87f5fa2b("Workflow: graphify<br/><small>.agents/workflows/graphify.md</small>")
+    end
+    agents_rules_graphify_8193478b -->|contains| agents_rules_graphify_graphify_dd1d4f66
+    agents_workflows_graphify_08a1cc26 -->|contains| agents_workflows_graphify_workflow_graphify_87f5fa2b
+    class agents_rules_graphify_8193478b concept;
+    class agents_rules_graphify_graphify_dd1d4f66 concept;
+    class agents_workflows_graphify_08a1cc26 concept;
+    class agents_workflows_graphify_workflow_graphify_87f5fa2b concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>rules/graphify.md</code><br><small style="color:var(--muted)">.agents/rules/graphify.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing rules/graphify.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>graphify</code><br><small style="color:var(--muted)">.agents/rules/graphify.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>workflows/graphify.md</code><br><small style="color:var(--muted)">.agents/workflows/graphify.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing workflows/graphify.md.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Workflow: graphify</code><br><small style="color:var(--muted)">.agents/workflows/graphify.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Workflow: graphify.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.agents/rules/graphify.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>.agents/workflows/graphify.md</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
 <h2 id="stats">Project Statistics</h2>
 
 <div class="grid">
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>196</td></tr>
-      <tr><td>Edges</td><td>479</td></tr>
+      <tr><td>Nodes</td><td>248</td></tr>
+      <tr><td>Edges</td><td>528</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>20</td></tr>
-      <tr><td>Documented Sections</td><td>12</td></tr>
+      <tr><td>Communities</td><td>23</td></tr>
+      <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>448</td></tr>
-      <tr><td>INFERRED</td><td>31</td></tr>
+      <tr><td>EXTRACTED</td><td>496</td></tr>
+      <tr><td>INFERRED</td><td>32</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
   </div>
@@ -1425,7 +2054,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>automatic_job_apply — Architecture Documentation</p>
-  <p>Generated: 2026-10-01 09:19 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-10-01 09:46 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

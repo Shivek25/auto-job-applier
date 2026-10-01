@@ -36,12 +36,39 @@ class LinkedInApplier:
             await page.goto(job_url, timeout=45000)
             await self.bm.random_delay(2, 4)
 
-            # Find Easy Apply button
-            apply_btn = await page.query_selector("button.jobs-apply-button")
+            # Dismiss any contextual overlay if dismiss button is present
+            dismiss_btn = await page.query_selector("button[aria-label='Dismiss'], button[data-tracking-control-name*='modal_dismiss']")
+            if dismiss_btn:
+                try:
+                    await dismiss_btn.click()
+                    await self.bm.random_delay(1, 2)
+                except Exception:
+                    pass
+
+            # Find Easy Apply button (various selectors across LinkedIn layouts)
+            apply_btn = await page.query_selector(
+                "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply')"
+            )
             if not apply_btn:
-                logger.info(f"No Easy Apply button found for {job_id}. Skipping.")
-                self.db.update_status(job_id, "SKIPPED", error_message="No Easy Apply button")
-                return False
+                # Check if page is asking for login
+                is_logged_out = await page.query_selector(
+                    "a[href*='login'], button:has-text('Sign in'), div.contextual-sign-in-modal, [data-tracking-control-name*='sign-in-modal']"
+                )
+                if is_logged_out:
+                    logger.warning("⚠️ LinkedIn is not logged in or is displaying a sign-in modal!")
+                    if self.mode == "review":
+                        logger.info("👉 Review mode: Please log in in the opened browser window now. Waiting up to 45s...")
+                        for _ in range(15):
+                            await asyncio.sleep(3)
+                            apply_btn = await page.query_selector("button.jobs-apply-button, button:has-text('Easy Apply')")
+                            if apply_btn:
+                                logger.info("✅ Login detected! Proceeding with Easy Apply...")
+                                break
+
+                if not apply_btn:
+                    logger.info(f"No Easy Apply button found for {job_id} (or sign-in required). Skipping.")
+                    self.db.update_status(job_id, "SKIPPED", error_message="No Easy Apply button or sign-in required")
+                    return False
 
             await apply_btn.click()
             await self.bm.random_delay(2, 3)

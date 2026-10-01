@@ -16,6 +16,8 @@ class SearchSettings(BaseModel):
     distance_miles: int = Field(default=50)
     is_remote: bool = Field(default=True)
     results_wanted: int = Field(default=20)
+    hours_old: int = Field(default=336, description="Max job age in hours (336 = 14 days / 2 weeks)")
+    easy_apply_only: bool = Field(default=True)
 
 class PlatformSettings(BaseModel):
     linkedin: bool = Field(default=True)

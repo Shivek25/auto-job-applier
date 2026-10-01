@@ -109,9 +109,17 @@ async def preview_pdf():
     return FileResponse(preview_path, media_type="application/pdf", filename="preview_resume.pdf")
 
 @app.get("/settings", response_class=HTMLResponse)
-async def settings_page(request: Request):
+async def settings_page(request: Request, success: Optional[str] = None, error: Optional[str] = None):
     config = load_config()
-    return templates.TemplateResponse(request=request, name="settings.html", context={"config": config})
+    return templates.TemplateResponse(
+        request=request,
+        name="settings.html",
+        context={
+            "config": config,
+            "success": success,
+            "error": error
+        }
+    )
 
 @app.post("/settings/save")
 async def save_settings(
@@ -121,6 +129,8 @@ async def save_settings(
     job_titles: str = Form(...),
     locations: str = Form(...),
     is_remote: bool = Form(False),
+    days_old: int = Form(14),
+    easy_apply_only: bool = Form(False),
     llm_provider: str = Form(...),
     api_key: str = Form("")
 ):
@@ -131,6 +141,8 @@ async def save_settings(
     config.search.job_titles = [t.strip() for t in job_titles.split(",") if t.strip()]
     config.search.locations = [l.strip() for l in locations.split(",") if l.strip()]
     config.search.is_remote = is_remote
+    config.search.hours_old = max(1, days_old) * 24
+    config.search.easy_apply_only = easy_apply_only
     config.llm.provider = llm_provider
     if api_key.strip():
         config.llm.api_key = api_key.strip()
@@ -139,7 +151,16 @@ async def save_settings(
     out_yaml.parent.mkdir(parents=True, exist_ok=True)
     with open(out_yaml, "w", encoding="utf-8") as f:
         yaml.safe_dump(config.model_dump(), f)
-    return RedirectResponse(url="/settings", status_code=303)
+    return RedirectResponse(url="/settings?success=Settings+saved+successfully!", status_code=303)
+
+@app.post("/settings/login")
+async def trigger_login(background_tasks: BackgroundTasks, platform: str = Form("linkedin")):
+    def run_login():
+        python_exe = sys.executable
+        subprocess.run([python_exe, "run.py", "--login", platform])
+
+    background_tasks.add_task(run_login)
+    return RedirectResponse(url="/settings?success=Chrome+browser+launched!+Please+log+in+in+the+opened+window.", status_code=303)
 
 @app.get("/receipts/{job_id}")
 async def view_receipt(job_id: str):

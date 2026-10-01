@@ -17,6 +17,7 @@ ENV/
 storage/*.db
 storage/*.pdf
 storage/temp_*
+storage/browser_profile/
 storage/receipts/*
 storage/tailored_resumes/*
 !storage/receipts/.gitkeep

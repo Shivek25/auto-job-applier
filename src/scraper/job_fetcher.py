@@ -15,20 +15,23 @@ class JobFetcher:
         search_terms: List[str],
         locations: List[str],
         results_wanted: int = 20,
-        is_remote: bool = True
+        is_remote: bool = True,
+        hours_old: int = 336,
+        easy_apply_only: bool = True
     ) -> List[Dict[str, Any]]:
         target_jobs = []
         for term in search_terms:
             for loc in locations:
-                logger.info(f"Scraping jobs for '{term}' in '{loc}'...")
+                logger.info(f"Scraping fresh jobs (past {hours_old//24} days) for '{term}' in '{loc}'...")
                 try:
                     jobs_df = scrape_jobs(
                         site_name=["linkedin", "indeed"],
                         search_term=term,
                         location=loc,
                         results_wanted=results_wanted,
-                        hours_old=72,
-                        is_remote=is_remote
+                        hours_old=hours_old,
+                        is_remote=is_remote,
+                        easy_apply=easy_apply_only
                     )
                     if jobs_df is not None and not jobs_df.empty:
                         for _, row in jobs_df.iterrows():

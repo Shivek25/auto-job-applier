@@ -2,6 +2,7 @@
 import os
 import json
 import re
+import time
 import logging
 from typing import Dict, Any, Optional
 import requests
@@ -57,16 +58,33 @@ class LLMClient:
 
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
-        resp = requests.post(url, json=payload, timeout=45)
         
-        # If 404, fallback to gemini-3-flash-preview
-        if resp.status_code == 404 and target_model != "gemini-3-flash-preview":
-            fallback_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key={self.api_key}"
-            resp = requests.post(fallback_url, json=payload, timeout=45)
+        last_resp = None
+        for attempt in range(4):
+            resp = requests.post(url, json=payload, timeout=45)
+            last_resp = resp
+            
+            # If 404, fallback to gemini-3-flash-preview
+            if resp.status_code == 404 and target_model != "gemini-3-flash-preview":
+                target_model = "gemini-3-flash-preview"
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
+                resp = requests.post(url, json=payload, timeout=45)
+                last_resp = resp
+            
+            if resp.status_code == 429:
+                wait_time = (attempt + 1) * 5
+                logger.warning(f"Gemini API rate limit (429) hit. Pausing {wait_time}s before retry (attempt {attempt + 1}/4)...")
+                time.sleep(wait_time)
+                continue
 
-        resp.raise_for_status()
-        data = resp.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+            resp.raise_for_status()
+            data = resp.json()
+            time.sleep(1.0) # Polite pause to stay within free tier RPM limits
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+
+        if last_resp is not None:
+            last_resp.raise_for_status()
+        raise RuntimeError("Failed to generate content from Gemini API after retries.")
 
     def _call_groq(self, prompt: str) -> str:
         if not self.api_key:

@@ -8,6 +8,32 @@
   </div>
 </div>
 
+{% if success %}
+<div style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #4ade80; padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-weight: 500;">
+  ✅ {{ success }}
+</div>
+{% endif %}
+
+{% if error %}
+<div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-weight: 500;">
+  ⚠️ {{ error }}
+</div>
+{% endif %}
+
+<div class="form-card" style="border: 1px solid var(--accent-cyan); margin-bottom: 32px;">
+  <h3 style="margin-top: 0;">🔑 Account Session & Login</h3>
+  <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+    To apply automatically without sign-in walls, log in to your LinkedIn account once in our dedicated Chrome profile. 
+    Your login cookies will be saved permanently in <code>storage/browser_profile</code> so applications can run hands-free.
+  </p>
+  <form action="/settings/login" method="post" style="display: flex; gap: 12px; align-items: center;">
+    <input type="hidden" name="platform" value="linkedin">
+    <button type="submit" class="btn" style="background: #0a66c2; color: #ffffff;">
+      🚀 Open Chrome & Sign In to LinkedIn
+    </button>
+  </form>
+</div>
+
 <form action="/settings/save" method="post">
   <div class="form-card">
     <h3 style="margin-top: 0;">Application Safeguards</h3>
@@ -39,7 +65,18 @@
       <input type="text" name="locations" value="{{ config.search.locations | join(', ') }}">
     </div>
     <div class="form-group">
-      <label>
+      <label>Maximum Job Age (Days)</label>
+      <input type="number" name="days_old" value="{{ config.search.hours_old // 24 if config.search.hours_old else 14 }}" min="1" max="60" style="width: 120px;">
+      <small style="color: var(--text-secondary); display: block; margin-top: 4px;">Default is 14 days (last 2 weeks). Older jobs will be ignored.</small>
+    </div>
+    <div class="form-group">
+      <label style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" name="easy_apply_only" value="true" {% if config.search.easy_apply_only %}checked{% endif %}>
+        <strong>Easy Apply Only</strong> (Filter only 1-click Easy Apply jobs, skip external redirect sites)
+      </label>
+    </div>
+    <div class="form-group">
+      <label style="display: flex; align-items: center; gap: 8px;">
         <input type="checkbox" name="is_remote" value="true" {% if config.search.is_remote %}checked{% endif %}>
         Include Remote Jobs
       </label>

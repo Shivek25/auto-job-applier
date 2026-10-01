@@ -29,9 +29,22 @@ async def main():
     parser.add_argument("--mode", choices=["auto", "review"], default=None, help="Autonomy mode: auto or review")
     parser.add_argument("--limit", type=int, default=None, help="Daily application limit")
     parser.add_argument("--platform", choices=["all", "linkedin", "indeed"], default="all", help="Target job platform")
+    parser.add_argument("--login", choices=["linkedin", "indeed"], default=None, help="Open browser to log in and save session permanently")
     args = parser.parse_args()
 
     config = load_config()
+
+    if args.login:
+        logger.info(f"Launching headful browser for one-time login to {args.login}...")
+        bm = BrowserManager(
+            headless=False,
+            user_data_dir=config.browser.chrome_user_data_dir,
+            profile_name=config.browser.chrome_profile_name
+        )
+        await bm.login_wizard(platform=args.login)
+        await bm.close()
+        return
+
     mode = args.mode or config.app.mode
     daily_limit = args.limit or config.app.daily_application_limit
 
@@ -77,7 +90,9 @@ async def main():
         search_terms=config.search.job_titles,
         locations=config.search.locations,
         results_wanted=config.search.results_wanted,
-        is_remote=config.search.is_remote
+        is_remote=config.search.is_remote,
+        hours_old=config.search.hours_old,
+        easy_apply_only=config.search.easy_apply_only
     )
     logger.info(f"Discovered {len(jobs)} candidate jobs across platforms.")
 
