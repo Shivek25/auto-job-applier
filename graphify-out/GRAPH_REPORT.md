@@ -1,7 +1,7 @@
 # Graph Report - automatic_job_apply  (2026-10-01)
 
 ## Corpus Check
-- 42 files · ~12,315 words
+- 42 files · ~12,323 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1cd60fc2`
+- Built from commit: `47bf4e72`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -150,9 +150,9 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.051) - this node is a cross-community bridge._
 - **Why does `Database` connect `applier/__init__.py` to `run.py`, `app.py`?**
   _High betweenness centrality (0.047) - this node is a cross-community bridge._
-- **Are the 8 inferred relationships involving `MasterProfile` (e.g. with `FormFiller` and `ResumeCompiler`) actually correct?**
+- **Are the 8 inferred relationships involving `MasterProfile` (e.g. with `test_form_filler_answer()` and `ResumeCompiler`) actually correct?**
   _`MasterProfile` has 8 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 6 inferred relationships involving `LLMClient` (e.g. with `Tech Stack` and `FormFiller`) actually correct?**
+- **Are the 6 inferred relationships involving `LLMClient` (e.g. with `ResumeTailor` and `JobMatcher`) actually correct?**
   _`LLMClient` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 3 inferred relationships involving `Database` (e.g. with `IndeedApplier` and `LinkedInApplier`) actually correct?**
   _`Database` has 3 INFERRED edges - model-reasoned connections that need verification._

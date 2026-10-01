@@ -13,12 +13,12 @@ class LLMClient:
     def __init__(
         self,
         provider: str = "gemini",
-        model: str = "gemini-3.1-flash-lite-preview",
+        model: str = "gemini-3.5-flash-lite",
         api_key: Optional[str] = None,
         ollama_base_url: str = "http://localhost:11434"
     ):
         self.provider = provider.lower()
-        self.model = model or "gemini-3.1-flash-lite-preview"
+        self.model = model or "gemini-3.5-flash-lite"
         self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GROQ_API_KEY")
         self.ollama_base_url = ollama_base_url
 
@@ -52,10 +52,10 @@ class LLMClient:
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
         
-        target_model = self.model or "gemini-3.1-flash-lite-preview"
-        # Route models to 3.1-flash-lite-preview which provides 500 RPD vs 20 RPD on 3-flash
+        target_model = self.model or "gemini-3.5-flash-lite"
+        # Route models to 3.5-flash-lite / 3.1-flash-lite which provide 500 RPD vs 20 RPD on standard flash
         if any(m in target_model for m in ["gemini-3-flash", "gemini-2.0", "gemini-1.5", "gemini-2.5"]):
-            target_model = "gemini-3.1-flash-lite-preview"
+            target_model = "gemini-3.5-flash-lite"
 
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -65,9 +65,9 @@ class LLMClient:
             resp = requests.post(url, json=payload, timeout=30)
             last_resp = resp
             
-            # If 404, fallback to gemini-3.1-flash-lite-preview
-            if resp.status_code == 404 and target_model != "gemini-3.1-flash-lite-preview":
-                target_model = "gemini-3.1-flash-lite-preview"
+            # If 404 or 429 on 3.5-flash-lite, fallback to 3.1-flash-lite
+            if resp.status_code in [404, 429] and target_model != "gemini-3.1-flash-lite":
+                target_model = "gemini-3.1-flash-lite"
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={self.api_key}"
                 resp = requests.post(url, json=payload, timeout=30)
                 last_resp = resp

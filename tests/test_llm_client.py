@@ -25,6 +25,7 @@ def test_llm_client_model_routing():
         }
         text = client.generate_text("test")
         assert text == "Hello"
-        # Verify the requested URL targets gemini-3.1-flash-lite-preview
+        # Verify the requested URL targets gemini-3.5-flash-lite
         called_url = mock_post.call_args[0][0]
-        assert "gemini-3.1-flash-lite-preview" in called_url
+        assert "gemini-3.5-flash-lite" in called_url
+

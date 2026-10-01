@@ -25,7 +25,7 @@ class PlatformSettings(BaseModel):
 
 class LLMSettings(BaseModel):
     provider: str = Field(default="gemini") # gemini, groq, ollama
-    model: str = Field(default="gemini-3.1-flash-lite-preview")
+    model: str = Field(default="gemini-3.5-flash-lite")
     api_key: Optional[str] = None
     ollama_base_url: str = Field(default="http://localhost:11434")
 
