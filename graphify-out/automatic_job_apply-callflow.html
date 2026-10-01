@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>automatic_job_apply — Complete Call Flow &amp; Architecture Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --border: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  --warn: #fbbf24; --err: #f87171; --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 2.4rem; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.7rem; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h3 { font-size: 1.25rem; margin: 32px 0 12px; color: var(--accent); }
+h4 { font-size: 1.05rem; margin: 20px 0 8px; color: var(--warn); }
+p { margin: 8px 0; color: var(--muted); }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+.mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; position: relative; }
+.mermaid.is-enhanced { padding: 0; overflow: hidden; min-height: 260px; }
+.mermaid-viewport { padding: 54px 24px 24px; overflow: hidden; cursor: grab; touch-action: none; min-height: 260px; }
+.mermaid-viewport.is-dragging { cursor: grabbing; }
+.mermaid-viewport svg { max-width: none !important; height: auto; transform-origin: 0 0; transition: transform 120ms ease; }
+.mermaid-toolbar { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(15,23,42,0.92); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+.mermaid-toolbar button, .mermaid-toolbar .zoom-level { height: 28px; min-width: 32px; border: 1px solid var(--border); border-radius: 6px; background: #1e293b; color: var(--text); font: 600 0.78rem system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; }
+.mermaid-toolbar button { cursor: pointer; }
+.mermaid-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+.mermaid-toolbar .zoom-level { min-width: 52px; color: var(--muted); background: transparent; }
+.call-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.call-table th { background: #1a2744; color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+.call-table td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+.call-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.tag-async { background: #7c3aed33; color: #a78bfa; }
+.tag-class { background: #05966933; color: var(--ok); }
+.tag-func { background: #2563eb33; color: var(--accent); }
+.tag-cmd { background: #d9770633; color: var(--warn); }
+.tag-endpoint { background: #dc262633; color: var(--err); }
+.tag-hook { background: #db277733; color: #f472b6; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin: 16px 0; }
+.arrow-chain { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent); padding: 10px; background: rgba(56,189,248,0.06); border-radius: 6px; }
+code { font-family: 'Fira Code', 'Cascadia Code', monospace; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; font-size: 0.88em; }
+ul, ol { margin: 8px 0 8px 24px; color: var(--muted); }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.nav { position: sticky; top: 0; background: var(--bg); z-index: 10; padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 16px; } h1 { font-size: 1.8rem; } }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>automatic_job_apply — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 196 nodes, 479 edges, 20 communities. Commit: 3517183</p>
+
+<div class="nav">
+    <a href="#overview">Architecture Overview</a>
+    <a href="#analysis-clustering">Analysis &amp; Clustering</a>
+    <a href="#cli-skills">CLI &amp; Skill Installers</a>
+    <a href="#tests-fixtures">Tests &amp; Fixtures</a>
+    <a href="#compiler-py">compiler.py</a>
+    <a href="#new-stealth-page">.new_stealth_page</a>
+    <a href="#ai-init-py">ai/__init__.py</a>
+    <a href="#applier-init-py">applier/__init__.py</a>
+    <a href="#src-init-py">src/__init__.py</a>
+    <a href="#resume-init-py">resume/__init__.py</a>
+    <a href="#scraper-init-py">scraper/__init__.py</a>
+    <a href="#storage-init-py">storage/__init__.py</a>
+    <a href="#web-init-py">web/__init__.py</a>
+</div>
+
+<!-- ====== Architecture Overview ====== -->
+<h2 id="overview">1. Architecture Overview</h2>
+
+<div class="mermaid">
+
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>9 nodes</small>")
+    class ANALYSIS_CLUSTERING_C79796DA module;
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>1 nodes</small>")
+    class CLI_SKILLS_9964CBB8 module;
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>161 nodes</small>")
+    class TESTS_FIXTURES_B84B1DCC module;
+    COMPILER_PY_53872CA8("compiler.py<br/><small>7 nodes</small>")
+    class COMPILER_PY_53872CA8 module;
+    NEW_STEALTH_PAGE_B0C7103B(".new_stealth_page<br/><small>4 nodes</small>")
+    class NEW_STEALTH_PAGE_B0C7103B module;
+    AI_INIT_PY_3415250C("ai/__init__.py<br/><small>2 nodes</small>")
+    class AI_INIT_PY_3415250C module;
+    APPLIER_INIT_PY_C91E6F1C("applier/__init__.py<br/><small>2 nodes</small>")
+    class APPLIER_INIT_PY_C91E6F1C module;
+    SRC_INIT_PY_CD2D174D("src/__init__.py<br/><small>2 nodes</small>")
+    class SRC_INIT_PY_CD2D174D module;
+    RESUME_INIT_PY_37866ED2("resume/__init__.py<br/><small>2 nodes</small>")
+    class RESUME_INIT_PY_37866ED2 module;
+    SCRAPER_INIT_PY_2465A9F6("scraper/__init__.py<br/><small>2 nodes</small>")
+    class SCRAPER_INIT_PY_2465A9F6 module;
+    STORAGE_INIT_PY_27C97B4D("storage/__init__.py<br/><small>2 nodes</small>")
+    class STORAGE_INIT_PY_27C97B4D module;
+    WEB_INIT_PY_B3080FEA("web/__init__.py<br/><small>2 nodes</small>")
+    class WEB_INIT_PY_B3080FEA module;
+    TESTS_FIXTURES_B84B1DCC -->|imports x9| COMPILER_PY_53872CA8
+    COMPILER_PY_53872CA8 -->|imports x6| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|method x5| ANALYSIS_CLUSTERING_C79796DA
+    TESTS_FIXTURES_B84B1DCC -->|method x2| NEW_STEALTH_PAGE_B0C7103B
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h4>Architecture Layers</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
+      <tr><td>Analysis &amp; Clustering</td><td>9</td><td><code>7, 9</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>1</td><td><code>19</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>161</td><td><code>0, 1, 2, 3, 4, 5, 10, 18</code></td></tr><tr><td>compiler.py</td><td>7</td><td><code>6</code></td></tr><tr><td>.new_stealth_page</td><td>4</td><td><code>8</code></td></tr><tr><td>ai/__init__.py</td><td>2</td><td><code>11</code></td></tr><tr><td>applier/__init__.py</td><td>2</td><td><code>12</code></td></tr><tr><td>src/__init__.py</td><td>2</td><td><code>13</code></td></tr><tr><td>resume/__init__.py</td><td>2</td><td><code>14</code></td></tr><tr><td>scraper/__init__.py</td><td>2</td><td><code>15</code></td></tr><tr><td>storage/__init__.py</td><td>2</td><td><code>16</code></td></tr><tr><td>web/__init__.py</td><td>2</td><td><code>17</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Core Flow</h4>
+    <div class="arrow-chain">CLI &amp; Skill Installers -&gt; Analysis &amp; Clustering -&gt; Tests &amp; Fixtures -&gt; compiler.py -&gt; .new_stealth_page -&gt; ai/__init__.py -&gt; applier/__init__.py</div>
+  </div>
+</div>
+<div class="grid">
+  <div class="card">
+    <h4>Graph Report Highlights</h4>
+    <ul>
+      <li>196 nodes · 479 edges · 20 communities (6 shown, 14 thin omitted)</li>
+      <li>Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.95)</li>
+      <li>Token cost: 0 input · 0 output</li>
+      <li>1. `MasterProfile` - 32 edges</li>
+      <li>2. `LLMClient` - 26 edges</li>
+      <li>3. `Database` - 24 edges</li>
+    </ul>
+  </div>
+</div>
+<hr>
+<!-- ====== 2. Analysis & Clustering ====== -->
+<h2 id="analysis-clustering">2. Analysis &amp; Clustering</h2>
+<p>Analysis &amp; Clustering groups implementation around storage, verifierpy, path, page, mostly in src/storage/verifier.py, src/applier/form_filler.py. This section covers 9 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Analysis &amp; Clustering (9 nodes, 8 edges)
+    subgraph analysis_clustering_External_generated_9ee0240b["External / generated"]
+        src_applier_form_filler_py_any_70cd0d23("Any")
+        src_storage_verifier_py_page_a4fdeffb("Page")
+        src_applier_form_filler_py_page_f10bbc52("Page")
+        src_storage_verifier_py_path_21c3a960("Path")
+    end
+    subgraph analysis_clustering_src_storage_verifier_py_74fac42b["src/storage/verifier.py"]
+        src_storage_verifier_submissionverifier_verify_a_fc649263("verify_and_capture()<br/><small>src/storage/verifier.py</small>")
+        src_storage_verifier_submissionverifier_get_rece_7ad771b9("get_receipt_path()<br/><small>src/storage/verifier.py</small>")
+        src_storage_verifier_submissionverifier_init_204f0a24("__init__()<br/><small>src/storage/verifier.py</small>")
+    end
+    subgraph analysis_clustering_src_applier_form_filler_py_165980ef["src/applier/form_filler.py"]
+        src_applier_form_filler_formfiller_fill_current_8ba91e25("fill_current_modal()<br/><small>src/applier/form_filler.py</small>")
+        src_applier_form_filler_formfiller_answer_questi_9a5b5f4b("answer_question()<br/><small>src/applier/form_filler.py</small>")
+    end
+    src_storage_verifier_submissionverifier_verify_a_fc649263 -->|calls| src_storage_verifier_submissionverifier_get_rece_7ad771b9
+    src_applier_form_filler_formfiller_fill_current_8ba91e25 -->|calls| src_applier_form_filler_formfiller_answer_questi_9a5b5f4b
+    class src_applier_form_filler_py_any_70cd0d23 klass;
+    class src_storage_verifier_py_page_a4fdeffb klass;
+    class src_applier_form_filler_py_page_f10bbc52 klass;
+    class src_storage_verifier_py_path_21c3a960 klass;
+    class src_storage_verifier_submissionverifier_verify_a_fc649263 function;
+    class src_storage_verifier_submissionverifier_get_rece_7ad771b9 function;
+    class src_storage_verifier_submissionverifier_init_204f0a24 function;
+    class src_applier_form_filler_formfiller_fill_current_8ba91e25 function;
+    class src_applier_form_filler_formfiller_answer_questi_9a5b5f4b function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>.get_receipt_path()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>SubmissionVerifier</code><br><small style="color:var(--muted)">src/storage/verifier.py</small><br><code>verify_and_capture()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.get_receipt_path() node in src/storage/verifier.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>SubmissionVerifier</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/storage/verifier.py.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>.verify_and_capture()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>SubmissionVerifier</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><code>get_receipt_path()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td>.verify_and_capture() node in src/storage/verifier.py.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Page</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Path</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Path node in project.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>.answer_question()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>fill_current_modal()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br><code>FormFiller</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.answer_question() node in src/applier/form_filler.py.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>.fill_current_modal()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FormFiller</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><code>answer_question()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td>.fill_current_modal() node in src/applier/form_filler.py.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Any</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Any node in project.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Page</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/storage/verifier.py</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/applier/form_filler.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x6, calls x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 3. CLI & Skill Installers ====== -->
+<h2 id="cli-skills">3. CLI &amp; Skill Installers</h2>
+<p>CLI &amp; Skill Installers groups implementation around mainjs, web, static, mostly in static/js/main.js. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: CLI &amp; Skill Installers (1 nodes, 0 edges)
+    src_web_static_js_main_1e16fc5c("main.js")
+    class src_web_static_js_main_1e16fc5c module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>main.js</code><br><small style="color:var(--muted)">static/js/main.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>main.js node in static/js/main.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>static/js/main.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 4. Tests & Fixtures ====== -->
+<h2 id="tests-fixtures">4. Tests &amp; Fixtures</h2>
+<p>Tests &amp; Fixtures groups implementation around test, tests, resume, applier, mostly in src/web/app.py, src/storage/database.py, src/ai/llm_client.py. This section covers 161 nodes and 432 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Tests &amp; Fixtures (161 nodes, 432 edges)
+    subgraph tests_fixtures_src_applier_browser_py_66535833["src/applier/browser.py"]
+        src_applier_browser_browsermanager_cf744c00("BrowserManager<br/><small>src/applier/browser.py</small>")
+        src_applier_browser_browsermanager_init_097d71e3("__init__()<br/><small>src/applier/browser.py</small>")
+        src_applier_browser_browsermanager_random_delay_b74de5cc("random_delay()<br/><small>src/applier/browser.py</small>")
+        src_applier_browser_browsermanager_human_type_a6fb7a00("human_type()<br/><small>src/applier/browser.py</small>")
+        src_applier_browser_browsermanager_close_082df601("close()<br/><small>src/applier/browser.py</small>")
+    end
+    subgraph tests_fixtures_src_applier_indeed_py_a9ae4733["src/applier/indeed.py"]
+        src_applier_indeed_bdc319fb("indeed.py")
+        src_applier_indeed_indeedapplier_174214b1("IndeedApplier<br/><small>src/applier/indeed.py</small>")
+        src_applier_indeed_indeedapplier_init_c9dc2750("__init__()<br/><small>src/applier/indeed.py</small>")
+        src_applier_indeed_indeedapplier_apply_0a38da07("apply()<br/><small>src/applier/indeed.py</small>")
+    end
+    subgraph tests_fixtures_src_applier_linkedin_py_983a5958["src/applier/linkedin.py"]
+        src_applier_linkedin_2118f6d0("linkedin.py")
+        src_applier_linkedin_linkedinapplier_44ff1dca("LinkedInApplier<br/><small>src/applier/linkedin.py</small>")
+        src_applier_linkedin_linkedinapplier_init_fc66f8b5("__init__()<br/><small>src/applier/linkedin.py</small>")
+    end
+    subgraph tests_fixtures_run_py_f9a71926["run.py"]
+        run_df6ad190("run.py")
+        run_main_d8101602("main()<br/><small>run.py</small>")
+    end
+    subgraph tests_fixtures_src_applier_form_filler_py_3b8b06b1["src/applier/form_filler.py"]
+        src_applier_form_filler_formfiller_9358323b("FormFiller<br/><small>src/applier/form_filler.py</small>")
+        src_applier_form_filler_formfiller_init_06ba84db("__init__()<br/><small>src/applier/form_filler.py</small>")
+    end
+    src_web_app_dc6c049d("app.py")
+    tests_test_compiler_f5969017("test_compiler.py")
+    src_applier_browser_browsermanager_cf744c00 -->|method| src_applier_browser_browsermanager_init_097d71e3
+    src_applier_browser_browsermanager_cf744c00 -->|method| src_applier_browser_browsermanager_random_delay_b74de5cc
+    src_applier_browser_browsermanager_cf744c00 -->|method| src_applier_browser_browsermanager_human_type_a6fb7a00
+    src_applier_browser_browsermanager_cf744c00 -->|method| src_applier_browser_browsermanager_close_082df601
+    src_applier_form_filler_formfiller_9358323b -->|method| src_applier_form_filler_formfiller_init_06ba84db
+    src_applier_indeed_indeedapplier_174214b1 -->|method| src_applier_indeed_indeedapplier_init_c9dc2750
+    src_applier_indeed_indeedapplier_174214b1 -->|method| src_applier_indeed_indeedapplier_apply_0a38da07
+    src_applier_linkedin_linkedinapplier_44ff1dca -->|method| src_applier_linkedin_linkedinapplier_init_fc66f8b5
+    run_main_d8101602 -->|calls| src_applier_browser_browsermanager_cf744c00
+    run_main_d8101602 -->|calls| src_applier_form_filler_formfiller_9358323b
+    run_main_d8101602 -->|calls| src_applier_linkedin_linkedinapplier_44ff1dca
+    run_main_d8101602 -->|calls| src_applier_indeed_indeedapplier_174214b1
+    run_df6ad190 -->|imports| src_applier_browser_browsermanager_cf744c00
+    run_df6ad190 -->|imports| src_applier_form_filler_formfiller_9358323b
+    run_df6ad190 -->|imports| src_applier_linkedin_linkedinapplier_44ff1dca
+    run_df6ad190 -->|imports| src_applier_indeed_indeedapplier_174214b1
+    run_df6ad190 -->|imports| src_applier_linkedin_2118f6d0
+    run_df6ad190 -->|imports| src_applier_indeed_bdc319fb
+    src_applier_indeed_bdc319fb -->|imports| src_applier_browser_browsermanager_cf744c00
+    src_applier_indeed_bdc319fb -->|imports| src_applier_form_filler_formfiller_9358323b
+    src_applier_linkedin_2118f6d0 -->|imports| src_applier_browser_browsermanager_cf744c00
+    src_applier_linkedin_2118f6d0 -->|imports| src_applier_form_filler_formfiller_9358323b
+    src_applier_indeed_indeedapplier_174214b1 -->|uses| src_applier_browser_browsermanager_cf744c00
+    src_applier_indeed_indeedapplier_174214b1 -->|uses| src_applier_form_filler_formfiller_9358323b
+    %% Omitted for readability: 143 nodes, 2 edges
+    class src_applier_browser_browsermanager_cf744c00 klass;
+    class src_applier_browser_browsermanager_init_097d71e3 function;
+    class src_applier_browser_browsermanager_random_delay_b74de5cc function;
+    class src_applier_browser_browsermanager_human_type_a6fb7a00 function;
+    class src_applier_browser_browsermanager_close_082df601 function;
+    class src_applier_indeed_bdc319fb module;
+    class src_applier_indeed_indeedapplier_174214b1 klass;
+    class src_applier_indeed_indeedapplier_init_c9dc2750 function;
+    class src_applier_indeed_indeedapplier_apply_0a38da07 function;
+    class src_applier_linkedin_2118f6d0 module;
+    class src_applier_linkedin_linkedinapplier_44ff1dca klass;
+    class src_applier_linkedin_linkedinapplier_init_fc66f8b5 function;
+    class run_df6ad190 module;
+    class run_main_d8101602 function;
+    class src_applier_form_filler_formfiller_9358323b klass;
+    class src_applier_form_filler_formfiller_init_06ba84db function;
+    class src_web_app_dc6c049d module;
+    class tests_test_compiler_f5969017 test;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>browser manager lifecycle()</code><br><small style="color:var(--muted)">tests/test_browser.py</small><br><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br>+6 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>close()</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>human_type()</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+3 more</td>
+  <td>BrowserManager node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>FormFiller</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br>+5 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br><code>answer_question()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br><code>fill_current_modal()</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br>+2 more</td>
+  <td>FormFiller node in src/applier/form_filler.py.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>main()</code><br><small style="color:var(--muted)">run.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_applier_drivers.py</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small><br>+1 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>apply()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+3 more</td>
+  <td>IndeedApplier node in src/applier/indeed.py.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>main()</code><br><small style="color:var(--muted)">run.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_applier_drivers.py</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small><br>+1 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br><code>apply()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+3 more</td>
+  <td>LinkedInApplier node in src/applier/linkedin.py.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>SubmissionVerifier</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br>+5 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small><br><code>get_receipt_path()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small><br><code>verify_and_capture()</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td>SubmissionVerifier node in src/storage/verifier.py.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>main()</code><br><small style="color:var(--muted)">run.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>Database</code><br><small style="color:var(--muted)">src/storage/database.py</small><br><code>FormFiller</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br>+10 more</td>
+  <td>main() node in run.py.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>.close()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.close() node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>.human_type()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.human_type() node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>.random_delay()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.random_delay() node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>.apply()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.apply() node in src/applier/indeed.py.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/applier/indeed.py.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>.apply()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.apply() node in src/applier/linkedin.py.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/applier/linkedin.py.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>test_applier_drivers_init()</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>LinkedInApplier</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>test_browser_manager_init()</code><br><small style="color:var(--muted)">tests/test_browser.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>test_browser_manager_lifecycle()</code><br><small style="color:var(--muted)">tests/test_browser.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>test_verifier_receipt_path()</code><br><small style="color:var(--muted)">tests/test_verifier.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>SubmissionVerifier</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>run.py</code><br><small style="color:var(--muted)">run.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>argparse</code><br><code>asyncio</code><br><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+30 more</td>
+  <td>Module file in run.py.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>llm_client.py</code><br><small style="color:var(--muted)">src/ai/llm_client.py</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>form_filler.py</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small><br><code>ingestor.py</code><br><small style="color:var(--muted)">src/resume/ingestor.py</small><br>+4 more</td>
+  <td><code>json</code><br><code>logging</code><br><code>os</code><br>+2 more</td>
+  <td>Module file in src/ai/llm_client.py.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br>+1 more</td>
+  <td><code>asyncio</code><br><code>os</code><br><code>pathlib</code><br>+4 more</td>
+  <td>Module file in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>form_filler.py</code><br><small style="color:var(--muted)">src/applier/form_filler.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br>+1 more</td>
+  <td><code>llm_client.py</code><br><small style="color:var(--muted)">src/ai/llm_client.py</small><br><code>LLMClient</code><br><small style="color:var(--muted)">src/ai/llm_client.py</small><br><code>logging</code><br>+5 more</td>
+  <td>Module file in src/applier/form_filler.py.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_applier_drivers.py</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small></td>
+  <td><code>asyncio</code><br><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+9 more</td>
+  <td>Module file in src/applier/indeed.py.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Path</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Path node in project.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_applier_drivers.py</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small></td>
+  <td><code>asyncio</code><br><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br>+9 more</td>
+  <td>Module file in src/applier/linkedin.py.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Path</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Path node in project.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>verifier.py</code><br><small style="color:var(--muted)">src/storage/verifier.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br>+1 more</td>
+  <td><code>datetime</code><br><code>pathlib</code><br><code>playwright_async_api</code></td>
+  <td>Module file in src/storage/verifier.py.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>test_applier_drivers.py</code><br><small style="color:var(--muted)">tests/test_applier_drivers.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>indeed.py</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>IndeedApplier</code><br><small style="color:var(--muted)">src/applier/indeed.py</small><br><code>linkedin.py</code><br><small style="color:var(--muted)">src/applier/linkedin.py</small><br>+3 more</td>
+  <td>Module file in tests/test_applier_drivers.py.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>test_browser.py</code><br><small style="color:var(--muted)">tests/test_browser.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>browser.py</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>os</code><br>+2 more</td>
+  <td>Module file in tests/test_browser.py.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>asyncio</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>asyncio node in project.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/web/app.py</code></td><td>12 nodes</td></tr>
+<tr><td><code>src/storage/database.py</code></td><td>11 nodes</td></tr>
+<tr><td><code>src/ai/llm_client.py</code></td><td>8 nodes</td></tr>
+<tr><td><code>src/config_loader.py</code></td><td>8 nodes</td></tr>
+<tr><td><code>src/resume/models.py</code></td><td>7 nodes</td></tr>
+<tr><td><code>src/applier/browser.py</code></td><td>6 nodes</td></tr>
+<tr><td><code>src/resume/ingestor.py</code></td><td>5 nodes</td></tr>
+<tr><td><code>src/applier/indeed.py</code></td><td>4 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x110, imports x96, calls x55, contains x51. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 5. compiler.py ====== -->
+<h2 id="compiler-py">5. compiler.py</h2>
+<p>compiler.py groups implementation around compilerpy, resume, resumecompiler, compile, mostly in src/resume/compiler.py. This section covers 7 nodes and 7 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: compiler.py (7 nodes, 7 edges)
+    subgraph compiler_py_src_resume_compiler_py_51f7fd3a["src/resume/compiler.py"]
+        src_resume_compiler_a01fd010("compiler.py")
+        src_resume_compiler_resumecompiler_0a75e096("ResumeCompiler<br/><small>src/resume/compiler.py</small>")
+        src_resume_compiler_resumecompiler_compile_pdf_abe22bb6("compile_pdf()<br/><small>src/resume/compiler.py</small>")
+        src_resume_compiler_resumecompiler_init_a6f5857d("__init__()<br/><small>src/resume/compiler.py</small>")
+    end
+    subgraph compiler_py_External_generated_c4467b6f["External / generated"]
+        shutil_74870859("shutil")
+        typst_497cec24("typst")
+        src_resume_compiler_py_path_1d73ad02("Path")
+    end
+    src_resume_compiler_resumecompiler_0a75e096 -->|method| src_resume_compiler_resumecompiler_compile_pdf_abe22bb6
+    src_resume_compiler_resumecompiler_0a75e096 -->|method| src_resume_compiler_resumecompiler_init_a6f5857d
+    src_resume_compiler_a01fd010 -->|imports| shutil_74870859
+    src_resume_compiler_a01fd010 -->|imports| typst_497cec24
+    class src_resume_compiler_a01fd010 module;
+    class src_resume_compiler_resumecompiler_0a75e096 klass;
+    class src_resume_compiler_resumecompiler_compile_pdf_abe22bb6 function;
+    class src_resume_compiler_resumecompiler_init_a6f5857d function;
+    class shutil_74870859 function;
+    class typst_497cec24 function;
+    class src_resume_compiler_py_path_1d73ad02 klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>main()</code><br><small style="color:var(--muted)">run.py</small><br><code>preview_pdf()</code><br><small style="color:var(--muted)">src/web/app.py</small><br>+3 more</td>
+  <td><code>__init__()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small><br><code>compile_pdf()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small><br><code>MasterProfile</code><br><small style="color:var(--muted)">src/resume/models.py</small></td>
+  <td>ResumeCompiler node in src/resume/compiler.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>.compile_pdf()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.compile_pdf() node in src/resume/compiler.py.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>.__init__()</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>ResumeCompiler</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.__init__() node in src/resume/compiler.py.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>app.py</code><br><small style="color:var(--muted)">src/web/app.py</small><br><code>run.py</code><br><small style="color:var(--muted)">run.py</small><br><code>test_compiler.py</code><br><small style="color:var(--muted)">tests/test_compiler.py</small></td>
+  <td><code>json</code><br><code>MasterProfile</code><br><small style="color:var(--muted)">src/resume/models.py</small><br><code>models.py</code><br><small style="color:var(--muted)">src/resume/models.py</small><br>+3 more</td>
+  <td>Module file in src/resume/compiler.py.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Path</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Path node in project.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>shutil</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>shutil node in project.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>typst</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compiler.py</code><br><small style="color:var(--muted)">src/resume/compiler.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>typst node in project.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/resume/compiler.py</code></td><td>4 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: method x2, references x2, imports x2, contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 6. .new_stealth_page ====== -->
+<h2 id="new-stealth-page">6. .new_stealth_page</h2>
+<p>.new_stealth_page groups implementation around page, applier, browserpy, new, mostly in src/applier/browser.py. This section covers 4 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: .new_stealth_page (4 nodes, 3 edges)
+    subgraph new_stealth_page_External_generated_7e850885["External / generated"]
+        browsercontext_1b548cfa("BrowserContext")
+        src_applier_browser_py_page_31016998("Page")
+    end
+    subgraph new_stealth_page_src_applier_browser_py_81841e61["src/applier/browser.py"]
+        src_applier_browser_browsermanager_new_stealth_p_ab292064("new_stealth_page()<br/><small>src/applier/browser.py</small>")
+        src_applier_browser_browsermanager_start_182ab747("start()<br/><small>src/applier/browser.py</small>")
+    end
+    src_applier_browser_browsermanager_new_stealth_p_ab292064 -->|calls| src_applier_browser_browsermanager_start_182ab747
+    class browsercontext_1b548cfa klass;
+    class src_applier_browser_py_page_31016998 klass;
+    class src_applier_browser_browsermanager_new_stealth_p_ab292064 function;
+    class src_applier_browser_browsermanager_start_182ab747 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>.new_stealth_page()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><code>start()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>.start()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BrowserManager</code><br><small style="color:var(--muted)">src/applier/browser.py</small><br><code>new_stealth_page()</code><br><small style="color:var(--muted)">src/applier/browser.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>.start() node in src/applier/browser.py.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>BrowserContext</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>BrowserContext node in project.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Page</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/applier/browser.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x2, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. ai/__init__.py ====== -->
+<h2 id="ai-init-py">7. ai/__init__.py</h2>
+<p>ai/__init__.py groups implementation around client, prompt, templates, autojobforge, mostly in src/ai/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: ai/__init__.py (2 nodes, 1 edges)
+    src_ai_init_rationale_1_e3be2d98("AI client and prompt templates for Auto...<br/><small>src/ai/__init__.py</small>")
+    src_ai_init_26505153("__init__.py")
+    src_ai_init_rationale_1_e3be2d98 -->|explains| src_ai_init_26505153
+    class src_ai_init_rationale_1_e3be2d98 concept;
+    class src_ai_init_26505153 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>ai/__init__.py</code><br><small style="color:var(--muted)">src/ai/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/ai/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AI client and prompt templates for AutoJobForge</code><br><small style="color:var(--muted)">src/ai/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for AI client and prompt templates for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/ai/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. applier/__init__.py ====== -->
+<h2 id="applier-init-py">8. applier/__init__.py</h2>
+<p>applier/__init__.py groups implementation around applier, job, application, execution, mostly in src/applier/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: applier/__init__.py (2 nodes, 1 edges)
+    src_applier_init_rationale_1_2679dd8e("Job application execution and automatio...<br/><small>src/applier/__init__.py</small>")
+    src_applier_init_c0ef19f7("__init__.py")
+    src_applier_init_rationale_1_2679dd8e -->|explains| src_applier_init_c0ef19f7
+    class src_applier_init_rationale_1_2679dd8e concept;
+    class src_applier_init_c0ef19f7 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>applier/__init__.py</code><br><small style="color:var(--muted)">src/applier/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/applier/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Job application execution and automation package for AutoJobForge</code><br><small style="color:var(--muted)">src/applier/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Job application execution and automation package for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/applier/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 9. src/__init__.py ====== -->
+<h2 id="src-init-py">9. src/__init__.py</h2>
+<p>src/__init__.py groups implementation around autojobforge, autonomous, job, application, mostly in src/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: src/__init__.py (2 nodes, 1 edges)
+    src_init_rationale_1_7a41ad73("AutoJobForge - Autonomous Job Applicati...<br/><small>src/__init__.py</small>")
+    src_init_a96b0270("__init__.py")
+    src_init_rationale_1_7a41ad73 -->|explains| src_init_a96b0270
+    class src_init_rationale_1_7a41ad73 concept;
+    class src_init_a96b0270 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>src/__init__.py</code><br><small style="color:var(--muted)">src/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AutoJobForge - Autonomous Job Application &amp; Resume Tailoring Engine</code><br><small style="color:var(--muted)">src/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for AutoJobForge - Autonomous Job Application &amp; Resume Tailoring Engine.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 10. resume/__init__.py ====== -->
+<h2 id="resume-init-py">10. resume/__init__.py</h2>
+<p>resume/__init__.py groups implementation around resume, processing, package, autojobforge, mostly in src/resume/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: resume/__init__.py (2 nodes, 1 edges)
+    src_resume_init_rationale_1_93b0f4d1("Resume and CV processing package for Au...<br/><small>src/resume/__init__.py</small>")
+    src_resume_init_253a41ad("__init__.py")
+    src_resume_init_rationale_1_93b0f4d1 -->|explains| src_resume_init_253a41ad
+    class src_resume_init_rationale_1_93b0f4d1 concept;
+    class src_resume_init_253a41ad module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>resume/__init__.py</code><br><small style="color:var(--muted)">src/resume/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/resume/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Resume and CV processing package for AutoJobForge</code><br><small style="color:var(--muted)">src/resume/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Resume and CV processing package for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/resume/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 11. scraper/__init__.py ====== -->
+<h2 id="scraper-init-py">11. scraper/__init__.py</h2>
+<p>scraper/__init__.py groups implementation around scraper, job, discovery, matching, mostly in src/scraper/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: scraper/__init__.py (2 nodes, 1 edges)
+    src_scraper_init_rationale_1_bba1e27d("Job discovery and matching package for...<br/><small>src/scraper/__init__.py</small>")
+    src_scraper_init_29ae43c8("__init__.py")
+    src_scraper_init_rationale_1_bba1e27d -->|explains| src_scraper_init_29ae43c8
+    class src_scraper_init_rationale_1_bba1e27d concept;
+    class src_scraper_init_29ae43c8 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>scraper/__init__.py</code><br><small style="color:var(--muted)">src/scraper/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/scraper/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Job discovery and matching package for AutoJobForge</code><br><small style="color:var(--muted)">src/scraper/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Job discovery and matching package for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/scraper/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 12. storage/__init__.py ====== -->
+<h2 id="storage-init-py">12. storage/__init__.py</h2>
+<p>storage/__init__.py groups implementation around storage, persistence, package, autojobforge, mostly in src/storage/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: storage/__init__.py (2 nodes, 1 edges)
+    src_storage_init_rationale_1_1eac090f("Storage and persistence package for Aut...<br/><small>src/storage/__init__.py</small>")
+    src_storage_init_dae8f70b("__init__.py")
+    src_storage_init_rationale_1_1eac090f -->|explains| src_storage_init_dae8f70b
+    class src_storage_init_rationale_1_1eac090f concept;
+    class src_storage_init_dae8f70b module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>storage/__init__.py</code><br><small style="color:var(--muted)">src/storage/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/storage/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Storage and persistence package for AutoJobForge</code><br><small style="color:var(--muted)">src/storage/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Storage and persistence package for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/storage/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. web/__init__.py ====== -->
+<h2 id="web-init-py">13. web/__init__.py</h2>
+<p>web/__init__.py groups implementation around web, dashboard, package, autojobforge, mostly in src/web/__init__.py. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: web/__init__.py (2 nodes, 1 edges)
+    src_web_init_rationale_1_a779ba3e("Web Dashboard package for AutoJobForge<br/><small>src/web/__init__.py</small>")
+    src_web_init_f6c42d7e("__init__.py")
+    src_web_init_rationale_1_a779ba3e -->|explains| src_web_init_f6c42d7e
+    class src_web_init_rationale_1_a779ba3e concept;
+    class src_web_init_f6c42d7e module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>web/__init__.py</code><br><small style="color:var(--muted)">src/web/__init__.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/web/__init__.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Web Dashboard package for AutoJobForge</code><br><small style="color:var(--muted)">src/web/__init__.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Web Dashboard package for AutoJobForge.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/web/__init__.py</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: explains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<h2 id="stats">Project Statistics</h2>
+
+<div class="grid">
+  <div class="card">
+    <h4>Graph</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>Nodes</td><td>196</td></tr>
+      <tr><td>Edges</td><td>479</td></tr>
+      <tr><td>Hyperedges</td><td>0</td></tr>
+      <tr><td>Communities</td><td>20</td></tr>
+      <tr><td>Documented Sections</td><td>12</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Edge Confidence</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>EXTRACTED</td><td>448</td></tr>
+      <tr><td>INFERRED</td><td>31</td></tr>
+      <tr><td>AMBIGUOUS</td><td>0</td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
+  <p>automatic_job_apply — Architecture Documentation</p>
+  <p>Generated: 2026-10-01 09:19 UTC · graphify callflow-html</p>
+</div>
+
+</div><!-- .container -->
+
+<script>
+(function () {
+  const mermaidConfig = {
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: { htmlLabels: true, useMaxWidth: true },
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#334155',
+      lineColor: '#64748b',
+      textColor: '#e2e8f0',
+    }
+  };
+
+  mermaid.initialize(mermaidConfig);
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function enhanceMermaidDiagrams() {
+    document.querySelectorAll('.mermaid').forEach((container) => {
+      if (container.dataset.zoomReady === 'true') return;
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      container.dataset.zoomReady = 'true';
+      container.classList.add('is-enhanced');
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+      svg.parentNode.insertBefore(viewport, svg);
+      viewport.appendChild(svg);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = [
+        '<button type="button" data-action="zoom-out" title="Zoom out">-</button>',
+        '<span class="zoom-level" data-role="level">100%</span>',
+        '<button type="button" data-action="zoom-in" title="Zoom in">+</button>',
+        '<button type="button" data-action="fit" title="Fit width">Fit</button>',
+        '<button type="button" data-action="reset" title="Reset view">Reset</button>'
+      ].join('');
+      container.insertBefore(toolbar, viewport);
+
+      const state = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+      const level = toolbar.querySelector('[data-role="level"]');
+
+      function applyTransform() {
+        svg.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        level.textContent = `${Math.round(state.scale * 100)}%`;
+      }
+
+      function zoomBy(delta) {
+        state.scale = clamp(state.scale + delta, 0.25, 3);
+        applyTransform();
+      }
+
+      function reset() {
+        state.scale = 1;
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      function fitWidth() {
+        const rawWidth = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width
+          ? svg.viewBox.baseVal.width
+          : svg.getBoundingClientRect().width / state.scale;
+        if (!rawWidth) {
+          reset();
+          return;
+        }
+        state.scale = clamp((viewport.clientWidth - 48) / rawWidth, 0.25, 1.4);
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      toolbar.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'zoom-in') zoomBy(0.15);
+        if (action === 'zoom-out') zoomBy(-0.15);
+        if (action === 'fit') fitWidth();
+        if (action === 'reset') reset();
+      });
+
+      viewport.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomBy(event.deltaY < 0 ? 0.1 : -0.1);
+      }, { passive: false });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.originX = state.x;
+        state.originY = state.y;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', (event) => {
+        if (!state.dragging) return;
+        state.x = state.originX + event.clientX - state.startX;
+        state.y = state.originY + event.clientY - state.startY;
+        applyTransform();
+      });
+
+      function endDrag(event) {
+        if (!state.dragging) return;
+        state.dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      applyTransform();
+    });
+  }
+
+  function renderMermaid() {
+    const result = mermaid.run
+      ? mermaid.run({ querySelector: '.mermaid' })
+      : Promise.resolve();
+    Promise.resolve(result)
+      .then(enhanceMermaidDiagrams)
+      .catch((error) => {
+        console.error('Mermaid render failed:', error);
+        enhanceMermaidDiagrams();
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    renderMermaid();
+  }
+})();
+</script>
+
+</body>
+</html>

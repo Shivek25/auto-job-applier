@@ -31,6 +31,9 @@ config/config.yaml
 test-results/
 .pytest_cache/
 
+# Graphify local cache
+graphify-out/cache/
+
 # IDE & OS files
 .vscode/
 .idea/

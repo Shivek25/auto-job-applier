@@ -69,6 +69,7 @@ flowchart TD
 * **📝 Intelligent Multi-Modal Form Filler:** Answers application questions (years of experience, work authorizations, salary expectations) using contextual reasoning over your master profile.
 * **📊 Modern Web Dashboard:** Real-time KPI cards, interactive application history, proof screenshot viewer, and one-click manual batch execution.
 * **⏰ Native Windows Scheduler:** Includes a single-click batch script (`setup_task.bat`) to schedule automated applications daily at 9:30 AM without third-party services.
+* **🗺️ Graphify Knowledge Graph:** Live interactive dependency and architecture visualization (`graphify-out/graph.html` and `graphify-out/wiki/`) for instant human and AI assistant project orientation.
 
 ---
 
@@ -83,6 +84,7 @@ flowchart TD
 | **AI LLMs** | Google Gemini Flash / Groq / Ollama | Free-tier capable, high reasoning capability, fast response |
 | **Dashboard** | FastAPI + Jinja2 + Pure CSS | Zero external node_modules bloat, snappy, premium dark-mode UI |
 | **Database** | SQLite3 | Embedded, zero-configuration local persistence |
+| **Knowledge Graph** | Graphify (Tree-sitter AST) | Persistent code intelligence, God-node detection, interactive HTML map |
 
 ---
 
