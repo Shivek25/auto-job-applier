@@ -67,14 +67,24 @@ Job Description:
 """
 
 RESUME_TAILOR_PROMPT = """
-You are an expert resume optimization consultant. 
-Given the candidate's master profile and the target job description:
-1. Rewrite the professional summary (2-3 sentences) to emphasize skills matching the JD.
-2. Select the top 10-15 most relevant skills matching the JD without lying or fabricating experience.
-3. Select the best 2-3 projects and tailor their bullet points using strong action verbs and metrics.
-4. Slightly tune work experience bullet points to mirror JD terminology while strictly preserving truthfulness.
+You are an expert ATS resume optimization consultant. 
+Tailor the candidate's master profile for maximum alignment with the target job description:
 
-Return a JSON matching the Master Profile schema with the tailored fields.
+CRITICAL INSTRUCTIONS:
+1. Professional Summary: Completely customize the professional summary (2-3 punchy sentences) to address the target role directly. Explicitly incorporate the primary tech stack, domain focus, and key analytical requirements mentioned in the JD.
+2. Skills: Re-order the skills in each category (Languages, Frameworks, Tools & Cloud, Databases) so that the specific technologies demanded by the JD appear first.
+3. Work Experience: Refine the bullet points of work experience to emphasize achievements, metrics, and workflows that mirror the JD's requirements (e.g. data modeling, ETL/ELT pipelines, query optimization, analytics) without changing real job titles or dates.
+4. Projects: Select the most relevant 2-3 projects and tailor their descriptions and bullet points to highlight technologies matching the JD.
+
+Return a pure JSON object matching the Master Profile schema:
+{
+  "personal_info": { ... },
+  "summary": "...",
+  "skills": { ... },
+  "work_experience": [ ... ],
+  "projects": [ ... ],
+  "education": [ ... ]
+}
 
 Master Profile:
 {profile_json}

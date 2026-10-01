@@ -18,6 +18,8 @@ class SearchSettings(BaseModel):
     results_wanted: int = Field(default=20)
     hours_old: int = Field(default=336, description="Max job age in hours (336 = 14 days / 2 weeks)")
     easy_apply_only: bool = Field(default=True)
+    max_experience_years: int = Field(default=2, description="Maximum experience required in years to apply")
+
 
 class PlatformSettings(BaseModel):
     linkedin: bool = Field(default=True)

@@ -41,6 +41,7 @@
         <th>Platform</th>
         <th>Match</th>
         <th>Status</th>
+        <th>Tailored Resume</th>
         <th>Proof Receipt</th>
       </tr>
     </thead>
@@ -55,6 +56,9 @@
           <td><strong>{{ app.match_score }}%</strong></td>
           <td><span class="badge {{ app.status | lower }}">{{ app.status }}</span></td>
           <td>
+            <a href="/resumes/{{ app.job_id }}" target="_blank" style="color: var(--accent-blue); font-weight: 600; text-decoration: none;">📄 View Resume</a>
+          </td>
+          <td>
             {% if app.screenshot_path %}
             <a href="/receipts/{{ app.job_id }}" target="_blank" style="color: var(--accent-cyan); font-weight: 600; text-decoration: none;">📸 View Receipt</a>
             {% else %}
@@ -65,7 +69,7 @@
         {% endfor %}
       {% else %}
         <tr>
-          <td colspan="7" class="empty-state">
+          <td colspan="8" class="empty-state">
             No applications submitted yet. Click <strong>Run Daily Batch Now</strong> to begin applying!
           </td>
         </tr>

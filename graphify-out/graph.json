@@ -18,7 +18,7 @@
       "source_file": "run.py",
       "source_location": "L27",
       "id": "automatic_job_apply_run_main",
-      "community": 3,
+      "community": 1,
       "norm_label": "main()"
     },
     {
@@ -27,7 +27,7 @@
       "source_file": "src/config_loader.py",
       "source_location": "L1",
       "id": "src_config_loader_py",
-      "community": 7,
+      "community": 6,
       "norm_label": "config_loader.py"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "src/config_loader.py",
       "source_location": "L6",
       "id": "src_config_loader_appsettings",
-      "community": 7,
+      "community": 6,
       "norm_label": "appsettings"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "",
       "source_location": "",
       "id": "basemodel",
-      "community": 7,
+      "community": 6,
       "norm_label": "basemodel"
     },
     {
@@ -54,52 +54,52 @@
       "source_file": "src/config_loader.py",
       "source_location": "L13",
       "id": "src_config_loader_searchsettings",
-      "community": 7,
+      "community": 6,
       "norm_label": "searchsettings"
     },
     {
       "label": "PlatformSettings",
       "file_type": "code",
       "source_file": "src/config_loader.py",
-      "source_location": "L22",
+      "source_location": "L24",
       "id": "src_config_loader_platformsettings",
-      "community": 7,
+      "community": 6,
       "norm_label": "platformsettings"
     },
     {
       "label": "LLMSettings",
       "file_type": "code",
       "source_file": "src/config_loader.py",
-      "source_location": "L26",
+      "source_location": "L28",
       "id": "src_config_loader_llmsettings",
-      "community": 7,
+      "community": 6,
       "norm_label": "llmsettings"
     },
     {
       "label": "BrowserSettings",
       "file_type": "code",
       "source_file": "src/config_loader.py",
-      "source_location": "L32",
+      "source_location": "L34",
       "id": "src_config_loader_browsersettings",
-      "community": 7,
+      "community": 6,
       "norm_label": "browsersettings"
     },
     {
       "label": "AppConfig",
       "file_type": "code",
       "source_file": "src/config_loader.py",
-      "source_location": "L37",
+      "source_location": "L39",
       "id": "src_config_loader_appconfig",
-      "community": 7,
+      "community": 6,
       "norm_label": "appconfig"
     },
     {
       "label": "load_config()",
       "file_type": "code",
       "source_file": "src/config_loader.py",
-      "source_location": "L44",
+      "source_location": "L46",
       "id": "src_config_loader_load_config",
-      "community": 7,
+      "community": 6,
       "norm_label": "load_config()"
     },
     {
@@ -108,7 +108,7 @@
       "source_file": "src/__init__.py",
       "source_location": "L1",
       "id": "src_init_py",
-      "community": 17,
+      "community": 14,
       "norm_label": "__init__.py"
     },
     {
@@ -117,7 +117,7 @@
       "source_file": "src/__init__.py",
       "source_location": "L1",
       "id": "src_init_rationale_1",
-      "community": 17,
+      "community": 14,
       "norm_label": "autojobforge - autonomous job application & resume tailoring engine"
     },
     {
@@ -126,7 +126,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L1",
       "id": "src_ai_llm_client_py",
-      "community": 13,
+      "community": 0,
       "norm_label": "llm_client.py"
     },
     {
@@ -135,7 +135,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L12",
       "id": "ai_llm_client_llmclient",
-      "community": 8,
+      "community": 4,
       "norm_label": "llmclient"
     },
     {
@@ -144,7 +144,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L13",
       "id": "ai_llm_client_llmclient_init",
-      "community": 8,
+      "community": 4,
       "norm_label": ".__init__()"
     },
     {
@@ -153,7 +153,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L25",
       "id": "ai_llm_client_llmclient_generate_text",
-      "community": 8,
+      "community": 4,
       "norm_label": ".generate_text()"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L35",
       "id": "ai_llm_client_llmclient_generate_json",
-      "community": 8,
+      "community": 4,
       "norm_label": ".generate_json()"
     },
     {
@@ -171,7 +171,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L51",
       "id": "ai_llm_client_llmclient_call_gemini",
-      "community": 8,
+      "community": 4,
       "norm_label": "._call_gemini()"
     },
     {
@@ -180,7 +180,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L90",
       "id": "ai_llm_client_llmclient_call_groq",
-      "community": 8,
+      "community": 4,
       "norm_label": "._call_groq()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "src/ai/llm_client.py",
       "source_location": "L104",
       "id": "ai_llm_client_llmclient_call_ollama",
-      "community": 8,
+      "community": 4,
       "norm_label": "._call_ollama()"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "src/ai/prompts.py",
       "source_location": "L1",
       "id": "src_ai_prompts_py",
-      "community": 34,
+      "community": 31,
       "norm_label": "prompts.py"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "src/ai/__init__.py",
       "source_location": "L1",
       "id": "src_ai_init_py",
-      "community": 20,
+      "community": 17,
       "norm_label": "__init__.py"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "src/ai/__init__.py",
       "source_location": "L1",
       "id": "ai_init_rationale_1",
-      "community": 20,
+      "community": 17,
       "norm_label": "ai client and prompt templates for autojobforge"
     },
     {
@@ -234,7 +234,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L10",
       "id": "applier_browser_browsermanager",
-      "community": 3,
+      "community": 1,
       "norm_label": "browsermanager"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L11",
       "id": "applier_browser_browsermanager_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L27",
       "id": "applier_browser_browsermanager_start",
-      "community": 3,
+      "community": 1,
       "norm_label": ".start()"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L57",
       "id": "applier_browser_browsermanager_login_wizard",
-      "community": 3,
+      "community": 1,
       "norm_label": ".login_wizard()"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L78",
       "id": "applier_browser_browsermanager_new_stealth_page",
-      "community": 3,
+      "community": 1,
       "norm_label": ".new_stealth_page()"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L88",
       "id": "applier_browser_browsermanager_random_delay",
-      "community": 3,
+      "community": 1,
       "norm_label": ".random_delay()"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L91",
       "id": "applier_browser_browsermanager_human_type",
-      "community": 3,
+      "community": 1,
       "norm_label": ".human_type()"
     },
     {
@@ -297,7 +297,7 @@
       "source_file": "src/applier/browser.py",
       "source_location": "L95",
       "id": "applier_browser_browsermanager_close",
-      "community": 3,
+      "community": 1,
       "norm_label": ".close()"
     },
     {
@@ -306,7 +306,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L1",
       "id": "src_applier_form_filler_py",
-      "community": 13,
+      "community": 0,
       "norm_label": "form_filler.py"
     },
     {
@@ -315,7 +315,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L12",
       "id": "applier_form_filler_formfiller",
-      "community": 3,
+      "community": 1,
       "norm_label": "formfiller"
     },
     {
@@ -324,7 +324,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L13",
       "id": "applier_form_filler_formfiller_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L21",
       "id": "applier_form_filler_formfiller_solve_deterministically",
-      "community": 3,
+      "community": 1,
       "norm_label": ".solve_deterministically()"
     },
     {
@@ -342,7 +342,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L120",
       "id": "applier_form_filler_formfiller_answer_question",
-      "community": 3,
+      "community": 1,
       "norm_label": ".answer_question()"
     },
     {
@@ -351,7 +351,7 @@
       "source_file": "src/applier/form_filler.py",
       "source_location": "L156",
       "id": "applier_form_filler_formfiller_fill_current_modal",
-      "community": 3,
+      "community": 1,
       "norm_label": ".fill_current_modal()"
     },
     {
@@ -369,7 +369,7 @@
       "source_file": "src/applier/indeed.py",
       "source_location": "L13",
       "id": "applier_indeed_indeedapplier",
-      "community": 3,
+      "community": 1,
       "norm_label": "indeedapplier"
     },
     {
@@ -378,7 +378,7 @@
       "source_file": "src/applier/indeed.py",
       "source_location": "L14",
       "id": "applier_indeed_indeedapplier_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -387,7 +387,7 @@
       "source_file": "src/applier/indeed.py",
       "source_location": "L28",
       "id": "applier_indeed_indeedapplier_apply",
-      "community": 3,
+      "community": 1,
       "norm_label": ".apply()"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "src/applier/linkedin.py",
       "source_location": "L13",
       "id": "applier_linkedin_linkedinapplier",
-      "community": 3,
+      "community": 1,
       "norm_label": "linkedinapplier"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "src/applier/linkedin.py",
       "source_location": "L14",
       "id": "applier_linkedin_linkedinapplier_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "src/applier/linkedin.py",
       "source_location": "L28",
       "id": "applier_linkedin_linkedinapplier_apply",
-      "community": 3,
+      "community": 1,
       "norm_label": ".apply()"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "src/applier/__init__.py",
       "source_location": "L1",
       "id": "src_applier_init_py",
-      "community": 21,
+      "community": 18,
       "norm_label": "__init__.py"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "src/applier/__init__.py",
       "source_location": "L1",
       "id": "applier_init_rationale_1",
-      "community": 21,
+      "community": 18,
       "norm_label": "job application execution and automation package for autojobforge"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "src/resume/compiler.py",
       "source_location": "L1",
       "id": "src_resume_compiler_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "compiler.py"
     },
     {
@@ -486,7 +486,7 @@
       "source_file": "src/resume/ingestor.py",
       "source_location": "L1",
       "id": "src_resume_ingestor_py",
-      "community": 13,
+      "community": 0,
       "norm_label": "ingestor.py"
     },
     {
@@ -495,7 +495,7 @@
       "source_file": "src/resume/ingestor.py",
       "source_location": "L9",
       "id": "resume_ingestor_cvingestor",
-      "community": 8,
+      "community": 4,
       "norm_label": "cvingestor"
     },
     {
@@ -504,7 +504,7 @@
       "source_file": "src/resume/ingestor.py",
       "source_location": "L10",
       "id": "resume_ingestor_cvingestor_init",
-      "community": 8,
+      "community": 4,
       "norm_label": ".__init__()"
     },
     {
@@ -513,7 +513,7 @@
       "source_file": "src/resume/ingestor.py",
       "source_location": "L13",
       "id": "resume_ingestor_cvingestor_extract_text_from_pdf",
-      "community": 8,
+      "community": 4,
       "norm_label": ".extract_text_from_pdf()"
     },
     {
@@ -522,7 +522,7 @@
       "source_file": "src/resume/ingestor.py",
       "source_location": "L22",
       "id": "resume_ingestor_cvingestor_ingest_cv",
-      "community": 8,
+      "community": 4,
       "norm_label": ".ingest_cv()"
     },
     {
@@ -531,7 +531,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L1",
       "id": "src_resume_models_py",
-      "community": 7,
+      "community": 6,
       "norm_label": "models.py"
     },
     {
@@ -540,7 +540,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L5",
       "id": "resume_models_personalinfo",
-      "community": 1,
+      "community": 6,
       "norm_label": "personalinfo"
     },
     {
@@ -549,7 +549,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L14",
       "id": "resume_models_skills",
-      "community": 1,
+      "community": 6,
       "norm_label": "skills"
     },
     {
@@ -558,7 +558,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L20",
       "id": "resume_models_workexperienceitem",
-      "community": 7,
+      "community": 6,
       "norm_label": "workexperienceitem"
     },
     {
@@ -567,7 +567,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L28",
       "id": "resume_models_projectitem",
-      "community": 7,
+      "community": 6,
       "norm_label": "projectitem"
     },
     {
@@ -576,7 +576,7 @@
       "source_file": "src/resume/models.py",
       "source_location": "L34",
       "id": "resume_models_educationitem",
-      "community": 7,
+      "community": 6,
       "norm_label": "educationitem"
     },
     {
@@ -594,14 +594,14 @@
       "source_file": "src/resume/tailor.py",
       "source_location": "L1",
       "id": "src_resume_tailor_py",
-      "community": 13,
+      "community": 0,
       "norm_label": "tailor.py"
     },
     {
       "label": "ResumeTailor",
       "file_type": "code",
       "source_file": "src/resume/tailor.py",
-      "source_location": "L6",
+      "source_location": "L9",
       "id": "resume_tailor_resumetailor",
       "community": 1,
       "norm_label": "resumetailor"
@@ -610,7 +610,7 @@
       "label": ".__init__()",
       "file_type": "code",
       "source_file": "src/resume/tailor.py",
-      "source_location": "L7",
+      "source_location": "L10",
       "id": "resume_tailor_resumetailor_init",
       "community": 1,
       "norm_label": ".__init__()"
@@ -619,7 +619,7 @@
       "label": ".tailor()",
       "file_type": "code",
       "source_file": "src/resume/tailor.py",
-      "source_location": "L10",
+      "source_location": "L13",
       "id": "resume_tailor_resumetailor_tailor",
       "community": 1,
       "norm_label": ".tailor()"
@@ -630,7 +630,7 @@
       "source_file": "src/resume/__init__.py",
       "source_location": "L1",
       "id": "src_resume_init_py",
-      "community": 22,
+      "community": 19,
       "norm_label": "__init__.py"
     },
     {
@@ -639,7 +639,7 @@
       "source_file": "src/resume/__init__.py",
       "source_location": "L1",
       "id": "resume_init_rationale_1",
-      "community": 22,
+      "community": 19,
       "norm_label": "resume and cv processing package for autojobforge"
     },
     {
@@ -657,7 +657,7 @@
       "source_file": "src/scraper/job_fetcher.py",
       "source_location": "L9",
       "id": "scraper_job_fetcher_jobfetcher",
-      "community": 3,
+      "community": 1,
       "norm_label": "jobfetcher"
     },
     {
@@ -666,7 +666,7 @@
       "source_file": "src/scraper/job_fetcher.py",
       "source_location": "L10",
       "id": "scraper_job_fetcher_jobfetcher_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -675,7 +675,7 @@
       "source_file": "src/scraper/job_fetcher.py",
       "source_location": "L13",
       "id": "scraper_job_fetcher_jobfetcher_fetch_jobs",
-      "community": 3,
+      "community": 1,
       "norm_label": ".fetch_jobs()"
     },
     {
@@ -684,7 +684,7 @@
       "source_file": "src/scraper/matcher.py",
       "source_location": "L1",
       "id": "src_scraper_matcher_py",
-      "community": 13,
+      "community": 0,
       "norm_label": "matcher.py"
     },
     {
@@ -693,7 +693,7 @@
       "source_file": "src/scraper/matcher.py",
       "source_location": "L11",
       "id": "scraper_matcher_jobmatcher",
-      "community": 8,
+      "community": 1,
       "norm_label": "jobmatcher"
     },
     {
@@ -702,34 +702,43 @@
       "source_file": "src/scraper/matcher.py",
       "source_location": "L12",
       "id": "scraper_matcher_jobmatcher_init",
-      "community": 8,
+      "community": 1,
       "norm_label": ".__init__()"
+    },
+    {
+      "label": ".check_experience_mismatch()",
+      "file_type": "code",
+      "source_file": "src/scraper/matcher.py",
+      "source_location": "L17",
+      "id": "scraper_matcher_jobmatcher_check_experience_mismatch",
+      "community": 1,
+      "norm_label": ".check_experience_mismatch()"
     },
     {
       "label": "._extract_skills()",
       "file_type": "code",
       "source_file": "src/scraper/matcher.py",
-      "source_location": "L16",
+      "source_location": "L56",
       "id": "scraper_matcher_jobmatcher_extract_skills",
-      "community": 8,
+      "community": 1,
       "norm_label": "._extract_skills()"
     },
     {
       "label": ".evaluate_heuristic()",
       "file_type": "code",
       "source_file": "src/scraper/matcher.py",
-      "source_location": "L25",
+      "source_location": "L65",
       "id": "scraper_matcher_jobmatcher_evaluate_heuristic",
-      "community": 8,
+      "community": 1,
       "norm_label": ".evaluate_heuristic()"
     },
     {
       "label": ".evaluate()",
       "file_type": "code",
       "source_file": "src/scraper/matcher.py",
-      "source_location": "L64",
+      "source_location": "L115",
       "id": "scraper_matcher_jobmatcher_evaluate",
-      "community": 8,
+      "community": 1,
       "norm_label": ".evaluate()"
     },
     {
@@ -738,7 +747,7 @@
       "source_file": "src/scraper/__init__.py",
       "source_location": "L1",
       "id": "src_scraper_init_py",
-      "community": 23,
+      "community": 20,
       "norm_label": "__init__.py"
     },
     {
@@ -747,7 +756,7 @@
       "source_file": "src/scraper/__init__.py",
       "source_location": "L1",
       "id": "scraper_init_rationale_1",
-      "community": 23,
+      "community": 20,
       "norm_label": "job discovery and matching package for autojobforge"
     },
     {
@@ -765,7 +774,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L6",
       "id": "storage_database_database",
-      "community": 3,
+      "community": 1,
       "norm_label": "database"
     },
     {
@@ -774,7 +783,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L7",
       "id": "storage_database_database_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -783,7 +792,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L12",
       "id": "storage_database_database_get_connection",
-      "community": 3,
+      "community": 1,
       "norm_label": "._get_connection()"
     },
     {
@@ -792,7 +801,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L17",
       "id": "storage_database_database_init_db",
-      "community": 3,
+      "community": 1,
       "norm_label": "._init_db()"
     },
     {
@@ -801,7 +810,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L41",
       "id": "storage_database_database_is_already_applied",
-      "community": 3,
+      "community": 1,
       "norm_label": ".is_already_applied()"
     },
     {
@@ -810,7 +819,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L47",
       "id": "storage_database_database_add_application",
-      "community": 3,
+      "community": 1,
       "norm_label": ".add_application()"
     },
     {
@@ -819,7 +828,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L71",
       "id": "storage_database_database_update_status",
-      "community": 3,
+      "community": 1,
       "norm_label": ".update_status()"
     },
     {
@@ -828,7 +837,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L98",
       "id": "storage_database_database_get_application",
-      "community": 3,
+      "community": 1,
       "norm_label": ".get_application()"
     },
     {
@@ -837,7 +846,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L105",
       "id": "storage_database_database_get_all_applications",
-      "community": 3,
+      "community": 1,
       "norm_label": ".get_all_applications()"
     },
     {
@@ -846,7 +855,7 @@
       "source_file": "src/storage/database.py",
       "source_location": "L111",
       "id": "storage_database_database_get_stats",
-      "community": 3,
+      "community": 1,
       "norm_label": ".get_stats()"
     },
     {
@@ -864,7 +873,7 @@
       "source_file": "src/storage/verifier.py",
       "source_location": "L6",
       "id": "storage_verifier_submissionverifier",
-      "community": 3,
+      "community": 1,
       "norm_label": "submissionverifier"
     },
     {
@@ -873,7 +882,7 @@
       "source_file": "src/storage/verifier.py",
       "source_location": "L7",
       "id": "storage_verifier_submissionverifier_init",
-      "community": 3,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -882,7 +891,7 @@
       "source_file": "src/storage/verifier.py",
       "source_location": "L11",
       "id": "storage_verifier_submissionverifier_get_receipt_path",
-      "community": 3,
+      "community": 1,
       "norm_label": ".get_receipt_path()"
     },
     {
@@ -891,7 +900,7 @@
       "source_file": "src/storage/verifier.py",
       "source_location": "L16",
       "id": "storage_verifier_submissionverifier_verify_and_capture",
-      "community": 3,
+      "community": 1,
       "norm_label": ".verify_and_capture()"
     },
     {
@@ -900,7 +909,7 @@
       "source_file": "src/storage/__init__.py",
       "source_location": "L1",
       "id": "src_storage_init_py",
-      "community": 24,
+      "community": 21,
       "norm_label": "__init__.py"
     },
     {
@@ -909,7 +918,7 @@
       "source_file": "src/storage/__init__.py",
       "source_location": "L1",
       "id": "storage_init_rationale_1",
-      "community": 24,
+      "community": 21,
       "norm_label": "storage and persistence package for autojobforge"
     },
     {
@@ -918,7 +927,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L1",
       "id": "src_web_app_py",
-      "community": 2,
+      "community": 3,
       "norm_label": "app.py"
     },
     {
@@ -927,7 +936,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L31",
       "id": "web_app_get_profile_data",
-      "community": 2,
+      "community": 3,
       "norm_label": "get_profile_data()"
     },
     {
@@ -936,7 +945,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L41",
       "id": "web_app_dashboard",
-      "community": 2,
+      "community": 3,
       "norm_label": "dashboard()"
     },
     {
@@ -945,7 +954,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L57",
       "id": "web_app_profile_page",
-      "community": 2,
+      "community": 3,
       "norm_label": "profile_page()"
     },
     {
@@ -954,7 +963,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L71",
       "id": "web_app_save_profile",
-      "community": 2,
+      "community": 1,
       "norm_label": "save_profile()"
     },
     {
@@ -963,7 +972,7 @@
       "source_file": "src/web/app.py",
       "source_location": "L81",
       "id": "web_app_upload_cv",
-      "community": 8,
+      "community": 4,
       "norm_label": "upload_cv()"
     },
     {
@@ -972,52 +981,61 @@
       "source_file": "src/web/app.py",
       "source_location": "L101",
       "id": "web_app_preview_pdf",
-      "community": 2,
+      "community": 3,
       "norm_label": "preview_pdf()"
+    },
+    {
+      "label": "get_tailored_resume()",
+      "file_type": "code",
+      "source_file": "src/web/app.py",
+      "source_location": "L112",
+      "id": "web_app_get_tailored_resume",
+      "community": 3,
+      "norm_label": "get_tailored_resume()"
     },
     {
       "label": "settings_page()",
       "file_type": "code",
       "source_file": "src/web/app.py",
-      "source_location": "L112",
+      "source_location": "L119",
       "id": "web_app_settings_page",
-      "community": 2,
+      "community": 6,
       "norm_label": "settings_page()"
     },
     {
       "label": "save_settings()",
       "file_type": "code",
       "source_file": "src/web/app.py",
-      "source_location": "L125",
+      "source_location": "L132",
       "id": "web_app_save_settings",
-      "community": 2,
+      "community": 6,
       "norm_label": "save_settings()"
     },
     {
       "label": "trigger_login()",
       "file_type": "code",
       "source_file": "src/web/app.py",
-      "source_location": "L157",
+      "source_location": "L166",
       "id": "web_app_trigger_login",
-      "community": 2,
+      "community": 3,
       "norm_label": "trigger_login()"
     },
     {
       "label": "view_receipt()",
       "file_type": "code",
       "source_file": "src/web/app.py",
-      "source_location": "L166",
+      "source_location": "L175",
       "id": "web_app_view_receipt",
-      "community": 2,
+      "community": 3,
       "norm_label": "view_receipt()"
     },
     {
       "label": "trigger_run()",
       "file_type": "code",
       "source_file": "src/web/app.py",
-      "source_location": "L173",
+      "source_location": "L182",
       "id": "web_app_trigger_run",
-      "community": 2,
+      "community": 3,
       "norm_label": "trigger_run()"
     },
     {
@@ -1026,7 +1044,7 @@
       "source_file": "src/web/__init__.py",
       "source_location": "L1",
       "id": "src_web_init_py",
-      "community": 25,
+      "community": 22,
       "norm_label": "__init__.py"
     },
     {
@@ -1035,7 +1053,7 @@
       "source_file": "src/web/__init__.py",
       "source_location": "L1",
       "id": "web_init_rationale_1",
-      "community": 25,
+      "community": 22,
       "norm_label": "web dashboard package for autojobforge"
     },
     {
@@ -1044,7 +1062,7 @@
       "source_file": "src/web/static/js/main.js",
       "source_location": "L1",
       "id": "src_web_static_js_main_js",
-      "community": 18,
+      "community": 15,
       "norm_label": "main.js"
     },
     {
@@ -1053,7 +1071,7 @@
       "source_file": "src/web/static/js/main.js",
       "source_location": "L14",
       "id": "js_main_runform",
-      "community": 18,
+      "community": 15,
       "norm_label": "runform"
     },
     {
@@ -1062,7 +1080,7 @@
       "source_file": "src/web/static/js/main.js",
       "source_location": "L17",
       "id": "js_main_btn",
-      "community": 18,
+      "community": 15,
       "norm_label": "btn"
     },
     {
@@ -1080,7 +1098,7 @@
       "source_file": "tests/test_applier_drivers.py",
       "source_location": "L6",
       "id": "tests_test_applier_drivers_test_applier_drivers_init",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_applier_drivers_init()"
     },
     {
@@ -1089,7 +1107,7 @@
       "source_file": "tests/test_browser.py",
       "source_location": "L1",
       "id": "tests_test_browser_py",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_browser.py"
     },
     {
@@ -1098,7 +1116,7 @@
       "source_file": "tests/test_browser.py",
       "source_location": "L6",
       "id": "tests_test_browser_test_browser_manager_init",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_browser_manager_init()"
     },
     {
@@ -1107,7 +1125,7 @@
       "source_file": "tests/test_browser.py",
       "source_location": "L17",
       "id": "tests_test_browser_test_browser_manager_lifecycle",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_browser_manager_lifecycle()"
     },
     {
@@ -1116,7 +1134,7 @@
       "source_file": "tests/test_cli_smoke.py",
       "source_location": "L1",
       "id": "tests_test_cli_smoke_py",
-      "community": 2,
+      "community": 3,
       "norm_label": "test_cli_smoke.py"
     },
     {
@@ -1125,7 +1143,7 @@
       "source_file": "tests/test_cli_smoke.py",
       "source_location": "L5",
       "id": "tests_test_cli_smoke_test_run_py_help",
-      "community": 2,
+      "community": 3,
       "norm_label": "test_run_py_help()"
     },
     {
@@ -1134,7 +1152,7 @@
       "source_file": "tests/test_compiler.py",
       "source_location": "L1",
       "id": "tests_test_compiler_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_compiler.py"
     },
     {
@@ -1143,7 +1161,7 @@
       "source_file": "tests/test_compiler.py",
       "source_location": "L6",
       "id": "tests_test_compiler_test_typst_resume_compilation",
-      "community": 1,
+      "community": 6,
       "norm_label": "test_typst_resume_compilation()"
     },
     {
@@ -1152,7 +1170,7 @@
       "source_file": "tests/test_config.py",
       "source_location": "L1",
       "id": "tests_test_config_py",
-      "community": 7,
+      "community": 6,
       "norm_label": "test_config.py"
     },
     {
@@ -1161,7 +1179,7 @@
       "source_file": "tests/test_config.py",
       "source_location": "L5",
       "id": "tests_test_config_test_load_config_default",
-      "community": 7,
+      "community": 6,
       "norm_label": "test_load_config_default()"
     },
     {
@@ -1170,7 +1188,7 @@
       "source_file": "tests/test_config.py",
       "source_location": "L32",
       "id": "tests_test_config_test_load_config_missing_file",
-      "community": 7,
+      "community": 6,
       "norm_label": "test_load_config_missing_file()"
     },
     {
@@ -1179,7 +1197,7 @@
       "source_file": "tests/test_database.py",
       "source_location": "L1",
       "id": "tests_test_database_py",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_database.py"
     },
     {
@@ -1188,7 +1206,7 @@
       "source_file": "tests/test_database.py",
       "source_location": "L5",
       "id": "tests_test_database_test_database_init_and_crud",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_database_init_and_crud()"
     },
     {
@@ -1197,7 +1215,7 @@
       "source_file": "tests/test_form_filler.py",
       "source_location": "L1",
       "id": "tests_test_form_filler_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_form_filler.py"
     },
     {
@@ -1206,7 +1224,7 @@
       "source_file": "tests/test_form_filler.py",
       "source_location": "L7",
       "id": "tests_test_form_filler_test_form_filler_answer",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_form_filler_answer()"
     },
     {
@@ -1215,7 +1233,7 @@
       "source_file": "tests/test_job_matcher.py",
       "source_location": "L1",
       "id": "tests_test_job_matcher_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_job_matcher.py"
     },
     {
@@ -1224,7 +1242,7 @@
       "source_file": "tests/test_job_matcher.py",
       "source_location": "L6",
       "id": "tests_test_job_matcher_test_job_matcher",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_job_matcher()"
     },
     {
@@ -1233,7 +1251,7 @@
       "source_file": "tests/test_llm_client.py",
       "source_location": "L1",
       "id": "tests_test_llm_client_py",
-      "community": 6,
+      "community": 4,
       "norm_label": "test_llm_client.py"
     },
     {
@@ -1242,7 +1260,7 @@
       "source_file": "tests/test_llm_client.py",
       "source_location": "L5",
       "id": "tests_test_llm_client_test_llm_client_mock_gemini",
-      "community": 6,
+      "community": 4,
       "norm_label": "test_llm_client_mock_gemini()"
     },
     {
@@ -1251,7 +1269,7 @@
       "source_file": "tests/test_llm_client.py",
       "source_location": "L12",
       "id": "tests_test_llm_client_test_llm_client_json_cleaning",
-      "community": 6,
+      "community": 4,
       "norm_label": "test_llm_client_json_cleaning()"
     },
     {
@@ -1260,7 +1278,7 @@
       "source_file": "tests/test_llm_client.py",
       "source_location": "L19",
       "id": "tests_test_llm_client_test_llm_client_model_routing",
-      "community": 6,
+      "community": 4,
       "norm_label": "test_llm_client_model_routing()"
     },
     {
@@ -1269,7 +1287,7 @@
       "source_file": "tests/test_resume_models.py",
       "source_location": "L1",
       "id": "tests_test_resume_models_py",
-      "community": 1,
+      "community": 2,
       "norm_label": "test_resume_models.py"
     },
     {
@@ -1278,7 +1296,7 @@
       "source_file": "tests/test_resume_models.py",
       "source_location": "L4",
       "id": "tests_test_resume_models_test_master_profile_validation",
-      "community": 1,
+      "community": 2,
       "norm_label": "test_master_profile_validation()"
     },
     {
@@ -1287,7 +1305,7 @@
       "source_file": "tests/test_resume_tailor.py",
       "source_location": "L1",
       "id": "tests_test_resume_tailor_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_resume_tailor.py"
     },
     {
@@ -1296,7 +1314,7 @@
       "source_file": "tests/test_resume_tailor.py",
       "source_location": "L6",
       "id": "tests_test_resume_tailor_test_resume_tailor",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_resume_tailor()"
     },
     {
@@ -1305,7 +1323,7 @@
       "source_file": "tests/test_verifier.py",
       "source_location": "L1",
       "id": "tests_test_verifier_py",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_verifier.py"
     },
     {
@@ -1314,7 +1332,7 @@
       "source_file": "tests/test_verifier.py",
       "source_location": "L5",
       "id": "tests_test_verifier_test_verifier_receipt_path",
-      "community": 0,
+      "community": 2,
       "norm_label": "test_verifier_receipt_path()"
     },
     {
@@ -1323,7 +1341,7 @@
       "source_file": "tests/test_web_app.py",
       "source_location": "L1",
       "id": "tests_test_web_app_py",
-      "community": 16,
+      "community": 2,
       "norm_label": "test_web_app.py"
     },
     {
@@ -1332,7 +1350,7 @@
       "source_file": "tests/test_web_app.py",
       "source_location": "L4",
       "id": "tests_test_web_app_test_web_app_routes",
-      "community": 16,
+      "community": 2,
       "norm_label": "test_web_app_routes()"
     },
     {
@@ -1341,7 +1359,7 @@
       "source_file": "tests/__init__.py",
       "source_location": "L1",
       "id": "tests_init_py",
-      "community": 19,
+      "community": 16,
       "norm_label": "__init__.py"
     },
     {
@@ -1350,7 +1368,7 @@
       "source_file": "tests/__init__.py",
       "source_location": "L1",
       "id": "tests_init_rationale_1",
-      "community": 19,
+      "community": 16,
       "norm_label": "test suite for autojobforge"
     },
     {
@@ -1359,7 +1377,7 @@
       "source_file": "README.md",
       "source_location": "L1",
       "id": "readme_md",
-      "community": 5,
+      "community": 7,
       "norm_label": "readme.md"
     },
     {
@@ -1368,7 +1386,7 @@
       "source_file": "README.md",
       "source_location": "L1",
       "id": "automatic_job_apply_readme_autojobforge",
-      "community": 5,
+      "community": 7,
       "norm_label": "\u26a1 autojobforge"
     },
     {
@@ -1377,7 +1395,7 @@
       "source_file": "README.md",
       "source_location": "L16",
       "id": "automatic_job_apply_readme_why_autojobforge",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83c\udf1f why autojobforge?"
     },
     {
@@ -1386,7 +1404,7 @@
       "source_file": "README.md",
       "source_location": "L28",
       "id": "automatic_job_apply_readme_system_architecture",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83c\udfdb\ufe0f system architecture"
     },
     {
@@ -1395,7 +1413,7 @@
       "source_file": "README.md",
       "source_location": "L30",
       "id": "automatic_job_apply_readme_codeblock_1",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:mermaid (flowchart td)"
     },
     {
@@ -1404,7 +1422,7 @@
       "source_file": "README.md",
       "source_location": "L63",
       "id": "automatic_job_apply_readme_core_features",
-      "community": 5,
+      "community": 7,
       "norm_label": "\u2728 core features"
     },
     {
@@ -1413,7 +1431,7 @@
       "source_file": "README.md",
       "source_location": "L76",
       "id": "automatic_job_apply_readme_tech_stack",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83d\udee0\ufe0f tech stack"
     },
     {
@@ -1422,7 +1440,7 @@
       "source_file": "README.md",
       "source_location": "L91",
       "id": "automatic_job_apply_readme_getting_started",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83d\ude80 getting started"
     },
     {
@@ -1431,7 +1449,7 @@
       "source_file": "README.md",
       "source_location": "L93",
       "id": "automatic_job_apply_readme_1_prerequisites",
-      "community": 5,
+      "community": 7,
       "norm_label": "1. prerequisites"
     },
     {
@@ -1440,7 +1458,7 @@
       "source_file": "README.md",
       "source_location": "L98",
       "id": "automatic_job_apply_readme_2_installation",
-      "community": 5,
+      "community": 7,
       "norm_label": "2. installation"
     },
     {
@@ -1449,7 +1467,7 @@
       "source_file": "README.md",
       "source_location": "L100",
       "id": "automatic_job_apply_readme_codeblock_2",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:bash (# clone the repository)"
     },
     {
@@ -1458,7 +1476,7 @@
       "source_file": "README.md",
       "source_location": "L114",
       "id": "automatic_job_apply_readme_3_configuration",
-      "community": 5,
+      "community": 7,
       "norm_label": "3. configuration"
     },
     {
@@ -1467,7 +1485,7 @@
       "source_file": "README.md",
       "source_location": "L117",
       "id": "automatic_job_apply_readme_codeblock_3",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:powershell ($env:gemini_api_key=\"your-gemini-api-key\")"
     },
     {
@@ -1476,7 +1494,7 @@
       "source_file": "README.md",
       "source_location": "L128",
       "id": "automatic_job_apply_readme_running_the_system",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83d\udda5\ufe0f running the system"
     },
     {
@@ -1485,7 +1503,7 @@
       "source_file": "README.md",
       "source_location": "L130",
       "id": "automatic_job_apply_readme_option_a_the_web_dashboard_recommended",
-      "community": 5,
+      "community": 7,
       "norm_label": "option a: the web dashboard (recommended)"
     },
     {
@@ -1494,7 +1512,7 @@
       "source_file": "README.md",
       "source_location": "L133",
       "id": "automatic_job_apply_readme_codeblock_4",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:bash (uvicorn src.web.app:app --reload --port 8000)"
     },
     {
@@ -1503,7 +1521,7 @@
       "source_file": "README.md",
       "source_location": "L142",
       "id": "automatic_job_apply_readme_option_b_command_line_cli",
-      "community": 5,
+      "community": 7,
       "norm_label": "option b: command line (cli)"
     },
     {
@@ -1512,7 +1530,7 @@
       "source_file": "README.md",
       "source_location": "L146",
       "id": "automatic_job_apply_readme_codeblock_5",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:bash (# run in safe review mode (prompts you before final submissi)"
     },
     {
@@ -1521,7 +1539,7 @@
       "source_file": "README.md",
       "source_location": "L157",
       "id": "automatic_job_apply_readme_option_c_automated_daily_scheduling_windows",
-      "community": 5,
+      "community": 7,
       "norm_label": "option c: automated daily scheduling (windows)"
     },
     {
@@ -1530,7 +1548,7 @@
       "source_file": "README.md",
       "source_location": "L160",
       "id": "automatic_job_apply_readme_codeblock_6",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:cmd (setup_task.bat)"
     },
     {
@@ -1539,7 +1557,7 @@
       "source_file": "README.md",
       "source_location": "L167",
       "id": "automatic_job_apply_readme_security_privacy_guarantees",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83d\udd12 security & privacy guarantees"
     },
     {
@@ -1548,7 +1566,7 @@
       "source_file": "README.md",
       "source_location": "L175",
       "id": "automatic_job_apply_readme_testing",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83e\uddea testing"
     },
     {
@@ -1557,7 +1575,7 @@
       "source_file": "README.md",
       "source_location": "L179",
       "id": "automatic_job_apply_readme_codeblock_7",
-      "community": 5,
+      "community": 7,
       "norm_label": "code:bash (pytest -v)"
     },
     {
@@ -1566,7 +1584,7 @@
       "source_file": "README.md",
       "source_location": "L193",
       "id": "automatic_job_apply_readme_license",
-      "community": 5,
+      "community": 7,
       "norm_label": "\ud83d\udcc4 license"
     },
     {
@@ -1575,7 +1593,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L1",
       "id": "docs_superpowers_plans_2026_09_30_autojobforge_md",
-      "community": 4,
+      "community": 5,
       "norm_label": "2026-09-30-autojobforge.md"
     },
     {
@@ -1584,7 +1602,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L1",
       "id": "plans_2026_09_30_autojobforge_autojobforge_implementation_plan",
-      "community": 4,
+      "community": 5,
       "norm_label": "autojobforge implementation plan"
     },
     {
@@ -1593,7 +1611,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L13",
       "id": "plans_2026_09_30_autojobforge_file_structure_map",
-      "community": 4,
+      "community": 5,
       "norm_label": "file structure map"
     },
     {
@@ -1602,7 +1620,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L15",
       "id": "plans_2026_09_30_autojobforge_codeblock_1",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block1 (automatic_job_apply/)"
     },
     {
@@ -1611,7 +1629,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L82",
       "id": "plans_2026_09_30_autojobforge_tasks",
-      "community": 4,
+      "community": 5,
       "norm_label": "tasks"
     },
     {
@@ -1620,7 +1638,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L84",
       "id": "plans_2026_09_30_autojobforge_task_1_environment_setup_project_configuration",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 1: environment setup & project configuration"
     },
     {
@@ -1629,7 +1647,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L101",
       "id": "plans_2026_09_30_autojobforge_task_2_storage_database_layer",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 2: storage & database layer"
     },
     {
@@ -1638,7 +1656,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L115",
       "id": "plans_2026_09_30_autojobforge_task_3_pluggable_ai_client_prompts",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 3: pluggable ai client & prompts"
     },
     {
@@ -1647,7 +1665,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L131",
       "id": "plans_2026_09_30_autojobforge_task_4_master_profile_schema_cv_ingestion",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 4: master profile schema & cv ingestion"
     },
     {
@@ -1656,7 +1674,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L146",
       "id": "plans_2026_09_30_autojobforge_task_5_dynamic_resume_tailor_typst_ats_pdf_compiler",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 5: dynamic resume tailor & typst ats pdf compiler"
     },
     {
@@ -1665,7 +1683,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L164",
       "id": "plans_2026_09_30_autojobforge_task_6_job_discovery_ai_match_evaluator",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 6: job discovery & ai match evaluator"
     },
     {
@@ -1674,7 +1692,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L179",
       "id": "plans_2026_09_30_autojobforge_task_7_playwright_stealth_browser_session_manager",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 7: playwright stealth browser & session manager"
     },
     {
@@ -1683,7 +1701,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L187",
       "id": "plans_2026_09_30_autojobforge_codeblock_2",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:bash (git add src/applier/browser.py)"
     },
     {
@@ -1692,7 +1710,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L194",
       "id": "plans_2026_09_30_autojobforge_task_8_ai_screening_form_filler_submission_verifier",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 8: ai screening form-filler & submission verifier"
     },
     {
@@ -1701,7 +1719,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L210",
       "id": "plans_2026_09_30_autojobforge_task_9_linkedin_indeed_easy_apply_automators",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 9: linkedin & indeed easy apply automators"
     },
     {
@@ -1710,7 +1728,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L222",
       "id": "plans_2026_09_30_autojobforge_task_10_headless_cli_orchestrator_windows_task_scheduler_setup",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 10: headless cli orchestrator & windows task scheduler setup"
     },
     {
@@ -1719,7 +1737,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L234",
       "id": "plans_2026_09_30_autojobforge_task_11_modern_dark_mode_web_dashboard",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 11: modern dark-mode web dashboard"
     },
     {
@@ -1728,7 +1746,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L246",
       "id": "plans_2026_09_30_autojobforge_codeblock_3",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:css (/* src/web/static/css/style.css */)"
     },
     {
@@ -1737,7 +1755,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L380",
       "id": "plans_2026_09_30_autojobforge_codeblock_4",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:html (<!-- src/web/templates/base.html -->)"
     },
     {
@@ -1746,7 +1764,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L405",
       "id": "plans_2026_09_30_autojobforge_codeblock_5",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:html (<!-- src/web/templates/dashboard.html -->)"
     },
     {
@@ -1755,7 +1773,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L473",
       "id": "plans_2026_09_30_autojobforge_codeblock_6",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:python (# src/web/app.py)"
     },
     {
@@ -1764,7 +1782,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L547",
       "id": "plans_2026_09_30_autojobforge_codeblock_7",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:bash (git add src/web/)"
     },
     {
@@ -1773,7 +1791,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L554",
       "id": "plans_2026_09_30_autojobforge_task_12_end_to_end_integration_verification_portfolio_readme",
-      "community": 4,
+      "community": 5,
       "norm_label": "task 12: end-to-end integration verification & portfolio readme"
     },
     {
@@ -1782,7 +1800,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L562",
       "id": "plans_2026_09_30_autojobforge_codeblock_8",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:markdown (# \u26a1 autojobforge)"
     },
     {
@@ -1791,7 +1809,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L592",
       "id": "plans_2026_09_30_autojobforge_codeblock_9",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block9"
     },
     {
@@ -1800,7 +1818,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L597",
       "id": "plans_2026_09_30_autojobforge_codeblock_10",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block10"
     },
     {
@@ -1809,7 +1827,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L602",
       "id": "plans_2026_09_30_autojobforge_codeblock_11",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block11 (open `http://localhost:8000` to upload your existing cv (.pd)"
     },
     {
@@ -1818,7 +1836,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L608",
       "id": "plans_2026_09_30_autojobforge_codeblock_12",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block12 (to setup windows task scheduler for daily 09:30 am runs:)"
     },
     {
@@ -1827,7 +1845,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L612",
       "id": "plans_2026_09_30_autojobforge_codeblock_13",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:block13"
     },
     {
@@ -1836,7 +1854,7 @@
       "source_file": "docs/superpowers/plans/2026-09-30-autojobforge.md",
       "source_location": "L622",
       "id": "plans_2026_09_30_autojobforge_codeblock_14",
-      "community": 4,
+      "community": 5,
       "norm_label": "code:bash (git add readme.md)"
     },
     {
@@ -1988,7 +2006,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 3,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "resumecompiler",
@@ -2001,7 +2019,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "educationitem",
@@ -2014,7 +2032,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "masterprofile",
@@ -2027,7 +2045,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "personalinfo",
@@ -2040,7 +2058,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "projectitem",
@@ -2053,7 +2071,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "skills",
@@ -2066,7 +2084,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "workexperienceitem",
@@ -2079,7 +2097,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "resumetailor",
@@ -2092,7 +2110,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "jobmatcher",
@@ -2105,7 +2123,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": "submissionverifier",
@@ -2131,7 +2149,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "indeedapplier",
@@ -2144,7 +2162,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "linkedinapplier",
@@ -2157,7 +2175,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "jobfetcher",
@@ -2170,7 +2188,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "database",
@@ -2183,7 +2201,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "llmclient",
@@ -2196,7 +2214,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "cvingestor",
@@ -2209,7 +2227,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "browsermanager",
@@ -2221,7 +2239,7 @@
       "label": ".compile_pdf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 3,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": ".compile_pdf()",
@@ -2233,7 +2251,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 3,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2245,7 +2263,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2257,7 +2275,7 @@
       "label": ".tailor()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": ".tailor()",
@@ -2269,7 +2287,7 @@
       "label": ".evaluate()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": ".evaluate()",
@@ -2281,7 +2299,7 @@
       "label": ".get_receipt_path()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": ".get_receipt_path()",
@@ -2293,7 +2311,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2305,7 +2323,7 @@
       "label": ".verify_and_capture()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": ".verify_and_capture()",
@@ -2317,7 +2335,7 @@
       "label": "dashboard()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "dashboard()",
@@ -2329,7 +2347,7 @@
       "label": "get_profile_data()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "get_profile_data()",
@@ -2341,7 +2359,7 @@
       "label": "preview_pdf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "preview_pdf()",
@@ -2353,7 +2371,7 @@
       "label": "profile_page()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "profile_page()",
@@ -2365,7 +2383,7 @@
       "label": "save_profile()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "save_profile()",
@@ -2377,7 +2395,7 @@
       "label": "save_settings()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "save_settings()",
@@ -2389,7 +2407,7 @@
       "label": "settings_page()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "settings_page()",
@@ -2401,7 +2419,7 @@
       "label": "trigger_login()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "trigger_login()",
@@ -2413,7 +2431,7 @@
       "label": "run_login()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "run_login()",
@@ -2425,7 +2443,7 @@
       "label": "trigger_run()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "trigger_run()",
@@ -2437,7 +2455,7 @@
       "label": "run_worker()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "run_worker()",
@@ -2449,7 +2467,7 @@
       "label": "upload_cv()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "upload_cv()",
@@ -2461,7 +2479,7 @@
       "label": "view_receipt()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "view_receipt()",
@@ -2485,7 +2503,7 @@
       "label": ".answer_question()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 13,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".answer_question()",
@@ -2497,7 +2515,7 @@
       "label": ".fill_current_modal()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 13,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".fill_current_modal()",
@@ -2509,7 +2527,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 0,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2521,7 +2539,7 @@
       "label": ".apply()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".apply()",
@@ -2533,7 +2551,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2545,7 +2563,7 @@
       "label": ".apply()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".apply()",
@@ -2557,7 +2575,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2569,7 +2587,7 @@
       "label": ".fetch_jobs()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".fetch_jobs()",
@@ -2581,7 +2599,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2593,7 +2611,7 @@
       "label": ".add_application()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".add_application()",
@@ -2605,7 +2623,7 @@
       "label": ".get_all_applications()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".get_all_applications()",
@@ -2617,7 +2635,7 @@
       "label": ".get_application()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".get_application()",
@@ -2629,7 +2647,7 @@
       "label": "._get_connection()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "._get_connection()",
@@ -2641,7 +2659,7 @@
       "label": ".get_stats()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".get_stats()",
@@ -2653,7 +2671,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2665,7 +2683,7 @@
       "label": "._init_db()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "._init_db()",
@@ -2677,7 +2695,7 @@
       "label": ".is_already_applied()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".is_already_applied()",
@@ -2689,7 +2707,7 @@
       "label": ".update_status()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": ".update_status()",
@@ -2701,7 +2719,7 @@
       "label": "._call_gemini()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "._call_gemini()",
@@ -2713,7 +2731,7 @@
       "label": "._call_groq()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "._call_groq()",
@@ -2725,7 +2743,7 @@
       "label": "._call_ollama()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "._call_ollama()",
@@ -2737,7 +2755,7 @@
       "label": ".generate_json()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".generate_json()",
@@ -2749,7 +2767,7 @@
       "label": ".generate_text()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".generate_text()",
@@ -2761,7 +2779,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2773,7 +2791,7 @@
       "label": ".extract_text_from_pdf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".extract_text_from_pdf()",
@@ -2785,7 +2803,7 @@
       "label": ".ingest_cv()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".ingest_cv()",
@@ -2797,7 +2815,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2809,7 +2827,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2821,7 +2839,7 @@
       "label": ".close()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".close()",
@@ -2833,7 +2851,7 @@
       "label": ".human_type()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".human_type()",
@@ -2845,7 +2863,7 @@
       "label": ".__init__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".__init__()",
@@ -2857,7 +2875,7 @@
       "label": ".login_wizard()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".login_wizard()",
@@ -2869,7 +2887,7 @@
       "label": ".new_stealth_page()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".new_stealth_page()",
@@ -2881,7 +2899,7 @@
       "label": ".random_delay()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".random_delay()",
@@ -2893,7 +2911,7 @@
       "label": ".start()",
       "_callable": true,
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": ".start()",
@@ -2915,7 +2933,7 @@
     {
       "label": "llm_client.py",
       "_origin": "ast",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "file_type": "code",
       "norm_label": "llm_client.py",
@@ -2970,7 +2988,7 @@
     {
       "label": "ingestor.py",
       "_origin": "ast",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "file_type": "code",
       "norm_label": "ingestor.py",
@@ -3014,7 +3032,7 @@
     {
       "label": "test_browser.py",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "run.py",
       "file_type": "code",
       "norm_label": "test_browser.py",
@@ -3025,7 +3043,7 @@
     {
       "label": "prompts.py",
       "_origin": "ast",
-      "community": 13,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "prompts.py",
@@ -3036,7 +3054,7 @@
     {
       "label": "compiler.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "compiler.py",
@@ -3047,7 +3065,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 1,
+      "community": 3,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "path",
@@ -3058,7 +3076,7 @@
     {
       "label": "models.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "models.py",
@@ -3069,7 +3087,7 @@
     {
       "label": "BaseModel",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "basemodel",
@@ -3080,7 +3098,7 @@
     {
       "label": "tailor.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "tailor.py",
@@ -3091,7 +3109,7 @@
     {
       "label": "matcher.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "matcher.py",
@@ -3102,7 +3120,7 @@
     {
       "label": "Any",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "any",
@@ -3113,7 +3131,7 @@
     {
       "label": "test_compiler.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "test_compiler.py",
@@ -3124,7 +3142,7 @@
     {
       "label": "test_form_filler.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "test_form_filler.py",
@@ -3135,7 +3153,7 @@
     {
       "label": "asyncio",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "asyncio",
@@ -3146,7 +3164,7 @@
     {
       "label": "test_job_matcher.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "test_job_matcher.py",
@@ -3157,7 +3175,7 @@
     {
       "label": "test_resume_models.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "test_resume_models.py",
@@ -3168,7 +3186,7 @@
     {
       "label": "test_resume_tailor.py",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "file_type": "code",
       "norm_label": "test_resume_tailor.py",
@@ -3179,7 +3197,7 @@
     {
       "label": "Page",
       "_origin": "ast",
-      "community": 15,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": "page",
@@ -3190,7 +3208,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 15,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": "path",
@@ -3201,7 +3219,7 @@
     {
       "label": "test_verifier.py",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "SubmissionVerifier",
       "file_type": "code",
       "norm_label": "test_verifier.py",
@@ -3212,7 +3230,7 @@
     {
       "label": "ai/__init__.py",
       "_origin": "ast",
-      "community": 26,
+      "community": 23,
       "community_name": "ai/__init__.py",
       "file_type": "code",
       "norm_label": "ai/__init__.py",
@@ -3223,7 +3241,7 @@
     {
       "label": "AI client and prompt templates for AutoJobForge",
       "_origin": "ast",
-      "community": 26,
+      "community": 23,
       "community_name": "ai/__init__.py",
       "file_type": "rationale",
       "norm_label": "ai client and prompt templates for autojobforge",
@@ -3234,7 +3252,7 @@
     {
       "label": "applier/__init__.py",
       "_origin": "ast",
-      "community": 27,
+      "community": 24,
       "community_name": "applier/__init__.py",
       "file_type": "code",
       "norm_label": "applier/__init__.py",
@@ -3245,7 +3263,7 @@
     {
       "label": "Job application execution and automation package for AutoJobForge",
       "_origin": "ast",
-      "community": 27,
+      "community": 24,
       "community_name": "applier/__init__.py",
       "file_type": "rationale",
       "norm_label": "job application execution and automation package for autojobforge",
@@ -3256,7 +3274,7 @@
     {
       "label": "src/__init__.py",
       "_origin": "ast",
-      "community": 17,
+      "community": 14,
       "community_name": "src/__init__.py",
       "file_type": "code",
       "norm_label": "src/__init__.py",
@@ -3267,7 +3285,7 @@
     {
       "label": "resume/__init__.py",
       "_origin": "ast",
-      "community": 28,
+      "community": 25,
       "community_name": "resume/__init__.py",
       "file_type": "code",
       "norm_label": "resume/__init__.py",
@@ -3278,7 +3296,7 @@
     {
       "label": "Resume and CV processing package for AutoJobForge",
       "_origin": "ast",
-      "community": 28,
+      "community": 25,
       "community_name": "resume/__init__.py",
       "file_type": "rationale",
       "norm_label": "resume and cv processing package for autojobforge",
@@ -3289,7 +3307,7 @@
     {
       "label": "scraper/__init__.py",
       "_origin": "ast",
-      "community": 29,
+      "community": 26,
       "community_name": "scraper/__init__.py",
       "file_type": "code",
       "norm_label": "scraper/__init__.py",
@@ -3300,7 +3318,7 @@
     {
       "label": "Job discovery and matching package for AutoJobForge",
       "_origin": "ast",
-      "community": 29,
+      "community": 26,
       "community_name": "scraper/__init__.py",
       "file_type": "rationale",
       "norm_label": "job discovery and matching package for autojobforge",
@@ -3311,7 +3329,7 @@
     {
       "label": "storage/__init__.py",
       "_origin": "ast",
-      "community": 30,
+      "community": 27,
       "community_name": "storage/__init__.py",
       "file_type": "code",
       "norm_label": "storage/__init__.py",
@@ -3322,7 +3340,7 @@
     {
       "label": "Storage and persistence package for AutoJobForge",
       "_origin": "ast",
-      "community": 30,
+      "community": 27,
       "community_name": "storage/__init__.py",
       "file_type": "rationale",
       "norm_label": "storage and persistence package for autojobforge",
@@ -3333,7 +3351,7 @@
     {
       "label": "web/__init__.py",
       "_origin": "ast",
-      "community": 31,
+      "community": 28,
       "community_name": "web/__init__.py",
       "file_type": "code",
       "norm_label": "web/__init__.py",
@@ -3344,7 +3362,7 @@
     {
       "label": "Web Dashboard package for AutoJobForge",
       "_origin": "ast",
-      "community": 31,
+      "community": 28,
       "community_name": "web/__init__.py",
       "file_type": "rationale",
       "norm_label": "web dashboard package for autojobforge",
@@ -3355,7 +3373,7 @@
     {
       "label": "tests/__init__.py",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "tests/__init__.py",
       "file_type": "code",
       "norm_label": "tests/__init__.py",
@@ -3366,7 +3384,7 @@
     {
       "label": "main.js",
       "_origin": "ast",
-      "community": 35,
+      "community": 32,
       "community_name": "main.js",
       "file_type": "code",
       "norm_label": "main.js",
@@ -3377,7 +3395,7 @@
     {
       "label": "BackgroundTasks",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "backgroundtasks",
@@ -3388,7 +3406,7 @@
     {
       "label": "get",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "get",
@@ -3399,7 +3417,7 @@
     {
       "label": "post",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "post",
@@ -3410,7 +3428,7 @@
     {
       "label": "Request",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "request",
@@ -3421,7 +3439,7 @@
     {
       "label": "config_loader.py",
       "_origin": "ast",
-      "community": 7,
+      "community": 6,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "config_loader.py",
@@ -3432,7 +3450,7 @@
     {
       "label": "BaseModel",
       "_origin": "ast",
-      "community": 7,
+      "community": 6,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "basemodel",
@@ -3443,7 +3461,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 7,
+      "community": 6,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "path",
@@ -3454,7 +3472,7 @@
     {
       "label": "app.py",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "app.py",
@@ -3465,7 +3483,7 @@
     {
       "label": "test_cli_smoke.py",
       "_origin": "ast",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "test_cli_smoke.py",
@@ -3476,7 +3494,7 @@
     {
       "label": "test_config.py",
       "_origin": "ast",
-      "community": 7,
+      "community": 6,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "test_config.py",
@@ -3487,7 +3505,7 @@
     {
       "label": "UploadFile",
       "_origin": "ast",
-      "community": 6,
+      "community": 3,
       "community_name": "app.py",
       "file_type": "code",
       "norm_label": "uploadfile",
@@ -3498,7 +3516,7 @@
     {
       "label": "test_web_app.py",
       "_origin": "ast",
-      "community": 16,
+      "community": 2,
       "community_name": "test_web_app.py",
       "file_type": "code",
       "norm_label": "test_web_app.py",
@@ -3509,7 +3527,7 @@
     {
       "label": "rules/graphify.md",
       "_origin": "ast",
-      "community": 32,
+      "community": 29,
       "community_name": "rules/graphify.md",
       "file_type": "document",
       "frontmatter": {
@@ -3525,7 +3543,7 @@
     {
       "label": "graphify",
       "_origin": "ast",
-      "community": 32,
+      "community": 29,
       "community_name": "rules/graphify.md",
       "file_type": "document",
       "node_kind": "heading",
@@ -3537,7 +3555,7 @@
     {
       "label": "workflows/graphify.md",
       "_origin": "ast",
-      "community": 33,
+      "community": 30,
       "community_name": "workflows/graphify.md",
       "file_type": "document",
       "frontmatter": {
@@ -3553,7 +3571,7 @@
     {
       "label": "Workflow: graphify",
       "_origin": "ast",
-      "community": 33,
+      "community": 30,
       "community_name": "workflows/graphify.md",
       "file_type": "document",
       "node_kind": "heading",
@@ -3565,7 +3583,7 @@
     {
       "label": "Connection",
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "connection",
@@ -3576,7 +3594,7 @@
     {
       "label": "Any",
       "_origin": "ast",
-      "community": 0,
+      "community": 13,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "any",
@@ -3587,7 +3605,7 @@
     {
       "label": "Page",
       "_origin": "ast",
-      "community": 0,
+      "community": 13,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "page",
@@ -3598,7 +3616,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "path",
@@ -3609,7 +3627,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "path",
@@ -3620,7 +3638,7 @@
     {
       "label": "Any",
       "_origin": "ast",
-      "community": 0,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "any",
@@ -3631,7 +3649,7 @@
     {
       "label": "Any",
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "any",
@@ -3642,7 +3660,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 12,
+      "community": 8,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "path",
@@ -3653,7 +3671,7 @@
     {
       "label": "test_applier_drivers.py",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "test_applier_drivers.py",
@@ -3664,7 +3682,7 @@
     {
       "label": "test_database.py",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "Database",
       "file_type": "code",
       "norm_label": "test_database.py",
@@ -3675,7 +3693,7 @@
     {
       "label": "Any",
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "any",
@@ -3686,7 +3704,7 @@
     {
       "label": "Path",
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "path",
@@ -3697,7 +3715,7 @@
     {
       "label": "test_llm_client.py",
       "_origin": "ast",
-      "community": 6,
+      "community": 4,
       "community_name": "LLMClient",
       "file_type": "code",
       "norm_label": "test_llm_client.py",
@@ -4104,7 +4122,7 @@
     {
       "label": "BrowserContext",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "browsercontext",
@@ -4115,7 +4133,7 @@
     {
       "label": "Page",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "page",
@@ -4126,7 +4144,7 @@
     {
       "label": "asyncio",
       "_origin": "ast",
-      "community": 0,
+      "community": 2,
       "community_name": "BrowserManager",
       "file_type": "code",
       "norm_label": "asyncio",
@@ -4137,7 +4155,7 @@
     {
       "label": "2026-09-30-autojobforge-design.md",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "page",
@@ -4149,7 +4167,7 @@
     {
       "label": "1. Overview & Goals",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4161,7 +4179,7 @@
     {
       "label": "2. Architecture & Tech Stack",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4173,7 +4191,7 @@
     {
       "label": "3.1 Ingestion & ATS Resume Compiler (`src/resume/`)",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4185,7 +4203,7 @@
     {
       "label": "3.2 Job Scraper & Match Scoring (`src/scraper/`)",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4197,7 +4215,7 @@
     {
       "label": "3.3 Playwright Stealth Applier (`src/applier/`)",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4209,7 +4227,7 @@
     {
       "label": "3.4 Storage & Verification (`src/storage/`)",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4221,7 +4239,7 @@
     {
       "label": "3.5 Web Dashboard & CLI (`src/web/`, `run.py`)",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4233,7 +4251,7 @@
     {
       "label": "3. Module Specifications",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4245,7 +4263,7 @@
     {
       "label": "4. Anti-Bot & Account Safety Rules",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4257,7 +4275,7 @@
     {
       "label": "5. File Structure",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4269,7 +4287,7 @@
     {
       "label": "AutoJobForge: Automated Job Application & Dynamic Resume Tailoring System",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4281,7 +4299,7 @@
     {
       "label": "Design Specification",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4293,7 +4311,7 @@
     {
       "label": "Tech Stack",
       "_origin": "ast",
-      "community": 14,
+      "community": 12,
       "community_name": "3. Module Specifications",
       "file_type": "document",
       "node_kind": "heading",
@@ -4353,7 +4371,7 @@
     {
       "label": "json",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4377,7 +4395,7 @@
     {
       "label": "os",
       "_origin": "semantic",
-      "community": 0,
+      "community": 3,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4401,7 +4419,7 @@
     {
       "label": "pdfplumber",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4449,7 +4467,7 @@
     {
       "label": "re",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4461,7 +4479,7 @@
     {
       "label": "requests",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4485,7 +4503,7 @@
     {
       "label": "time",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4497,7 +4515,7 @@
     {
       "label": "typing",
       "_origin": "semantic",
-      "community": 13,
+      "community": 0,
       "community_name": "run.py",
       "external": true,
       "file_type": "concept",
@@ -4509,7 +4527,7 @@
     {
       "label": "pytest",
       "_origin": "semantic",
-      "community": 1,
+      "community": 2,
       "community_name": "MasterProfile",
       "external": true,
       "file_type": "concept",
@@ -4521,7 +4539,7 @@
     {
       "label": "shutil",
       "_origin": "semantic",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "external": true,
       "file_type": "concept",
@@ -4533,7 +4551,7 @@
     {
       "label": "typst",
       "_origin": "semantic",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "external": true,
       "file_type": "concept",
@@ -4545,7 +4563,7 @@
     {
       "label": "unittest_mock",
       "_origin": "semantic",
-      "community": 1,
+      "community": 0,
       "community_name": "MasterProfile",
       "external": true,
       "file_type": "concept",
@@ -4557,7 +4575,7 @@
     {
       "label": "fastapi",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4569,7 +4587,7 @@
     {
       "label": "fastapi_responses",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4581,7 +4599,7 @@
     {
       "label": "fastapi_staticfiles",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4593,7 +4611,7 @@
     {
       "label": "fastapi_templating",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4605,7 +4623,7 @@
     {
       "label": "pydantic",
       "_origin": "semantic",
-      "community": 7,
+      "community": 6,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4617,7 +4635,7 @@
     {
       "label": "subprocess",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4629,7 +4647,7 @@
     {
       "label": "sys",
       "_origin": "semantic",
-      "community": 2,
+      "community": 3,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4641,7 +4659,7 @@
     {
       "label": "yaml",
       "_origin": "semantic",
-      "community": 2,
+      "community": 6,
       "community_name": "app.py",
       "external": true,
       "file_type": "concept",
@@ -4653,7 +4671,7 @@
     {
       "label": "fastapi_testclient",
       "_origin": "semantic",
-      "community": 16,
+      "community": 2,
       "community_name": "test_web_app.py",
       "external": true,
       "file_type": "concept",
@@ -7227,6 +7245,17 @@
       "target": "resume_models_masterprofile"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/resume/tailor.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_resume_tailor_py",
+      "target": "logging",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -7484,6 +7513,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/scraper/matcher.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "scraper_matcher_jobmatcher",
+      "target": "scraper_matcher_jobmatcher_check_experience_mismatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scraper/matcher.py",
       "source_location": "L16",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -7520,6 +7559,17 @@
       "weight": 1.0,
       "source": "tests_test_job_matcher_test_job_matcher",
       "target": "scraper_matcher_jobmatcher"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scraper/matcher.py",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "scraper_matcher_jobmatcher_evaluate_heuristic",
+      "target": "scraper_matcher_jobmatcher_check_experience_mismatch",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -8147,6 +8197,16 @@
       "confidence_score": 1.0,
       "source": "src_web_app_py",
       "target": "web_app_preview_pdf"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/web/app.py",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "src_web_app_py",
+      "target": "web_app_get_tailored_resume",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15483,5 +15543,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "07b69db944bb970e164f003b0034bae7c481d932"
+  "built_at_commit": "eebb21a70ebeeb7df8e82eb24eb03d28a5962d4e"
 }

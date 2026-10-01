@@ -1,16 +1,16 @@
 # Graph Report - automatic_job_apply  (2026-10-01)
 
 ## Corpus Check
-- 42 files · ~21,426 words
+- 42 files · ~24,299 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 447 nodes · 971 edges · 36 communities (17 shown, 19 thin omitted)
+- 449 nodes · 975 edges · 33 communities (15 shown, 18 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.79)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `07b69db9`
+- Built from commit: `eebb21a7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -46,9 +46,6 @@
 - [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
 - [[_COMMUNITY_Community 30|Community 30]]
-- [[_COMMUNITY_Community 31|Community 31]]
-- [[_COMMUNITY_Community 32|Community 32]]
-- [[_COMMUNITY_Community 33|Community 33]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `MasterProfile` - 32 edges
@@ -65,52 +62,52 @@
 ## Surprising Connections (you probably didn't know these)
 - `Tech Stack` --references--> `LLMClient`  [INFERRED]
   docs/superpowers/specs/2026-09-30-autojobforge-design.md → src/ai/llm_client.py
-- `test_llm_client_model_routing()` --calls--> `LLMClient`  [INFERRED]
-  tests/test_llm_client.py → src/ai/llm_client.py
 - `main()` --calls--> `load_config()`  [INFERRED]
   run.py → src/config_loader.py
-- `main()` --calls--> `MasterProfile`  [INFERRED]
-  run.py → src/resume/models.py
 - `main()` --calls--> `LLMClient`  [INFERRED]
   run.py → src/ai/llm_client.py
+- `test_llm_client_model_routing()` --calls--> `LLMClient`  [INFERRED]
+  tests/test_llm_client.py → src/ai/llm_client.py
+- `test_browser_manager_init()` --calls--> `BrowserManager`  [INFERRED]
+  tests/test_browser.py → src/applier/browser.py
 
-## Communities (36 total, 19 thin omitted)
+## Communities (33 total, 18 thin omitted)
 
 ### Community 0 - "run.py"
-Cohesion: 0.08
-Nodes (31): argparse, asyncio, BrowserContext, datetime, jobspy, logging, os, pathlib (+23 more)
+Cohesion: 0.1
+Nodes (35): argparse, asyncio, datetime, jobspy, json, logging, pathlib, pdfplumber (+27 more)
 
 ### Community 1 - "MasterProfile"
-Cohesion: 0.12
-Nodes (27): pytest, ResumeCompiler, MasterProfile, PersonalInfo, Skills, ResumeTailor, shutil, Path (+19 more)
+Cohesion: 0.06
+Nodes (13): BrowserManager, FormFiller, IndeedApplier, LinkedInApplier, main(), ResumeCompiler, MasterProfile, ResumeTailor (+5 more)
 
 ### Community 2 - "app.py"
-Cohesion: 0.09
-Nodes (28): BackgroundTasks, fastapi, fastapi_responses, fastapi_staticfiles, fastapi_templating, get, post, Request (+20 more)
+Cohesion: 0.07
+Nodes (20): BrowserContext, fastapi_testclient, pytest, BrowserManager, Page, IndeedApplier, Path, LinkedInApplier (+12 more)
 
 ### Community 3 - "Database"
-Cohesion: 0.09
-Nodes (8): BrowserManager, FormFiller, IndeedApplier, LinkedInApplier, main(), JobFetcher, Database, SubmissionVerifier
+Cohesion: 0.08
+Nodes (29): BackgroundTasks, fastapi, fastapi_responses, fastapi_staticfiles, fastapi_templating, get, os, post (+21 more)
 
 ### Community 4 - "LLMClient"
+Cohesion: 0.1
+Nodes (10): LLMClient, CVIngestor, LLMClient, Any, CVIngestor, Path, test_llm_client_json_cleaning(), test_llm_client_mock_gemini() (+2 more)
+
+### Community 5 - "Community 5"
 Cohesion: 0.07
 Nodes (29): AutoJobForge Implementation Plan, code:block1 (automatic_job_apply/), code:block10, code:block11 (Open `http://localhost:8000` to upload your existing CV (.pd), code:block12 (To setup Windows Task Scheduler for daily 09:30 AM runs:), code:block13, code:bash (git add README.md), code:bash (git add src/applier/browser.py) (+21 more)
 
-### Community 5 - "Community 5"
+### Community 6 - "⚡ AutoJobForge"
+Cohesion: 0.18
+Nodes (22): BaseModel, pydantic, EducationItem, PersonalInfo, ProjectItem, Skills, WorkExperienceItem, AppConfig (+14 more)
+
+### Community 7 - "Tasks"
 Cohesion: 0.08
 Nodes (23): 1. Prerequisites, 2. Installation, 3. Configuration, ⚡ AutoJobForge, code:mermaid (flowchart TD), code:bash (# Clone the repository), code:powershell ($env:GEMINI_API_KEY="your-gemini-api-key"), code:bash (uvicorn src.web.app:app --reload --port 8000) (+15 more)
 
-### Community 6 - "⚡ AutoJobForge"
-Cohesion: 0.13
-Nodes (9): LLMClient, Any, CVIngestor, Path, upload_cv(), test_llm_client_json_cleaning(), test_llm_client_mock_gemini(), test_llm_client_model_routing() (+1 more)
-
-### Community 7 - "Tasks"
-Cohesion: 0.23
-Nodes (16): BaseModel, pydantic, EducationItem, ProjectItem, WorkExperienceItem, AppConfig, AppSettings, BrowserSettings (+8 more)
-
 ### Community 8 - "BrowserManager"
-Cohesion: 0.18
-Nodes (4): LLMClient, CVIngestor, JobMatcher, upload_cv()
+Cohesion: 0.19
+Nodes (6): Connection, JobFetcher, Any, Database, Any, Path
 
 ### Community 9 - "3. Module Specifications"
 Cohesion: 0.12
@@ -125,30 +122,22 @@ Cohesion: 0.12
 Nodes (15): AutoJobForge Implementation Plan, File Structure Map, Task 10: Headless CLI Orchestrator & Windows Task Scheduler Setup, Task 11: Modern Dark-Mode Web Dashboard, Task 12: End-to-End Integration Verification & Portfolio README, Task 1: Environment Setup & Project Configuration, Task 2: Storage & Database Layer, Task 3: Pluggable AI Client & Prompts (+7 more)
 
 ### Community 12 - "applier/__init__.py"
-Cohesion: 0.24
-Nodes (4): Connection, Database, Any, Path
-
-### Community 13 - "src/__init__.py"
-Cohesion: 0.31
-Nodes (6): json, pdfplumber, re, requests, time, typing
-
-### Community 14 - "resume/__init__.py"
 Cohesion: 0.14
 Nodes (13): 1. Overview & Goals, 2. Architecture & Tech Stack, 3.1 Ingestion & ATS Resume Compiler (`src/resume/`), 3.2 Job Scraper & Match Scoring (`src/scraper/`), 3.3 Playwright Stealth Applier (`src/applier/`), 3.4 Storage & Verification (`src/storage/`), 3.5 Web Dashboard & CLI (`src/web/`, `run.py`), 3. Module Specifications (+5 more)
 
 ## Knowledge Gaps
 - **106 isolated node(s):** `AI client and prompt templates for AutoJobForge`, `Job application execution and automation package for AutoJobForge`, `Resume and CV processing package for AutoJobForge`, `Job discovery and matching package for AutoJobForge`, `Storage and persistence package for AutoJobForge` (+101 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `LLMClient` connect `⚡ AutoJobForge` to `run.py`, `MasterProfile`, `app.py`, `src/__init__.py`, `resume/__init__.py`?**
+- **Why does `LLMClient` connect `LLMClient` to `run.py`, `Database`, `applier/__init__.py`?**
   _High betweenness centrality (0.076) - this node is a cross-community bridge._
-- **Why does `main()` connect `Database` to `run.py`, `MasterProfile`, `BrowserManager`, `Tasks`?**
+- **Why does `main()` connect `MasterProfile` to `run.py`, `LLMClient`, `⚡ AutoJobForge`?**
   _High betweenness centrality (0.051) - this node is a cross-community bridge._
-- **Why does `Database` connect `applier/__init__.py` to `run.py`, `app.py`?**
+- **Why does `Database` connect `BrowserManager` to `run.py`, `app.py`, `Database`?**
   _High betweenness centrality (0.047) - this node is a cross-community bridge._
 - **Are the 8 inferred relationships involving `MasterProfile` (e.g. with `test_form_filler_answer()` and `ResumeCompiler`) actually correct?**
   _`MasterProfile` has 8 INFERRED edges - model-reasoned connections that need verification._

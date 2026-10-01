@@ -70,6 +70,11 @@
       <small style="color: var(--text-secondary); display: block; margin-top: 4px;">Default is 14 days (last 2 weeks). Older jobs will be ignored.</small>
     </div>
     <div class="form-group">
+      <label>Maximum Experience Required (Years)</label>
+      <input type="number" name="max_experience_years" value="{{ config.search.max_experience_years or 2 }}" min="0" max="15" style="width: 120px;">
+      <small style="color: var(--text-secondary); display: block; margin-top: 4px;">Jobs requiring more than this (e.g. 3+, 4+, 5+ years or Senior/Lead/Architect roles) will be automatically skipped.</small>
+    </div>
+    <div class="form-group">
       <label style="display: flex; align-items: center; gap: 8px;">
         <input type="checkbox" name="easy_apply_only" value="true" {% if config.search.easy_apply_only %}checked{% endif %}>
         <strong>Easy Apply Only</strong> (Filter only 1-click Easy Apply jobs, skip external redirect sites)

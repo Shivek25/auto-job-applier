@@ -1,7 +1,7 @@
 # src/scraper/matcher.py
 import re
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from src.ai.llm_client import LLMClient
 from src.ai.prompts import JOB_MATCH_PROMPT
 from src.resume.models import MasterProfile
@@ -9,9 +9,49 @@ from src.resume.models import MasterProfile
 logger = logging.getLogger(__name__)
 
 class JobMatcher:
-    def __init__(self, llm_client: LLMClient, min_score: int = 70):
+    def __init__(self, llm_client: LLMClient, min_score: int = 70, max_experience_years: int = 2):
         self.llm = llm_client
         self.min_score = min_score
+        self.max_experience_years = max_experience_years
+
+    def check_experience_mismatch(self, job_description: str, job_title: str = "") -> Optional[str]:
+        title_lower = job_title.lower()
+        desc_lower = job_description.lower()
+
+        # 1. Check Seniority in Title
+        senior_indicators = [
+            "senior", "sr.", "sr ", "lead", "principal", "staff",
+            "architect", "director", "manager", "head of", "vp"
+        ]
+        for sr in senior_indicators:
+            if re.search(r'\b' + re.escape(sr) + r'\b', title_lower):
+                return f"Title specifies senior role ('{sr.title()}'), exceeding max {self.max_experience_years} years experience"
+
+        # 2. Check Experience in Description
+        exp_patterns = [
+            r'(?:proven\s+experience|work\s+experience|experience|exp|hands-on)[\s\(\:\-]*(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)',
+            r'(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)(?:\s+of)?\s+(?:work\s+)?experience',
+            r'(?:minimum|at\s+least|min\.?)\s*(\d+)\s*\+?\s*(?:years?|yrs?)',
+            r'(\d+)\s*\+?\s*(?:years?|yrs?)\s+(?:in|with|of)'
+        ]
+
+        found_years = []
+        for pat in exp_patterns:
+            for match in re.finditer(pat, desc_lower):
+                groups = match.groups()
+                if groups and groups[0]:
+                    y1 = int(groups[0])
+                    y2 = int(groups[1]) if len(groups) > 1 and groups[1] else None
+                    min_yr = min(y1, y2) if y2 is not None else y1
+                    found_years.append((min_yr, y1, y2))
+
+        # Check if any strict requirement exceeds candidate's max experience
+        exceeded = [y for y in found_years if y[0] > self.max_experience_years]
+        if exceeded:
+            req = exceeded[0][1]
+            return f"Requires {req}+ years of experience, exceeding candidate max of {self.max_experience_years} years"
+
+        return None
 
     def _extract_skills(self, master_profile: MasterProfile) -> List[str]:
         skills = []
@@ -23,6 +63,17 @@ class JobMatcher:
         return list(set(skills))
 
     def evaluate_heuristic(self, master_profile: MasterProfile, job_description: str, job_title: str = "") -> Dict[str, Any]:
+        # Fast reject if experience requirements exceeded
+        exp_mismatch = self.check_experience_mismatch(job_description, job_title)
+        if exp_mismatch:
+            return {
+                "is_match": False,
+                "match_score": 20,
+                "summary_reason": exp_mismatch,
+                "matched_skills": [],
+                "missing_critical_skills": ["Experience requirement exceeded"]
+            }
+
         skills = self._extract_skills(master_profile)
         desc_lower = job_description.lower()
         title_lower = job_title.lower()

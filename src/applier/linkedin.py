@@ -77,12 +77,27 @@ class LinkedInApplier:
             max_steps = 10
             submitted = False
             for step in range(max_steps):
-                # Upload resume if file input present
+                # Upload and select tailored resume if file input present
                 file_input = await page.query_selector("input[type='file']")
                 if file_input:
                     try:
-                        await file_input.set_input_files(str(tailored_pdf_path))
-                        await self.bm.random_delay(1, 2)
+                        abs_pdf = str(tailored_pdf_path.resolve())
+                        logger.info(f"Uploading tailored resume to LinkedIn: {abs_pdf}")
+                        await file_input.set_input_files(abs_pdf)
+                        await self.bm.random_delay(2, 3)
+
+                        # Explicitly ensure the newly uploaded resume card / radio is checked
+                        resume_cards = await page.query_selector_all(
+                            "div.jobs-document-upload-resume-card, [data-test-document-upload-resume], label.jobs-document-upload__title"
+                        )
+                        if resume_cards:
+                            # The most recently uploaded resume is placed first in the list
+                            card_radio = await resume_cards[0].query_selector("input[type='radio']")
+                            if card_radio:
+                                await card_radio.check(force=True)
+                            else:
+                                await resume_cards[0].click()
+                            logger.info("Selected newly uploaded tailored resume.")
                     except Exception as e:
                         logger.warning(f"File upload note: {e}")
 

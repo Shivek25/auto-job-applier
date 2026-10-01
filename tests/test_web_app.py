@@ -20,3 +20,8 @@ def test_web_app_routes():
     resp = client.get("/settings")
     assert resp.status_code == 200
     assert "Settings" in resp.text
+
+    # Test resumes route (404 for non-existent)
+    resp = client.get("/resumes/fake-job-id")
+    assert resp.status_code == 404
+

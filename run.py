@@ -74,7 +74,11 @@ async def main():
         api_key=config.llm.api_key,
         ollama_base_url=config.llm.ollama_base_url
     )
-    matcher = JobMatcher(llm, min_score=config.app.min_match_score)
+    matcher = JobMatcher(
+        llm, 
+        min_score=config.app.min_match_score,
+        max_experience_years=config.search.max_experience_years
+    )
     tailor = ResumeTailor(llm)
     compiler = ResumeCompiler()
     verifier = SubmissionVerifier()

@@ -1,11 +1,11 @@
 {
   "D:\\College_Work\\automatic_job_apply\\run.py": {
-    "mtime": 1790859262.6642456,
-    "hash": "7a615ad8da7fbc0ca0da557ac5563738"
+    "mtime": 1790861094.463499,
+    "hash": "ea968b6fe56b318eef24fa817267d54f"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\config_loader.py": {
-    "mtime": 1790852329.1579473,
-    "hash": "1f0c47cf7f6be375a96c432e89497f95"
+    "mtime": 1790861035.4777722,
+    "hash": "2bee50e540a8f449b21d2f3eb5056ab0"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\__init__.py": {
     "mtime": 1790764967.310107,
@@ -16,8 +16,8 @@
     "hash": "4f0a3b20ee3858c99dfe5a3d3366a616"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\ai\\prompts.py": {
-    "mtime": 1790766126.5887218,
-    "hash": "276a89884dfeca105a82b01be4819086"
+    "mtime": 1790861121.1290727,
+    "hash": "6d536537717daee728bf440906fa41b2"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\ai\\__init__.py": {
     "mtime": 1790766126.566248,
@@ -36,8 +36,8 @@
     "hash": "28c67ce0519817ac30b7e0c04d42ce04"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\applier\\linkedin.py": {
-    "mtime": 1790859092.498247,
-    "hash": "58b21e7e27c02774815a8a921d7e5cd4"
+    "mtime": 1790861108.2443213,
+    "hash": "fdfe6c33638883cafc547ed34452ceaa"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\applier\\__init__.py": {
     "mtime": 1790766126.5902555,
@@ -56,8 +56,8 @@
     "hash": "aef4d7b82228bf61c3f0271e7281a732"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\resume\\tailor.py": {
-    "mtime": 1790766126.629202,
-    "hash": "036e3ebf0d35c2f04598355920cc3dd9"
+    "mtime": 1790861134.2109454,
+    "hash": "1e734ce3ef4f3cac929882421f04b864"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\resume\\__init__.py": {
     "mtime": 1790766126.6256888,
@@ -68,8 +68,8 @@
     "hash": "8a75b7c07e56dd50c5ff20f722dfde31"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\scraper\\matcher.py": {
-    "mtime": 1790851429.3692925,
-    "hash": "f67536a9ca163beae1537e48f6f08345"
+    "mtime": 1790861258.0523887,
+    "hash": "e4b9662af510aedd5ad7139b5fdf7adc"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\scraper\\__init__.py": {
     "mtime": 1790766126.6307106,
@@ -88,8 +88,8 @@
     "hash": "5808d3f74b484ef9d13626d437e1a432"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\web\\app.py": {
-    "mtime": 1790849978.1500003,
-    "hash": "1d0ac3cec5e8eda63b36fbb609c3e751"
+    "mtime": 1790861150.401674,
+    "hash": "da5a82fa70d94295d97abf3374c6e8f4"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\web\\__init__.py": {
     "mtime": 1790766126.6496394,
@@ -128,8 +128,8 @@
     "hash": "ed9130ac1b0ee056b48f85c41a58ed81"
   },
   "D:\\College_Work\\automatic_job_apply\\tests\\test_job_matcher.py": {
-    "mtime": 1790766126.7318969,
-    "hash": "7202d00e3766a0cda20f64f0a58ba3fc"
+    "mtime": 1790861187.2610328,
+    "hash": "5bc3044c5c160f841010c88807e10a3a"
   },
   "D:\\College_Work\\automatic_job_apply\\tests\\test_llm_client.py": {
     "mtime": 1790852346.0502715,
@@ -148,8 +148,8 @@
     "hash": "7698a6b60a9b7e80e56893874334c8ff"
   },
   "D:\\College_Work\\automatic_job_apply\\tests\\test_web_app.py": {
-    "mtime": 1790766126.7376447,
-    "hash": "3a050614ffd56955505db7033d49868a"
+    "mtime": 1790861200.8816423,
+    "hash": "5bf83c4831d3af2333cd2afea4349dc6"
   },
   "D:\\College_Work\\automatic_job_apply\\tests\\__init__.py": {
     "mtime": 1790764967.3111134,
@@ -168,8 +168,8 @@
     "hash": "b4bb1e6f6b805e8cbfa362e44c60ebd6"
   },
   "D:\\College_Work\\automatic_job_apply\\config\\config.yaml": {
-    "mtime": 1790852336.9306643,
-    "hash": "f2efd69531252faab71256e3d2cf9208"
+    "mtime": 1790861048.6387546,
+    "hash": "907a34c939ebda65d369f203c74929f8"
   },
   "D:\\College_Work\\automatic_job_apply\\docs\\superpowers\\plans\\2026-09-30-autojobforge.md": {
     "mtime": 1790766126.551061,
@@ -184,16 +184,16 @@
     "hash": "29ed309ceb05dab8b54382c913cc4c7c"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\web\\templates\\dashboard.html": {
-    "mtime": 1790766126.6842015,
-    "hash": "cde0ce2dc2ed6a79c2d10a55ebf1cd84"
+    "mtime": 1790861162.5632849,
+    "hash": "fb81c6dbeef0f617a9ad04de9d8ae839"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\web\\templates\\profile.html": {
     "mtime": 1790847990.4437513,
     "hash": "7198067561569bbd54e58401978eff67"
   },
   "D:\\College_Work\\automatic_job_apply\\src\\web\\templates\\settings.html": {
-    "mtime": 1790849978.150999,
-    "hash": "cb39f3cf3bbcc812d62f1918fb538324"
+    "mtime": 1790861175.7043104,
+    "hash": "799c1264355d5daba61716d3469138b6"
   },
   "D:\\College_Work\\automatic_job_apply\\storage\\preview_resume.pdf": {
     "mtime": 1790848111.2547908,
@@ -432,8 +432,8 @@
     "hash": "eb74d3a51b01cb589cf4fedd8c2f3024"
   },
   "D:\\College_Work\\automatic_job_apply\\storage\\tailored_resumes\\li-4473593785.pdf": {
-    "mtime": 1790858427.4120975,
-    "hash": "87dcb168fbb9558e86525a6b96b24f30"
+    "mtime": 1790859793.0639741,
+    "hash": "afc4f26bfd536d33caf8ef7eda77909c"
   },
   "D:\\College_Work\\automatic_job_apply\\storage\\tailored_resumes\\li-4473702636.pdf": {
     "mtime": 1790849180.3771732,
@@ -478,6 +478,10 @@
   "D:\\College_Work\\automatic_job_apply\\storage\\receipts\\Maven_Workforce_Inc_li-4473593785_20261001_181149.png": {
     "mtime": 1790858509.1611648,
     "hash": "a09bc87d2422f028516063b4889b7d4d"
+  },
+  "D:\\College_Work\\automatic_job_apply\\storage\\receipts\\Maven_Workforce_Inc_li-4473593785_20261001_183636.png": {
+    "mtime": 1790859996.699659,
+    "hash": "aa32b6c21203a3f26391d9cc1351fc62"
   },
   "D:\\College_Work\\automatic_job_apply\\storage\\receipts\\SCG_li-4468531238_20261001_181641.png": {
     "mtime": 1790858801.588842,

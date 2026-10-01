@@ -108,6 +108,13 @@ async def preview_pdf():
     compiler.compile_pdf(profile, preview_path)
     return FileResponse(preview_path, media_type="application/pdf", filename="preview_resume.pdf")
 
+@app.get("/resumes/{job_id}")
+async def get_tailored_resume(job_id: str):
+    pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
+    if not pdf_path.exists():
+        return HTMLResponse("Tailored resume not found for this job ID", status_code=404)
+    return FileResponse(pdf_path, media_type="application/pdf", filename=f"{job_id}_tailored_resume.pdf")
+
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request, success: Optional[str] = None, error: Optional[str] = None):
     config = load_config()
@@ -131,6 +138,7 @@ async def save_settings(
     is_remote: bool = Form(False),
     days_old: int = Form(14),
     easy_apply_only: bool = Form(False),
+    max_experience_years: int = Form(2),
     llm_provider: str = Form(...),
     api_key: str = Form("")
 ):
@@ -143,6 +151,7 @@ async def save_settings(
     config.search.is_remote = is_remote
     config.search.hours_old = max(1, days_old) * 24
     config.search.easy_apply_only = easy_apply_only
+    config.search.max_experience_years = max(0, max_experience_years)
     config.llm.provider = llm_provider
     if api_key.strip():
         config.llm.api_key = api_key.strip()
