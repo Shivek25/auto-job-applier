@@ -77,93 +77,110 @@ class LinkedInApplier:
             max_steps = 10
             submitted = False
             for step in range(max_steps):
-                # Upload and select tailored resume if file input present
-                file_input = await page.query_selector("input[type='file']")
-                if file_input:
+                # Detect Resume step
+                is_resume_step = await page.evaluate("""() => {
+                    const text = document.querySelector('.jobs-easy-apply-modal, [data-test-modal], div[role="dialog"]')?.innerText || '';
+                    const hasResumeHeading = /resume/i.test(text) && (/upload/i.test(text) || /doc, docx/i.test(text) || /pdf/i.test(text));
+                    const hasFileInput = !!document.querySelector("input[type='file']");
+                    const hasUploadBtn = !!document.querySelector("label:has-text('Upload resume'), button:has-text('Upload resume'), [aria-label*='Upload resume']");
+                    return hasResumeHeading || hasFileInput || hasUploadBtn;
+                }""")
+                
+                if is_resume_step:
                     try:
                         abs_pdf = str(tailored_pdf_path.resolve())
                         target_filename = tailored_pdf_path.name
-                        logger.info(f"Resume step detected. Preparing upload: {target_filename}")
+                        logger.info(f"📄 Resume step detected! Uploading tailored resume: {abs_pdf}")
 
-                        # Check if user already has 4 resumes (LinkedIn maximum allowed)
-                        existing_cards = await page.query_selector_all(
-                            "div.jobs-document-upload-resume-card, div[data-test-document-upload-resume]"
+                        # Delete oldest resume if limit (4) reached
+                        await page.evaluate("""() => {
+                            const cards = document.querySelectorAll(
+                                'div.jobs-document-upload-resume-card, div[data-test-document-upload-resume], li.jobs-document-upload-resume-card'
+                            );
+                            if (cards.length >= 4) {
+                                const last = cards[cards.length - 1];
+                                const del = last.querySelector('button[aria-label*="Delete"], button[data-test-document-delete-button]');
+                                if (del) del.click();
+                            }
+                        }""")
+
+                        uploaded = False
+                        # Method A: Trigger upload via file chooser on 'Upload resume' button/label
+                        upload_el = await page.query_selector(
+                            "label:has-text('Upload resume'), button:has-text('Upload resume'), [aria-label*='Upload resume'], label[for*='upload-resume']"
                         )
-                        if len(existing_cards) >= 4:
-                            logger.info("Found 4 existing resumes on LinkedIn (limit reached). Deleting oldest resume to allow upload...")
-                            oldest_card = existing_cards[-1]
-                            del_btn = await oldest_card.query_selector("button[aria-label*='Delete'], button:has-text('Delete')")
-                            if del_btn:
-                                await del_btn.click()
-                                await asyncio.sleep(1)
-                                confirm_del = await page.query_selector("button.artdeco-button--primary:has-text('Delete')")
-                                if confirm_del:
-                                    await confirm_del.click()
-                                    await asyncio.sleep(2)
+                        if upload_el:
+                            try:
+                                async with page.expect_file_chooser(timeout=3000) as fc_info:
+                                    await upload_el.click()
+                                fc = await fc_info.value
+                                await fc.set_files(abs_pdf)
+                                uploaded = True
+                                logger.info(f"Resume uploaded via file chooser: {target_filename}")
+                            except Exception as e:
+                                logger.debug(f"File chooser dialog note: {e}")
 
-                        # Set input files to trigger upload
-                        logger.info(f"Uploading tailored resume to LinkedIn: {abs_pdf}")
-                        await file_input.set_input_files(abs_pdf)
+                        # Method B: Direct set_input_files on input[type='file']
+                        if not uploaded:
+                            file_input = await page.query_selector("input[type='file']")
+                            if file_input:
+                                await file_input.set_input_files(abs_pdf)
+                                uploaded = True
+                                logger.info(f"Resume uploaded via set_input_files: {target_filename}")
 
-                        # Wait for upload to complete and the card to appear in the DOM
-                        selected = False
-                        for _ in range(8):
+                        # Wait for upload processing (up to 5s)
+                        for _ in range(5):
                             await asyncio.sleep(1)
-                            cards = await page.query_selector_all(
-                                "div.jobs-document-upload-resume-card, div[data-test-document-upload-resume]"
-                            )
-                            for card in cards:
-                                card_text = await card.inner_text()
-                                if target_filename.lower() in card_text.lower() or (len(cards) > len(existing_cards) and card == cards[0]):
-                                    logger.info(f"Target resume card identified: '{target_filename}'. Selecting...")
-                                    try:
-                                        await card.click()
-                                    except Exception:
-                                        pass
-                                    card_radio = await card.query_selector("input[type='radio']")
-                                    if card_radio:
-                                        try:
-                                            await card_radio.check(force=True)
-                                        except Exception:
-                                            pass
-                                        await page.evaluate("""(r) => {
-                                            r.checked = true;
-                                            r.dispatchEvent(new Event('input', { bubbles: true }));
-                                            r.dispatchEvent(new Event('change', { bubbles: true }));
-                                            r.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-                                        }""", card_radio)
-                                    lbl = await card.query_selector("label")
-                                    if lbl:
-                                        try:
-                                            await lbl.click(force=True)
-                                        except Exception:
-                                            pass
-                                    selected = True
-                                    logger.info("Selected newly uploaded tailored resume.")
-                                    break
-                            if selected:
+                            is_loading = await page.evaluate("""() => {
+                                return !!document.querySelector('.artdeco-inline-feedback--loading, [role="progressbar"], .jobs-document-upload--loading');
+                            }""")
+                            if not is_loading:
                                 break
 
-                        # Fallback if card wasn't explicitly matched by text
-                        if not selected:
-                            cards = await page.query_selector_all(
-                                "div.jobs-document-upload-resume-card, div[data-test-document-upload-resume]"
-                            )
-                            if cards:
-                                first_card = cards[0]
-                                await first_card.click()
-                                card_radio = await first_card.query_selector("input[type='radio']")
-                                if card_radio:
-                                    await page.evaluate("""(r) => {
-                                        r.checked = true;
-                                        r.dispatchEvent(new Event('input', { bubbles: true }));
-                                        r.dispatchEvent(new Event('change', { bubbles: true }));
-                                    }""", card_radio)
-                                    try:
-                                        await card_radio.check(force=True)
-                                    except Exception:
-                                        pass
-                                logger.info("Selected top resume card.")
+                        # Pure JavaScript selection (safe against any viewport errors)
+                        selected_name = await page.evaluate("""(targetName) => {
+                            const cards = Array.from(document.querySelectorAll(
+                                'div.jobs-document-upload-resume-card, div[data-test-document-upload-resume], li.jobs-document-upload-resume-card, .jobs-document-upload'
+                            ));
+                            
+                            let target = null;
+                            if (targetName) {
+                                target = cards.find(c => c.innerText.toLowerCase().includes(targetName.toLowerCase()));
+                            }
+                            if (!target && cards.length > 0) {
+                                target = cards[0];
+                            }
+                            
+                            if (target) {
+                                target.scrollIntoView({ behavior: 'instant', block: 'center' });
+                                const radio = target.querySelector('input[type="radio"]');
+                                if (radio) {
+                                    radio.checked = true;
+                                    radio.dispatchEvent(new Event('input', { bubbles: true }));
+                                    radio.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                                const lbl = target.querySelector('label') || target;
+                                try { lbl.click(); } catch(e) {}
+                                return target.innerText.split('\\n')[0];
+                            }
+                            
+                            // Fallback to first radio in resume section
+                            const radios = document.querySelectorAll('input[type="radio"][name*="resume"], .jobs-document-upload input[type="radio"]');
+                            if (radios.length > 0) {
+                                radios[0].scrollIntoView({ behavior: 'instant', block: 'center' });
+                                radios[0].checked = true;
+                                radios[0].dispatchEvent(new Event('input', { bubbles: true }));
+                                radios[0].dispatchEvent(new Event('change', { bubbles: true }));
+                                try { radios[0].click(); } catch(e) {}
+                                return 'first_resume_radio';
+                            }
+                            return null;
+                        }""", target_filename)
+
+                        if selected_name:
+                            logger.info(f"✅ Selected tailored resume card: {selected_name}")
+                        else:
+                            logger.warning("Could not explicitly select tailored resume card.")
                     except Exception as e:
                         logger.warning(f"File upload note: {e}")
 

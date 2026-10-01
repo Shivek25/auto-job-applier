@@ -324,113 +324,124 @@ class FormFiller:
                 if not is_resume:
                     question_radios.append(r)
 
-            # Group radios by name attribute or fieldset
-            radio_groups = {}
-            for r in question_radios:
-                group_key = await r.get_attribute("name")
-                if not group_key:
-                    group_key = await page.evaluate(
-                        "(el) => el.closest('fieldset')?.id || el.closest('.fb-form-element')?.id || 'group_default'", 
-                        r
-                    )
-                radio_groups.setdefault(group_key, []).append(r)
-
-            for g_key, g_radios in radio_groups.items():
-                # Extract question / legend text for this group
-                q_text = await page.evaluate("""(el) => {
-                    const fieldset = el.closest('fieldset');
-                    if (fieldset) {
-                        const legend = fieldset.querySelector('legend');
-                        if (legend) return legend.innerText;
-                        return fieldset.innerText;
-                    }
-                    const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
-                                  el.closest('.fb-form-element') || 
-                                  el.closest('.jobs-easy-apply-form-element') || 
-                                  el.parentElement;
-                    return group ? group.innerText : '';
-                }""", g_radios[0])
+            # 3. Handle radio buttons (screening questions: default Yes, sponsorship No)
+            answered_radios = await page.evaluate("""() => {
+                const results = [];
+                const processedRadios = new Set();
                 
-                q_low = q_text.lower()
-                is_sponsorship = any(w in q_low for w in ["sponsorship", "require sponsor", "visa sponsor", "work authorization sponsor"])
-                target_answer = "no" if is_sponsorship else "yes"
-
-                # Check if group already has an answer checked
-                already_checked = None
-                for r in g_radios:
-                    if await r.is_checked():
-                        already_checked = r
-                        break
-
-                # If already checked, ensure sponsorship is NOT checked 'yes'
-                if already_checked:
-                    checked_text = await page.evaluate("(el) => el.parentElement?.innerText?.toLowerCase() || ''", already_checked)
-                    if is_sponsorship and "yes" in checked_text:
-                        # Must switch from yes to no
-                        pass
-                    else:
-                        # Valid existing selection, continue
-                        continue
-
-                # Find radio that matches target_answer
-                target_radio = None
-                for r in g_radios:
-                    opt_text = await page.evaluate("""(el) => {
-                        const val = el.value || '';
-                        let lblText = '';
-                        if (el.id) {
-                            const lbl = document.querySelector(`label[for="${el.id}"]`);
-                            if (lbl) lblText = lbl.innerText;
-                        }
-                        if (!lblText && el.parentElement) {
-                            lblText = el.parentElement.innerText;
-                        }
-                        return (val + ' ' + lblText).toLowerCase();
-                    }""", r)
+                // Helper to process a group of radios
+                function processGroup(questionText, radios) {
+                    if (!radios || radios.length === 0) return;
                     
-                    if target_answer in opt_text:
-                        target_radio = r
-                        break
-
-                # Fallback to first radio in group if target not matched
-                if not target_radio and g_radios:
-                    target_radio = g_radios[0]
-
-                if target_radio:
-                    try:
-                        # 1. Force check on input
-                        await target_radio.check(force=True)
+                    // Skip resume selection radios
+                    if (/resume/i.test(questionText) || radios.some(r => r.name && /resume/i.test(r.name))) {
+                        return;
+                    }
+                    
+                    const qLow = (questionText || '').toLowerCase();
+                    const isSponsor = qLow.includes('sponsor') || qLow.includes('visa');
+                    const target = isSponsor ? 'no' : 'yes';
+                    
+                    // Check if group already has a valid checked radio
+                    let alreadyChecked = radios.find(r => r.checked);
+                    if (alreadyChecked) {
+                        const checkedText = (alreadyChecked.parentElement?.innerText || '').toLowerCase();
+                        if (isSponsor && checkedText.includes('yes')) {
+                            // Must switch sponsorship from yes to no
+                        } else {
+                            // Already answered validly
+                            radios.forEach(r => processedRadios.add(r));
+                            return;
+                        }
+                    }
+                    
+                    // Find matching radio for target
+                    let targetRadio = null;
+                    for (const r of radios) {
+                        const val = (r.value || '').toLowerCase();
+                        const lbl = (r.id ? document.querySelector(`label[for="${r.id}"]`)?.innerText : '') || r.parentElement?.innerText || '';
+                        const combined = (val + ' ' + lbl).toLowerCase();
+                        if (combined.includes(target)) {
+                            targetRadio = r;
+                            break;
+                        }
+                    }
+                    
+                    // Fallback to first radio if target not found
+                    if (!targetRadio && radios.length > 0) {
+                        targetRadio = radios[0];
+                    }
+                    
+                    if (targetRadio) {
+                        // Scroll smoothly inside modal
+                        try {
+                            targetRadio.scrollIntoView({ behavior: 'instant', block: 'center' });
+                        } catch (e) {}
                         
-                        # 2. Click label
-                        r_id = await target_radio.get_attribute("id")
-                        if r_id:
-                            lbl = await container.query_selector(f"label[for='{r_id}']")
-                            if lbl:
-                                await lbl.click(force=True)
-                        else:
-                            await target_radio.click(force=True)
-
-                        # 3. JavaScript dispatchEvent to guarantee React catches the change
-                        await page.evaluate("""(el) => {
-                            el.checked = true;
-                            el.dispatchEvent(new Event('input', { bubbles: true }));
-                            el.dispatchEvent(new Event('change', { bubbles: true }));
-                        }""", target_radio)
+                        targetRadio.checked = true;
+                        targetRadio.dispatchEvent(new Event('input', { bubbles: true }));
+                        targetRadio.dispatchEvent(new Event('change', { bubbles: true }));
                         
-                        short_q = q_text.splitlines()[0] if q_text else g_key
-                        logger.info(f"Radio answered: '{short_q.strip()}' -> '{target_answer}'")
-                    except Exception as e:
-                        logger.warning(f"Could not check radio for {g_key}: {e}")
+                        // Click label or wrapper to trigger LinkedIn React UI state
+                        const clickable = (targetRadio.id ? document.querySelector(`label[for="${targetRadio.id}"]`) : null) || 
+                                          targetRadio.closest('label') || 
+                                          targetRadio.parentElement;
+                        if (clickable) {
+                            try { clickable.click(); } catch(e) {}
+                        }
+                        
+                        radios.forEach(r => processedRadios.add(r));
+                        results.push({ question: questionText.split('\\n')[0].trim(), answer: target });
+                    }
+                }
+                
+                // Process each fieldset or question grouping
+                const groups = document.querySelectorAll(
+                    'fieldset, div.fb-form-element, div.jobs-easy-apply-form-section__grouping, div.jobs-easy-apply-form-element'
+                );
+                for (const g of groups) {
+                    const radios = Array.from(g.querySelectorAll('input[type="radio"]'));
+                    if (radios.length > 0 && !radios.every(r => processedRadios.has(r))) {
+                        const qText = g.querySelector('legend')?.innerText || g.querySelector('label')?.innerText || g.innerText;
+                        processGroup(qText, radios);
+                    }
+                }
+                
+                // Fallback for any orphaned radios grouped by name
+                const allRadios = Array.from(document.querySelectorAll('input[type="radio"]')).filter(r => !processedRadios.has(r));
+                const byName = {};
+                for (const r of allRadios) {
+                    const name = r.name || 'orphan';
+                    if (!byName[name]) byName[name] = [];
+                    byName[name].push(r);
+                }
+                for (const [name, radios] of Object.entries(byName)) {
+                    const parent = radios[0].closest('.fb-form-element') || radios[0].parentElement;
+                    const qText = parent ? parent.innerText : name;
+                    processGroup(qText, radios);
+                }
+                
+                return results;
+            }""")
+            for item in (answered_radios or []):
+                logger.info(f"Radio answered: '{item.get('question', '')}' -> '{item.get('answer', '')}'")
 
-            # 4. Handle unchecked required checkboxes (e.g. agreement, privacy)
-            checkboxes = await container.query_selector_all("input[type='checkbox']")
-            for cb in checkboxes:
-                is_checked = await cb.is_checked()
-                if not is_checked:
-                    try:
-                        await cb.check(force=True)
-                    except Exception:
-                        pass
+            # 4. Handle unchecked required checkboxes (e.g. agreement, privacy) via DOM
+            await page.evaluate("""() => {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                for (const cb of checkboxes) {
+                    if (!cb.checked) {
+                        try {
+                            cb.scrollIntoView({ behavior: 'instant', block: 'center' });
+                            cb.checked = true;
+                            cb.dispatchEvent(new Event('input', { bubbles: true }));
+                            cb.dispatchEvent(new Event('change', { bubbles: true }));
+                            const lbl = cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null;
+                            if (lbl) lbl.click(); else cb.click();
+                        } catch(e) {}
+                    }
+                }
+            }""")
 
         except Exception as e:
             logger.warning(f"Error during form modal filling: {e}")
