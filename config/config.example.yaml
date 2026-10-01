@@ -23,7 +23,7 @@ platforms:
 
 llm:
   provider: "gemini" # gemini, groq, or ollama
-  model: "gemini-2.0-flash"
+  model: "gemini-3-flash-preview"
   api_key: "YOUR_GEMINI_API_KEY_HERE"
   ollama_base_url: "http://localhost:11434"
 

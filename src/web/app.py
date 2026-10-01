@@ -5,6 +5,7 @@ import json
 import yaml
 import subprocess
 from pathlib import Path
+from typing import Optional
 from fastapi import FastAPI, Request, Form, UploadFile, File, BackgroundTasks
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -53,14 +54,16 @@ async def dashboard(request: Request):
     )
 
 @app.get("/profile", response_class=HTMLResponse)
-async def profile_page(request: Request):
+async def profile_page(request: Request, success: Optional[str] = None, error: Optional[str] = None):
     profile_dict, profile_json = get_profile_data()
     return templates.TemplateResponse(
         request=request,
         name="profile.html",
         context={
             "profile": profile_dict,
-            "profile_json": profile_json
+            "profile_json": profile_json,
+            "success": success,
+            "error": error
         }
     )
 
@@ -72,7 +75,7 @@ async def save_profile(profile_json: str = Form(...)):
     data = json.loads(profile_json)
     validated = MasterProfile(**data)
     p_file.write_text(validated.model_dump_json(indent=2), encoding="utf-8")
-    return RedirectResponse(url="/profile", status_code=303)
+    return RedirectResponse(url="/profile?success=Master+Profile+saved+successfully!", status_code=303)
 
 @app.post("/profile/upload")
 async def upload_cv(file: UploadFile = File(...)):
@@ -81,12 +84,18 @@ async def upload_cv(file: UploadFile = File(...)):
     with open(tmp_path, "wb") as f:
         f.write(await file.read())
     
-    config = load_config()
-    llm = LLMClient(provider=config.llm.provider, api_key=config.llm.api_key)
-    ingestor = CVIngestor(llm)
-    ingestor.ingest_cv(tmp_path, output_json="config/master_profile.json")
-    tmp_path.unlink(missing_ok=True)
-    return RedirectResponse(url="/profile", status_code=303)
+    try:
+        config = load_config()
+        llm = LLMClient(provider=config.llm.provider, model=config.llm.model, api_key=config.llm.api_key)
+        ingestor = CVIngestor(llm)
+        ingestor.ingest_cv(tmp_path, output_json="config/master_profile.json")
+        return RedirectResponse(url="/profile?success=CV+parsed+and+Master+Profile+updated+successfully!", status_code=303)
+    except Exception as e:
+        logger.error(f"Error ingesting CV: {e}", exc_info=True)
+        from urllib.parse import quote_plus
+        return RedirectResponse(url=f"/profile?error={quote_plus(str(e))}", status_code=303)
+    finally:
+        tmp_path.unlink(missing_ok=True)
 
 @app.get("/profile/preview-pdf")
 async def preview_pdf():
