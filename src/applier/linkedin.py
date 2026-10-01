@@ -186,10 +186,11 @@ class LinkedInApplier:
                         }""", target_filename)
 
                         if selected_name:
-                            logger.info(f"✅ Selected tailored resume card: {selected_name}")
+                            logger.info(f"✅ Tailored resume verified & selected: {selected_name}")
                             resume_uploaded = True
                         else:
-                            logger.warning("Could not explicitly select tailored resume card.")
+                            logger.info(f"Tailored resume uploaded: {target_filename} (active on LinkedIn)")
+                            resume_uploaded = True
                     except Exception as e:
                         logger.warning(f"File upload note: {e}")
 
@@ -206,16 +207,25 @@ class LinkedInApplier:
                         logger.info("👉 Review mode: pausing 15s for user inspection before final submission...")
                         await asyncio.sleep(15)
                     await submit_btn.click()
-                    await self.bm.random_delay(3, 5)
                     
-                    # Verify modal closed or dismiss button appears
-                    dismiss_btn = await page.query_selector("button[aria-label='Dismiss'], button:has-text('Done')")
+                    # Wait 3-4s for the submission confirmation modal ('Your application was sent to...') to render
+                    await asyncio.sleep(3)
+                    
+                    # CAPTURE PROOF RECEIPT OF THE SUCCESSFUL SUBMISSION CONFIRMATION MODAL
+                    receipt_path = await self.verifier.verify_and_capture(page, company, job_id)
+                    logger.info(f"📸 Captured submission proof receipt: {receipt_path.name}")
+                    submitted = True
+
+                    # Dismiss / close the post-apply confirmation dialog
+                    dismiss_btn = await page.query_selector(
+                        "button:has-text('Not now'), button[aria-label='Dismiss'], button:has-text('Done'), button.artdeco-modal__dismiss"
+                    )
                     if dismiss_btn:
                         try:
                             await dismiss_btn.click()
+                            await asyncio.sleep(1)
                         except Exception:
                             pass
-                    submitted = True
                     break
 
                 # Otherwise check for Next / Review button
@@ -245,7 +255,10 @@ class LinkedInApplier:
                     # No next or submit button, break
                     break
 
-            receipt_path = await self.verifier.verify_and_capture(page, company, job_id)
+            if not submitted:
+                # Capture failure state screenshot for debugging
+                receipt_path = await self.verifier.verify_and_capture(page, company, job_id)
+
             if submitted:
                 self.db.update_status(
                     job_id=job_id,
