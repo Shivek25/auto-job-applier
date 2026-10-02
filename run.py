@@ -103,8 +103,16 @@ async def main():
     logger.info(f"Discovered {len(jobs)} candidate jobs across platforms.")
 
     filler = FormFiller(llm, master_profile)
-    linkedin_applier = LinkedInApplier(bm, filler, verifier, db, mode=mode)
-    indeed_applier = IndeedApplier(bm, filler, verifier, db, mode=mode)
+    linkedin_applier = LinkedInApplier(
+        bm, filler, verifier, db,
+        matcher=matcher, tailor=tailor, compiler=compiler, master_profile=master_profile,
+        mode=mode
+    )
+    indeed_applier = IndeedApplier(
+        bm, filler, verifier, db,
+        matcher=matcher, tailor=tailor, compiler=compiler, master_profile=master_profile,
+        mode=mode
+    )
 
     submitted_count = stats["today_submitted"]
     for job in jobs:
@@ -117,6 +125,11 @@ async def main():
 
         if args.platform != "all" and args.platform not in site:
             continue
+
+        # Sanitize missing or 'None' descriptions from scraper
+        raw_desc = job.get("description", "")
+        if not raw_desc or raw_desc.strip().lower() in ["none", "nan", "null"]:
+            job["description"] = ""
 
         # AI & Heuristic Match Scoring
         try:

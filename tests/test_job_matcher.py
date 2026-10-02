@@ -33,3 +33,13 @@ def test_job_matcher():
     assert sr_res["is_match"] is False
     assert "Senior" in sr_res["summary_reason"]
 
+    # Test Databricks and parenthesized experience requirements
+    db_res = matcher.evaluate(profile, "Requirements added by the job poster: 4+ years of work experience with Databricks Products", job_title="Analytics Developer")
+    assert db_res["is_match"] is False
+    assert "Requires 4+ years" in db_res["summary_reason"]
+
+    yr5_res = matcher.evaluate(profile, "We Are Hiring - Analytics Developer (5 +Years Experience)", job_title="Analytics Developer")
+    assert yr5_res["is_match"] is False
+    assert "Requires 5+ years" in yr5_res["summary_reason"]
+
+

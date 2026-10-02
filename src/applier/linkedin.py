@@ -8,6 +8,12 @@ from src.applier.form_filler import FormFiller
 from src.storage.verifier import SubmissionVerifier
 from src.storage.database import Database
 
+from typing import Optional
+from src.scraper.matcher import JobMatcher
+from src.resume.tailor import ResumeTailor
+from src.resume.compiler import ResumeCompiler
+from src.resume.models import MasterProfile
+
 logger = logging.getLogger(__name__)
 
 class LinkedInApplier:
@@ -17,13 +23,62 @@ class LinkedInApplier:
         form_filler: FormFiller,
         verifier: SubmissionVerifier,
         database: Database,
+        matcher: Optional[JobMatcher] = None,
+        tailor: Optional[ResumeTailor] = None,
+        compiler: Optional[ResumeCompiler] = None,
+        master_profile: Optional[MasterProfile] = None,
         mode: str = "auto"
     ):
         self.bm = browser_manager
         self.filler = form_filler
         self.verifier = verifier
         self.db = database
+        self.matcher = matcher
+        self.tailor = tailor
+        self.compiler = compiler
+        self.master_profile = master_profile
         self.mode = mode
+
+    async def extract_full_description(self, page: Page) -> str:
+        try:
+            # Click '... more' or 'Show more' button to expand the full description
+            await page.evaluate("""() => {
+                const candidates = Array.from(document.querySelectorAll(
+                    '.jobs-description__footer-button, button.show-more-less-html__button, button[aria-label*="more"], button[data-tracking-control-name*="show_more"], .jobs-description-content__footer button, button, a, span[role="button"]'
+                ));
+                for (const el of candidates) {
+                    const txt = (el.innerText || '').trim().toLowerCase();
+                    if (txt === '... more' || txt === 'more' || txt === 'show more' || txt.includes('show more')) {
+                        try { el.click(); } catch(e) {}
+                        break;
+                    }
+                }
+            }""")
+            await asyncio.sleep(1)
+
+            # Extract full description text and requirements sections
+            full_text = await page.evaluate("""() => {
+                const descContainer = document.querySelector(
+                    '#job-details, .jobs-description__content, .jobs-description-content__text, .jobs-box__html-content, article.jobs-description__container, .jobs-description'
+                );
+                let text = descContainer ? (descContainer.innerText || '') : '';
+                
+                // Also capture 'Requirements added by the job poster', 'Preferences and skills', and top card insights
+                const extraSections = document.querySelectorAll(
+                    '.job-details-preferences-and-skills, .job-details-how-you-match, [data-test-job-details-preferences-and-skills], .jobs-unified-top-card__job-insight, .job-details-jobs-unified-top-card__job-insight'
+                );
+                for (const sec of extraSections) {
+                    const secText = (sec.innerText || '').trim();
+                    if (secText && !text.includes(secText)) {
+                        text += '\\n' + secText;
+                    }
+                }
+                return text.trim();
+            }""")
+            return full_text
+        except Exception as e:
+            logger.debug(f"Note on extracting live job description: {e}")
+            return ""
 
     async def apply(self, job: dict, tailored_pdf_path: Path) -> bool:
         page = await self.bm.new_stealth_page()
@@ -44,6 +99,35 @@ class LinkedInApplier:
                     await self.bm.random_delay(1, 2)
                 except Exception:
                     pass
+
+            # 1. Expand and extract full live job description & poster requirements
+            live_desc = await self.extract_full_description(page)
+            if live_desc and len(live_desc) > 50:
+                logger.info(f"📋 Extracted full live JD ({len(live_desc)} chars) from page.")
+                
+                # Check experience mismatch against full live description
+                if self.matcher:
+                    mismatch = self.matcher.check_experience_mismatch(live_desc, job.get("title", ""))
+                    if mismatch:
+                        logger.info(f"🚫 Skipping {company} ({job_id}): Full JD requirement mismatch - {mismatch}")
+                        self.db.update_status(job_id, "SKIPPED", error_message=mismatch)
+                        return False
+                    
+                    # Also re-check score if candidate profile provided
+                    if self.master_profile:
+                        eval_res = self.matcher.evaluate(self.master_profile, live_desc, job.get("title", ""))
+                        if not eval_res["is_match"]:
+                            logger.info(f"🚫 Skipping {company} ({job_id}): Live match score {eval_res['match_score']}% below threshold.")
+                            self.db.update_status(job_id, "SKIPPED", error_message=f"Live score {eval_res['match_score']}% below threshold: {eval_res.get('summary_reason', '')}")
+                            return False
+
+                # If initial description was missing or incomplete, re-tailor with the full live JD
+                initial_desc = job.get("description", "")
+                if (not initial_desc or len(initial_desc) < 150 or initial_desc.strip().lower() in ["none", "nan"]) and self.tailor and self.compiler and self.master_profile:
+                    logger.info(f"🎯 Re-tailoring resume using full live job description for {company}...")
+                    job["description"] = live_desc
+                    tailored_profile = self.tailor.tailor(self.master_profile, live_desc)
+                    self.compiler.compile_pdf(tailored_profile, tailored_pdf_path)
 
             # Find Easy Apply button (various selectors across LinkedIn layouts)
             apply_btn = await page.query_selector(

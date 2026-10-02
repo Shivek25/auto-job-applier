@@ -29,10 +29,10 @@ class JobMatcher:
 
         # 2. Check Experience in Description
         exp_patterns = [
-            r'(?:proven\s+experience|work\s+experience|experience|exp|hands-on)[\s\(\:\-]*(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)',
-            r'(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)(?:\s+of)?\s+(?:work\s+)?experience',
+            r'(?:proven\s+experience|work\s+experience|experience|exp|hands-on|background)[\s\(\:\-]*(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)',
+            r'(\d+)\s*\+?\s*(?:to|-)?\s*(\d+)?\s*(?:years?|yrs?)(?:\s+of)?(?:\s+(?:work|relevant|hands-on|industry|professional|practical))?\s+(?:experience|exp)',
             r'(?:minimum|at\s+least|min\.?)\s*(\d+)\s*\+?\s*(?:years?|yrs?)',
-            r'(\d+)\s*\+?\s*(?:years?|yrs?)\s+(?:in|with|of)'
+            r'(\d+)\s*\+?\s*(?:years?|yrs?)\s+(?:in|with|of|working)'
         ]
 
         found_years = []
