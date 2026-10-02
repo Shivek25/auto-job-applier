@@ -41,7 +41,10 @@ class Database:
     def is_already_applied(self, job_id: str) -> bool:
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT 1 FROM applications WHERE job_id = ?", (job_id,))
+            cursor.execute(
+                "SELECT 1 FROM applications WHERE job_id = ? AND status IN ('SUBMITTED', 'PENDING')",
+                (job_id,)
+            )
             return cursor.fetchone() is not None
 
     def add_application(

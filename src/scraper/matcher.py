@@ -74,8 +74,13 @@ class JobMatcher:
                 "missing_critical_skills": ["Experience requirement exceeded"]
             }
 
+        desc_clean = (job_description or "").strip()
+        if desc_clean.lower() in ["none", "nan", "null"]:
+            desc_clean = ""
+        is_empty_desc = len(desc_clean) == 0
+
         skills = self._extract_skills(master_profile)
-        desc_lower = job_description.lower()
+        desc_lower = desc_clean.lower()
         title_lower = job_title.lower()
 
         matched_skills = []
@@ -89,7 +94,8 @@ class JobMatcher:
         
         # Title alignment bonus
         target_roles = ["data", "engineer", "analyst", "analytics", "sql", "etl", "bi", "snowflake", "bigquery", "database"]
-        if any(role in title_lower for role in target_roles):
+        matched_target_roles = [role for role in target_roles if role in title_lower]
+        if matched_target_roles:
             score += 25
 
         # Irrelevant role penalty
@@ -100,6 +106,22 @@ class JobMatcher:
         # Skill match bonus (5 points per matched skill, up to 35 max)
         score += min(35, len(matched_skills) * 5)
         score = max(10, min(95, score))
+
+        # If clean target role and description is empty,
+        # this is a search result card where full JD hasn't been fetched yet.
+        # Boost to 75 so it passes pre-filtering to browser live verification.
+        if matched_target_roles and not any(r in title_lower for r in irrelevant_roles):
+            if is_empty_desc:
+                score = max(score, 75)
+                matched_role_str = matched_target_roles[0].title()
+                reason = f"Target title match ('{matched_role_str}'). Full JD will be extracted and verified in browser."
+                return {
+                    "is_match": True,
+                    "match_score": score,
+                    "summary_reason": reason,
+                    "matched_skills": matched_skills,
+                    "missing_critical_skills": []
+                }
 
         is_match = score >= self.min_score
         reason = f"Heuristic match: {len(matched_skills)} matched skills ({', '.join(matched_skills[:4])})" if matched_skills else "Heuristic evaluation based on title and keywords"
@@ -118,6 +140,11 @@ class JobMatcher:
         
         # If decisively high match (>= 75%) or decisively low (< 50%), use heuristic directly
         if heuristic["match_score"] >= 75 or heuristic["match_score"] < 50:
+            return heuristic
+
+        # If job description is missing, do not invoke LLM (would produce false 0 score)
+        desc_clean = (job_description or "").strip()
+        if not desc_clean or desc_clean.lower() in ["none", "nan", "null"]:
             return heuristic
 
         # Otherwise evaluate via LLM for borderline cases

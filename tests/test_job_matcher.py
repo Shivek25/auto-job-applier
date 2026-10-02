@@ -42,4 +42,22 @@ def test_job_matcher():
     assert yr5_res["is_match"] is False
     assert "Requires 5+ years" in yr5_res["summary_reason"]
 
+    # Test empty preview description with target role title (should pass pre-filtering at 75% without calling LLM)
+    mock_llm.generate_json.reset_mock()
+    empty_desc_target_res = matcher.evaluate(profile, "", job_title="Data Analyst")
+    assert empty_desc_target_res["is_match"] is True
+    assert empty_desc_target_res["match_score"] == 75
+    assert "Target title match" in empty_desc_target_res["summary_reason"]
+    mock_llm.generate_json.assert_not_called()
+
+    # Test empty preview description with senior role (should fast-reject at 20%)
+    empty_desc_sr_res = matcher.evaluate(profile, "", job_title="Senior Data Analyst")
+    assert empty_desc_sr_res["is_match"] is False
+    assert empty_desc_sr_res["match_score"] == 20
+
+    # Test empty preview description with irrelevant role (should reject at <= 40%)
+    empty_desc_irrel_res = matcher.evaluate(profile, "", job_title="Frontend Developer")
+    assert empty_desc_irrel_res["is_match"] is False
+    assert empty_desc_irrel_res["match_score"] <= 40
+
 

@@ -139,18 +139,7 @@ async def main():
             eval_result = {"is_match": True, "match_score": 75}
 
         if not eval_result["is_match"]:
-            logger.info(f"Skipping {job['company']} - Match score: {eval_result['match_score']}% (below {config.app.min_match_score}% threshold)")
-            db.add_application(
-                job_id=job_id,
-                platform=job["site"],
-                title=job["title"],
-                company=job["company"],
-                location=job["location"],
-                job_url=job["job_url"],
-                match_score=eval_result["match_score"],
-                status="SKIPPED",
-                error_message=f"Score below threshold: {eval_result.get('summary_reason', '')}"
-            )
+            logger.info(f"Skipping {job['company']} - Match score: {eval_result['match_score']}% (below {config.app.min_match_score}% threshold): {eval_result.get('summary_reason', '')}")
             continue
 
         logger.info(f"Eligible Match ({eval_result['match_score']}%)! Tailoring resume for {job['company']}...")
