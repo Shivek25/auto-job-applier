@@ -203,6 +203,35 @@ class LinkedInApplier:
                     "button[aria-label='Submit application'], button:has-text('Submit application'), button.artdeco-button--primary:has-text('Submit')"
                 )
                 if submit_btn:
+                    # Explicitly uncheck any 'Follow company' checkbox on the review screen
+                    await page.evaluate("""() => {
+                        const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+                        for (const cb of checkboxes) {
+                            const id = (cb.id || '').toLowerCase();
+                            const name = (cb.name || '').toLowerCase();
+                            const lblText = (
+                                (cb.id ? document.querySelector(`label[for="${cb.id}"]`)?.innerText : '') ||
+                                cb.closest('label')?.innerText ||
+                                cb.closest('.fb-form-element')?.innerText ||
+                                cb.parentElement?.innerText || ''
+                            ).toLowerCase();
+                            
+                            if (id.includes('follow') || name.includes('follow') || lblText.includes('follow') || lblText.includes('stay up to date')) {
+                                if (cb.checked) {
+                                    try {
+                                        const clickable = (cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null) || cb.closest('label') || cb;
+                                        clickable.click();
+                                    } catch(e) {}
+                                    if (cb.checked) {
+                                        cb.checked = false;
+                                        cb.dispatchEvent(new Event('input', { bubbles: true }));
+                                        cb.dispatchEvent(new Event('change', { bubbles: true }));
+                                    }
+                                }
+                            }
+                        }
+                    }""")
+
                     if self.mode == "review":
                         logger.info("👉 Review mode: pausing 15s for user inspection before final submission...")
                         await asyncio.sleep(15)

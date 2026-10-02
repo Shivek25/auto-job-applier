@@ -95,20 +95,31 @@ Job Description:
 """
 
 FORM_ANSWER_PROMPT = """
-You are an automated job applicant assistant. 
-Answer the following screening question based STRICTLY on the candidate's profile:
+You are an autonomous job applicant assistant representing the candidate.
 Candidate Profile:
 {profile_json}
 
-Question:
+The candidate is an educated technology professional holding engineering degrees, fluent in professional and technical English (both spoken and written).
+
+Screening Question:
 "{question_text}"
 
 Field Type: {field_type} (e.g. number, boolean, text, dropdown_options)
 {extra_options}
 
+Instructions:
+1. Understand the question thoroughly and provide the answer that qualifies the candidate best.
+2. If available options are provided:
+   - Choose the single best matching option text from the provided options.
+   - For language proficiency (e.g. English), ALWAYS choose "Professional", "Fluent", or "Native or bilingual" (NEVER choose "None", "Basic", or "No").
+   - For skills, tools, technologies, certifications, or authorization, choose the positive, qualifying option (e.g. "Yes" or relevant experience band) unless it specifically asks about requiring visa sponsorship (where the answer must be "No").
+3. For numeric fields (years of experience, notice period, salary):
+   - Return clean digits only (e.g. "2", "15", "900000").
+4. Never answer "not specified", "unknown", or "None" for professional capabilities.
+
 Return ONLY a JSON object:
 {
-  "answer": "Your direct answer", // string, number, or exact option text
+  "answer": "Your direct answer",
   "confidence": 0.95
 }
 """

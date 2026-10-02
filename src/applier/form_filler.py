@@ -93,6 +93,12 @@ class FormFiller:
         if "years" in lbl or "experience" in lbl:
             return "2"
 
+        # Language proficiency (English, etc.)
+        if any(w in lbl for w in ["english", "language", "communication"]) and any(w in lbl for w in ["proficiency", "level", "fluency", "skill", "speak"]):
+            return "Professional"
+        if "english" in lbl and any(w in lbl for w in ["level", "proficiency", "fluent", "speak", "scale"]):
+            return "Professional"
+
         # Common affirmative questions
         if any(w in lbl for w in ["authorized", "authorization", "legally", "18", "commute", "relocate", "hybrid", "onsite"]):
             return "Yes"
@@ -131,11 +137,15 @@ class FormFiller:
             res = self.llm.generate_json(prompt)
             ans = str(res.get("answer", "")).strip()
             
-            # Sanitize LLM response - eliminate refusal/fluff text
-            if any(ref in ans.lower() for ref in ["not specified", "candidate profile", "not mentioned", "unknown", "n/a"]):
+            # Sanitize LLM response - eliminate refusal/fluff/negative rejection text
+            if any(ref in ans.lower() for ref in ["not specified", "candidate profile", "not mentioned", "unknown", "n/a", "none"]):
                 if field_type == "number" or "year" in q_lower:
                     return "2"
-                return "Yes"
+                if options:
+                    for opt in options:
+                        if any(w in opt.lower() for w in ["professional", "native", "fluent", "bilingual", "yes"]):
+                            return opt
+                return "Professional" if ("english" in q_lower or "language" in q_lower) else "Yes"
 
             # If field expects number or years, extract digits only
             if field_type == "number" or "year" in q_lower or "salary" in q_lower or "ctc" in q_lower:
@@ -151,7 +161,11 @@ class FormFiller:
         
         if field_type == "number" or "year" in q_lower:
             return "2"
-        return "Yes"
+        if options:
+            for opt in options:
+                if any(w in opt.lower() for w in ["professional", "native", "fluent", "bilingual", "yes"]):
+                    return opt
+        return "Professional" if ("english" in q_lower or "language" in q_lower) else "Yes"
 
     async def fill_current_modal(self, page: Page):
         try:
@@ -233,15 +247,39 @@ class FormFiller:
             # 2. Handle select / dropdown elements
             selects = await container.query_selector_all("select")
             for sel in selects:
-                sel_val = await sel.input_value()
-                if not sel_val or sel_val in ["0", "Select an option", ""]:
+                sel_val = (await sel.input_value() or "").strip()
+                # Re-evaluate if unselected, default placeholder, or set to disqualifying "none"
+                needs_eval = (
+                    not sel_val or 
+                    sel_val.lower() in ["0", "select an option", "select", "choose", "none", ""]
+                )
+                if needs_eval:
                     label_text = await page.evaluate(
                         """(el) => {
-                            const group = el.closest('.jobs-easy-apply-form-section__grouping') || 
-                                          el.closest('.fb-form-element') || 
-                                          el.closest('div');
-                            const lbl = group ? group.querySelector('label') : null;
-                            return (lbl ? lbl.innerText : '') || el.getAttribute('aria-label') || '';
+                            if (el.id) {
+                                const l = document.querySelector(`label[for="${el.id}"]`);
+                                if (l && l.innerText.trim()) return l.innerText.trim();
+                            }
+                            const labelledby = el.getAttribute('aria-labelledby');
+                            if (labelledby) {
+                                const l = document.getElementById(labelledby);
+                                if (l && l.innerText.trim()) return l.innerText.trim();
+                            }
+                            if (el.getAttribute('aria-label')) return el.getAttribute('aria-label').trim();
+                            
+                            const container = el.closest('.fb-form-element, .jobs-easy-apply-form-section__grouping, .jobs-easy-apply-form-element, fieldset, [data-test-form-element]');
+                            if (container) {
+                                const q = container.querySelector('label, legend, .fb-form-element-label, [data-test-form-element-label]');
+                                if (q && q.innerText.trim()) return q.innerText.trim();
+                            }
+                            
+                            let p = el.parentElement;
+                            for (let i = 0; i < 3 && p; i++) {
+                                const l = p.querySelector('label, legend');
+                                if (l && l.innerText.trim()) return l.innerText.trim();
+                                p = p.parentElement;
+                            }
+                            return el.getAttribute('name') || '';
                         }""", 
                         sel
                     )
@@ -250,21 +288,60 @@ class FormFiller:
                     for opt in options:
                         t = (await opt.inner_text()).strip()
                         v = await opt.get_attribute("value")
-                        if t and t not in ["Select an option", "Select", "Choose"]:
+                        if t and t.lower() not in ["select an option", "select", "choose", ""]:
                             opt_texts.append((t, v))
                     
                     if opt_texts:
                         lbl_low = label_text.lower()
+                        opt_names_low = [t.lower() for t, _ in opt_texts]
                         chosen_val = None
                         
-                        # Country / Phone code dropdown
+                        # A. Country / Dial code dropdown
                         if any(w in lbl_low for w in ["country code", "phone", "dial", "country"]):
                             for t, v in opt_texts:
                                 if "india" in t.lower() or "+91" in t:
                                     chosen_val = v
                                     break
                         
-                        # Yes / No question dropdown
+                        # B. Language proficiency (English, etc.) - never choose None
+                        if not chosen_val and (
+                            any(w in lbl_low for w in ["english", "language", "proficiency", "fluency", "communication", "speak"]) or
+                            any(w in opt_names_low for w in ["conversational", "professional", "native or bilingual", "fluent"])
+                        ):
+                            for target in ["professional", "native", "bilingual", "fluent", "conversational", "advanced"]:
+                                for t, v in opt_texts:
+                                    if target in t.lower() and "none" not in t.lower():
+                                        chosen_val = v
+                                        logger.info(f"Selected language proficiency option '{t}' for question '{label_text}'")
+                                        break
+                                if chosen_val:
+                                    break
+
+                        # C. Sponsorship / Visa (Always No)
+                        if not chosen_val and any(w in lbl_low for w in ["sponsorship", "require sponsor", "visa"]):
+                            for t, v in opt_texts:
+                                if "no" in t.lower():
+                                    chosen_val = v
+                                    break
+
+                        # D. Authorization / Relocation / Commute / Age 18+ (Always Yes)
+                        if not chosen_val and any(w in lbl_low for w in ["authorized", "commute", "relocate", "18", "hybrid", "onsite"]):
+                            for t, v in opt_texts:
+                                if "yes" in t.lower():
+                                    chosen_val = v
+                                    break
+
+                        # E. Experience / Years in dropdown
+                        if not chosen_val and any(w in lbl_low for w in ["year", "experience"]):
+                            for target in ["2", "1-3", "2-3", "2+", "1+", "yes"]:
+                                for t, v in opt_texts:
+                                    if target in t.lower() and "0" not in t.lower():
+                                        chosen_val = v
+                                        break
+                                if chosen_val:
+                                    break
+
+                        # F. Yes / No dropdown question
                         has_yes = any("yes" in t.lower() for t, _ in opt_texts)
                         has_no = any("no" in t.lower() for t, _ in opt_texts)
                         if not chosen_val and (has_yes or has_no):
@@ -279,34 +356,51 @@ class FormFiller:
                                         chosen_val = v
                                         break
 
-                        # Sponsorship
-                        if not chosen_val and any(w in lbl_low for w in ["sponsorship", "visa"]):
-                            for t, v in opt_texts:
-                                if "no" in t.lower():
-                                    chosen_val = v
-                                    break
-                        
-                        # Authorization, relocation, commute, experience
-                        if not chosen_val and any(w in lbl_low for w in ["authorized", "commute", "relocate", "degree", "experience", "18"]):
-                            for t, v in opt_texts:
-                                if "yes" in t.lower():
-                                    chosen_val = v
-                                    break
-                        
-                        # Language proficiency
-                        if not chosen_val and any(w in lbl_low for w in ["proficiency", "level", "language"]):
-                            for t, v in opt_texts:
-                                if any(w in t.lower() for w in ["professional", "fluent", "native", "advanced", "full"]):
-                                    chosen_val = v
-                                    break
-                        
-                        # Fallback to first non-empty option
+                        # G. LLM Reasoning for dynamic dropdown questions
+                        if not chosen_val:
+                            try:
+                                opt_labels = [t for t, _ in opt_texts]
+                                llm_ans = await self.answer_question(
+                                    question_text=label_text or "Select best option for candidate",
+                                    field_type="dropdown_option",
+                                    options=opt_labels
+                                )
+                                llm_ans_str = str(llm_ans).strip().lower()
+                                logger.info(f"LLM dropdown answered: '{label_text}' -> '{llm_ans}'")
+                                
+                                # Exact match
+                                for t, v in opt_texts:
+                                    if t.lower() == llm_ans_str:
+                                        chosen_val = v
+                                        break
+                                # Substring match
+                                if not chosen_val:
+                                    for t, v in opt_texts:
+                                        if llm_ans_str in t.lower() or t.lower() in llm_ans_str:
+                                            chosen_val = v
+                                            break
+                            except Exception as e:
+                                logger.warning(f"Error querying LLM for dropdown: {e}")
+
+                        # H. Absolute Safety Fallback: NEVER choose 'None' or negative options if positive options exist
                         if not chosen_val and opt_texts:
-                            chosen_val = opt_texts[0][1]
+                            positive_opts = [
+                                (t, v) for t, v in opt_texts
+                                if not any(bad == t.strip().lower() for bad in ["none", "no", "n/a", "not applicable", "0", "refuse", "decline"])
+                            ]
+                            if positive_opts:
+                                chosen_val = positive_opts[0][1]
+                                logger.info(f"Positive fallback selected option: '{positive_opts[0][0]}'")
+                            else:
+                                chosen_val = opt_texts[0][1]
 
                         if chosen_val:
                             try:
                                 await sel.select_option(value=chosen_val)
+                                await page.evaluate(
+                                    "(el) => { el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }", 
+                                    sel
+                                )
                             except Exception:
                                 pass
 
@@ -426,19 +520,49 @@ class FormFiller:
             for item in (answered_radios or []):
                 logger.info(f"Radio answered: '{item.get('question', '')}' -> '{item.get('answer', '')}'")
 
-            # 4. Handle unchecked required checkboxes (e.g. agreement, privacy) via DOM
+            # 4. Handle checkboxes:
+            # - ALWAYS UNCHECK any "Follow company" / "Stay up to date" checkboxes
+            # - Check required agreements, terms, privacy checkboxes ONLY if they are NOT follow checkboxes
             await page.evaluate("""() => {
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
                 for (const cb of checkboxes) {
-                    if (!cb.checked) {
-                        try {
-                            cb.scrollIntoView({ behavior: 'instant', block: 'center' });
-                            cb.checked = true;
-                            cb.dispatchEvent(new Event('input', { bubbles: true }));
-                            cb.dispatchEvent(new Event('change', { bubbles: true }));
-                            const lbl = cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null;
-                            if (lbl) lbl.click(); else cb.click();
-                        } catch(e) {}
+                    const id = (cb.id || '').toLowerCase();
+                    const name = (cb.name || '').toLowerCase();
+                    const lblText = (
+                        (cb.id ? document.querySelector(`label[for="${cb.id}"]`)?.innerText : '') ||
+                        cb.closest('label')?.innerText ||
+                        cb.closest('.fb-form-element')?.innerText ||
+                        cb.parentElement?.innerText || ''
+                    ).toLowerCase();
+                    
+                    const isFollow = id.includes('follow') || name.includes('follow') ||
+                                     lblText.includes('follow') || lblText.includes('stay up to date');
+                    
+                    if (isFollow) {
+                        // Ensure UNCHECKED
+                        if (cb.checked) {
+                            try {
+                                const clickable = (cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null) || cb.closest('label') || cb;
+                                clickable.click();
+                            } catch(e) {}
+                            if (cb.checked) {
+                                cb.checked = false;
+                                cb.dispatchEvent(new Event('input', { bubbles: true }));
+                                cb.dispatchEvent(new Event('change', { bubbles: true }));
+                            }
+                        }
+                    } else {
+                        // Check agreement / terms / consent checkboxes if unchecked
+                        if (!cb.checked) {
+                            try {
+                                cb.scrollIntoView({ behavior: 'instant', block: 'center' });
+                                cb.checked = true;
+                                cb.dispatchEvent(new Event('input', { bubbles: true }));
+                                cb.dispatchEvent(new Event('change', { bubbles: true }));
+                                const lbl = cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null;
+                                if (lbl) lbl.click(); else cb.click();
+                            } catch(e) {}
+                        }
                     }
                 }
             }""")

@@ -40,4 +40,16 @@ async def test_form_filler_answer():
     ans_sanitized = await filler_in.answer_question("Random custom query", "text")
     assert ans_sanitized == "Yes"
 
+    # Test English proficiency deterministic resolution
+    assert filler.solve_deterministically("What is your level of proficiency in English?") == "Professional"
+    assert filler.solve_deterministically("English language fluency level", "select") == "Professional"
+
+    # Test dropdown option sanitization when LLM returns 'None'
+    mock_llm.generate_json.return_value = {"answer": "None"}
+    options = ["None", "Conversational", "Professional", "Native or bilingual"]
+    ans_dropdown = await filler.answer_question("What is your level of proficiency in English?", "dropdown_option", options)
+    assert ans_dropdown in ["Professional", "Native or bilingual", "Conversational"]
+    assert ans_dropdown != "None"
+
+
 
