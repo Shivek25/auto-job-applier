@@ -102,10 +102,19 @@ class Database:
             row = cursor.fetchone()
             return dict(row) if row else None
 
-    def get_all_applications(self, limit: int = 100) -> List[Dict[str, Any]]:
+    def get_all_applications(self, limit: int = 100, status: Optional[str] = None) -> List[Dict[str, Any]]:
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM applications ORDER BY applied_at DESC LIMIT ?", (limit,))
+            if status and status.upper() != "ALL":
+                cursor.execute(
+                    "SELECT * FROM applications WHERE status = ? ORDER BY applied_at DESC LIMIT ?",
+                    (status.upper(), limit)
+                )
+            else:
+                cursor.execute(
+                    "SELECT * FROM applications ORDER BY applied_at DESC LIMIT ?",
+                    (limit,)
+                )
             return [dict(row) for row in cursor.fetchall()]
 
     def get_stats(self) -> Dict[str, int]:

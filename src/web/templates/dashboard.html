@@ -30,7 +30,12 @@
   </div>
 </div>
 
-<h3>Recent Applications</h3>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; margin-bottom: 16px;">
+  <h3 style="margin: 0;">Applied Jobs</h3>
+  <div style="font-size: 13px; color: var(--text-secondary);">
+    Displaying only submitted applications ({{ applications | length }} total applied).
+  </div>
+</div>
 <div class="table-wrapper">
   <table>
     <thead>
@@ -49,7 +54,7 @@
       {% if applications %}
         {% for app in applications %}
         <tr>
-          <td>{{ app.applied_at }}</td>
+          <td>{{ app.applied_at[:16].replace('T', ' ') if app.applied_at else '-' }}</td>
           <td><strong>{{ app.company }}</strong></td>
           <td>{{ app.title }}</td>
           <td>

@@ -38,9 +38,9 @@ def get_profile_data() -> tuple[dict, str]:
     return {}, "{}"
 
 @app.get("/", response_class=HTMLResponse)
-async def dashboard(request: Request):
+async def dashboard(request: Request, status: Optional[str] = "SUBMITTED"):
     stats = db.get_stats()
-    applications = db.get_all_applications(limit=100)
+    applications = db.get_all_applications(limit=100, status=status)
     total_att = (stats["total_submitted"] + stats["total_failed"]) or 1
     success_rate = int((stats["total_submitted"] / total_att) * 100) if stats["total_submitted"] else 0
     return templates.TemplateResponse(
@@ -49,7 +49,8 @@ async def dashboard(request: Request):
         context={
             "stats": stats,
             "applications": applications,
-            "success_rate": success_rate
+            "success_rate": success_rate,
+            "filter_status": status
         }
     )
 
