@@ -41,15 +41,17 @@ class LinkedInApplier:
 
     async def extract_full_description(self, page: Page) -> str:
         try:
-            # Click '... more' or 'Show more' button to expand the full description
+            # Click '... more' button to expand the full description (DO NOT click links/anchors to avoid navigating away)
             await page.evaluate("""() => {
-                const candidates = Array.from(document.querySelectorAll(
-                    '.jobs-description__footer-button, button.show-more-less-html__button, button[aria-label*="more"], button[data-tracking-control-name*="show_more"], .jobs-description-content__footer button, button, a, span[role="button"]'
-                ));
-                for (const el of candidates) {
-                    const txt = (el.innerText || '').trim().toLowerCase();
-                    if (txt === '... more' || txt === 'more' || txt === 'show more' || txt.includes('show more')) {
-                        try { el.click(); } catch(e) {}
+                const buttons = Array.from(document.querySelectorAll('button'));
+                for (const btn of buttons) {
+                    const aria = (btn.getAttribute('aria-label') || '').toLowerCase();
+                    if (aria.includes('more options') || aria.includes('options')) continue;
+                    
+                    const txt = (btn.innerText || '').trim().toLowerCase();
+                    if (txt === '... more' || txt === '… more' || txt === 'more' || txt === 'show more' || txt.endsWith('more')) {
+                        if (btn.closest('header, nav, .global-nav')) continue;
+                        try { btn.click(); } catch(e) {}
                         break;
                     }
                 }
@@ -59,9 +61,19 @@ class LinkedInApplier:
             # Extract full description text and requirements sections
             full_text = await page.evaluate("""() => {
                 const descContainer = document.querySelector(
-                    '#job-details, .jobs-description__content, .jobs-description-content__text, .jobs-box__html-content, article.jobs-description__container, .jobs-description'
+                    'div[id*="AboutTheJob"], #job-details, .jobs-description__content, .jobs-description-content__text, .jobs-box__html-content, article.jobs-description__container, .jobs-description'
                 );
-                let text = descContainer ? (descContainer.innerText || '') : '';
+                let text = '';
+                if (descContainer) {
+                    text = descContainer.innerText.trim();
+                } else {
+                    const allDivs = Array.from(document.querySelectorAll('div, section, article'));
+                    const match = allDivs.find(d => {
+                        const t = d.innerText || '';
+                        return t.includes('About the job') && t.length > 200 && t.length < 15000;
+                    });
+                    if (match) text = match.innerText.trim();
+                }
                 
                 // Also capture 'Requirements added by the job poster', 'Preferences and skills', and top card insights
                 const extraSections = document.querySelectorAll(
@@ -131,7 +143,7 @@ class LinkedInApplier:
 
             # Find Easy Apply button (various selectors across LinkedIn layouts)
             apply_btn = await page.query_selector(
-                "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply')"
+                "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply'), button[aria-label*='Easy Apply']"
             )
             if not apply_btn:
                 # Check if page is asking for login
@@ -144,10 +156,21 @@ class LinkedInApplier:
                         logger.info("👉 Review mode: Please log in in the opened browser window now. Waiting up to 45s...")
                         for _ in range(15):
                             await asyncio.sleep(3)
-                            apply_btn = await page.query_selector("button.jobs-apply-button, button:has-text('Easy Apply')")
+                            apply_btn = await page.query_selector(
+                                "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply'), button[aria-label*='Easy Apply']"
+                            )
                             if apply_btn:
                                 logger.info("✅ Login detected! Proceeding with Easy Apply...")
                                 break
+
+                if not apply_btn:
+                    try:
+                        apply_btn = await page.wait_for_selector(
+                            "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply'), button[aria-label*='Easy Apply']",
+                            timeout=3000
+                        )
+                    except Exception:
+                        pass
 
                 if not apply_btn:
                     logger.info(f"No Easy Apply button found for {job_id} (or sign-in required). Skipping.")
@@ -167,12 +190,11 @@ class LinkedInApplier:
                 if not resume_uploaded:
                     try:
                         is_resume_step = await page.evaluate("""() => {
-                            const modal = document.querySelector('.jobs-easy-apply-modal, [data-test-modal], div[role="dialog"]');
-                            const text = (modal ? modal.innerText : document.body.innerText) || '';
-                            const hasResumeHeading = /resume/i.test(text) && (/upload/i.test(text) || /doc, docx/i.test(text) || /pdf/i.test(text));
+                            // Only detect as resume step if file input, upload button, or resume cards are present
                             const hasFileInput = !!document.querySelector("input[type='file']");
-                            const hasUploadBtn = Array.from(document.querySelectorAll('label, button, span')).some(el => /upload resume/i.test(el.innerText || ''));
-                            return hasResumeHeading || hasFileInput || hasUploadBtn;
+                            const hasUploadBtn = Array.from(document.querySelectorAll('label, button, span')).some(el => /upload resume/i.test((el.innerText || '').trim()));
+                            const hasResumeCards = !!document.querySelector('div.jobs-document-upload-resume-card, div[data-test-document-upload-resume], input[type="radio"][name*="resume"]');
+                            return hasFileInput || hasUploadBtn || hasResumeCards;
                         }""")
                     except Exception as e:
                         logger.debug(f"Resume detection note: {e}")
