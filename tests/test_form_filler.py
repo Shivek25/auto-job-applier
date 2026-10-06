@@ -51,5 +51,29 @@ async def test_form_filler_answer():
     assert ans_dropdown in ["Professional", "Native or bilingual", "Conversational"]
     assert ans_dropdown != "None"
 
+    # Test previous employment with company (ALWAYS No)
+    assert filler.solve_deterministically(
+        'Have you previously worked with WNS? if not please put "0" in the Employee ID question below.'
+    ) == "No"
+    assert filler.solve_deterministically("Are you a former employee of this company?") == "No"
+    assert filler.solve_deterministically("Have you ever been employed by our organization?") == "No"
+    assert filler.solve_deterministically("Do you have any relatives currently working at this company?") == "No"
+
+    # Test employee ID and national ID fields
+    assert filler.solve_deterministically(
+        'Please enter your WNS Employee ID (Request not to mention "u", just type the Employee ID)'
+    ) == "0"
+    assert filler.solve_deterministically("Employee ID") == "0"
+    assert filler.solve_deterministically("Kindly enter National ID number") == "Not Applicable"
+
+    # Test answer_question intercepts previous employment directly (without querying LLM)
+    mock_llm.generate_json.return_value = {"answer": "Yes"}
+    ans_neg = await filler.answer_question(
+        'Have you previously worked with WNS? if not please put "0" in the Employee ID question below.',
+        "radio",
+        options=["Yes", "No"]
+    )
+    assert ans_neg == "No"
+
 
 

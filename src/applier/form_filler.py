@@ -18,8 +18,53 @@ class FormFiller:
             for s in sk_list:
                 self.skills_set.add(s.lower())
 
+    def is_negative_question(self, text: str) -> bool:
+        t = (text or "").lower().strip()
+        negative_markers = [
+            # Visa sponsorship
+            "sponsorship", "require sponsor", "visa sponsor", "require visa",
+            # Prior / Current employment at target company or internal affiliation
+            "previously worked", "previously been employed", "previously employed",
+            "prior employment", "previous employment", "worked before", "worked here",
+            "worked with us", "worked for us", "worked at us", "employed by us", "employed with us",
+            "former employee", "past employee", "ex-employee",
+            "currently employed by", "currently work for", "current employee",
+            "internal applicant", "internal candidate",
+            "interned with", "interned at",
+            # Conflicts of interest / Relatives
+            "relative", "relatives", "family member", "nepotism",
+            # Legal / Non-compete / Disciplinary
+            "non-compete", "noncompete", "restrictive covenant",
+            "terminated for cause", "disciplinary", "convicted", "felony", "criminal record",
+            "politically exposed", "government official"
+        ]
+        if any(m in t for m in negative_markers):
+            return True
+
+        if any(m in t for m in ["ever worked", "ever been employed"]):
+            technical_words = ["tool", "language", "framework", "library", "technology", "database", "python", "sql", "aws", "snowflake", "dbt"]
+            if not any(w in t for w in technical_words):
+                return True
+
+        return False
+
     def solve_deterministically(self, label_text: str, input_type: str = "text") -> Optional[str]:
         lbl = label_text.lower().strip()
+
+        # National ID / Citizen ID fallback
+        if "national id" in lbl or "government id" in lbl:
+            return "Not Applicable"
+
+        # Previous employee ID / Staff ID for target company (Must be 0)
+        if (
+            any(w in lbl for w in ["employee id", "staff id", "worker id", "previous id", "former id"])
+            and not any(q_w in lbl for q_w in ["have you", "were you", "are you", "did you", "previously worked", "worked before", "former employee"])
+        ):
+            return "0"
+
+        # Negative / Disqualifying questions (Previous employment, Sponsorship, Conflicts)
+        if self.is_negative_question(lbl):
+            return "No"
 
         # Phone country code
         if ("country code" in lbl or "phone code" in lbl or "dial" in lbl) and input_type in ["text", "tel"]:
@@ -125,6 +170,15 @@ class FormFiller:
 
     async def answer_question(self, question_text: str, field_type: str, options: Optional[List[str]] = None) -> Any:
         q_lower = question_text.lower()
+        
+        # Intercept negative questions immediately (Always No)
+        if self.is_negative_question(question_text):
+            if options:
+                for opt in options:
+                    if opt.lower().strip() in ["no", "false"]:
+                        return opt
+            return "No"
+
         extra_options = f"Available options: {options}" if options else ""
         prompt = (
             FORM_ANSWER_PROMPT
@@ -141,6 +195,12 @@ class FormFiller:
             if any(ref in ans.lower() for ref in ["not specified", "candidate profile", "not mentioned", "unknown", "n/a", "none"]):
                 if field_type == "number" or "year" in q_lower:
                     return "2"
+                if self.is_negative_question(question_text):
+                    if options:
+                        for opt in options:
+                            if "no" in opt.lower():
+                                return opt
+                    return "No"
                 if options:
                     for opt in options:
                         if any(w in opt.lower() for w in ["professional", "native", "fluent", "bilingual", "yes"]):
@@ -161,6 +221,12 @@ class FormFiller:
         
         if field_type == "number" or "year" in q_lower:
             return "2"
+        if self.is_negative_question(question_text):
+            if options:
+                for opt in options:
+                    if "no" in opt.lower():
+                        return opt
+            return "No"
         if options:
             for opt in options:
                 if any(w in opt.lower() for w in ["professional", "native", "fluent", "bilingual", "yes"]):
@@ -317,8 +383,10 @@ class FormFiller:
                                 if chosen_val:
                                     break
 
-                        # C. Sponsorship / Visa (Always No)
-                        if not chosen_val and any(w in lbl_low for w in ["sponsorship", "require sponsor", "visa"]):
+                        is_negative_q = self.is_negative_question(label_text)
+
+                        # C. Negative / Disqualification questions (Sponsorship, Prior employment at company, Relatives - Always No)
+                        if not chosen_val and is_negative_q:
                             for t, v in opt_texts:
                                 if "no" in t.lower():
                                     chosen_val = v
@@ -345,7 +413,7 @@ class FormFiller:
                         has_yes = any("yes" in t.lower() for t, _ in opt_texts)
                         has_no = any("no" in t.lower() for t, _ in opt_texts)
                         if not chosen_val and (has_yes or has_no):
-                            if any(w in lbl_low for w in ["sponsorship", "visa", "require sponsor"]):
+                            if is_negative_q:
                                 for t, v in opt_texts:
                                     if "no" in t.lower():
                                         chosen_val = v
@@ -382,17 +450,23 @@ class FormFiller:
                             except Exception as e:
                                 logger.warning(f"Error querying LLM for dropdown: {e}")
 
-                        # H. Absolute Safety Fallback: NEVER choose 'None' or negative options if positive options exist
+                        # H. Absolute Safety Fallback: For negative questions choose 'No'; for positive qualifications choose positive option
                         if not chosen_val and opt_texts:
-                            positive_opts = [
-                                (t, v) for t, v in opt_texts
-                                if not any(bad == t.strip().lower() for bad in ["none", "no", "n/a", "not applicable", "0", "refuse", "decline"])
-                            ]
-                            if positive_opts:
-                                chosen_val = positive_opts[0][1]
-                                logger.info(f"Positive fallback selected option: '{positive_opts[0][0]}'")
-                            else:
-                                chosen_val = opt_texts[0][1]
+                            if is_negative_q:
+                                for t, v in opt_texts:
+                                    if "no" in t.lower():
+                                        chosen_val = v
+                                        break
+                            if not chosen_val:
+                                positive_opts = [
+                                    (t, v) for t, v in opt_texts
+                                    if not any(bad == t.strip().lower() for bad in ["none", "no", "n/a", "not applicable", "0", "refuse", "decline"])
+                                ]
+                                if positive_opts:
+                                    chosen_val = positive_opts[0][1]
+                                    logger.info(f"Positive fallback selected option: '{positive_opts[0][0]}'")
+                                else:
+                                    chosen_val = opt_texts[0][1]
 
                         if chosen_val:
                             try:
@@ -433,15 +507,34 @@ class FormFiller:
                     }
                     
                     const qLow = (questionText || '').toLowerCase();
-                    const isSponsor = qLow.includes('sponsor') || qLow.includes('visa');
-                    const target = isSponsor ? 'no' : 'yes';
+                    const negativeTriggers = [
+                        'sponsor', 'visa',
+                        'previously worked', 'previously been employed', 'previously employed',
+                        'prior employment', 'previous employment', 'worked before', 'worked here',
+                        'worked with us', 'worked for us', 'worked at us', 'employed by us', 'employed with us',
+                        'former employee', 'past employee', 'ex-employee',
+                        'currently employed by', 'currently work for', 'current employee',
+                        'internal applicant', 'internal candidate',
+                        'relative', 'family member', 'nepotism',
+                        'non-compete', 'noncompete', 'restrictive covenant',
+                        'terminated for cause', 'disciplinary', 'convicted', 'felony', 'criminal record',
+                        'politically exposed', 'government official'
+                    ];
+                    let isNegative = negativeTriggers.some(t => qLow.includes(t));
+                    if (!isNegative && (qLow.includes('ever worked') || qLow.includes('ever been employed'))) {
+                        const techWords = ['tool', 'language', 'framework', 'library', 'technology', 'database', 'python', 'sql', 'aws', 'snowflake', 'dbt'];
+                        if (!techWords.some(w => qLow.includes(w))) {
+                            isNegative = true;
+                        }
+                    }
+                    const target = isNegative ? 'no' : 'yes';
                     
                     // Check if group already has a valid checked radio
                     let alreadyChecked = radios.find(r => r.checked);
                     if (alreadyChecked) {
                         const checkedText = (alreadyChecked.parentElement?.innerText || '').toLowerCase();
-                        if (isSponsor && checkedText.includes('yes')) {
-                            // Must switch sponsorship from yes to no
+                        if (isNegative && checkedText.includes('yes')) {
+                            // Must switch negative question from yes to no
                         } else {
                             // Already answered validly
                             radios.forEach(r => processedRadios.add(r));

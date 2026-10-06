@@ -1,0 +1,27 @@
+{
+  "domain_rules": {
+    "linkedin.com": {
+      "VALIDATION_ERROR": {
+        "strategy": "ANSWER_FIELD",
+        "action_details": {
+          "action": "answer",
+          "element_index": 11,
+          "element_selector": "#_r_21_",
+          "value_to_fill": "0"
+        },
+        "rule": "When applying on WNS LinkedIn forms, ensure employee ID fields are correctly populated with '0' if the candidate has never worked there."
+      },
+      "MODAL_OVERLAY": {
+        "strategy": "CLICK_ELEMENT",
+        "action_details": {
+          "action": "click",
+          "element_index": 7,
+          "element_selector": "button:has-text('Next')",
+          "value_to_fill": ""
+        },
+        "rule": "On LinkedIn Easy Apply modals, informational banners regarding job alerts can be ignored; proceed by clicking the Next button to continue through the application wizard."
+      }
+    }
+  },
+  "healed_patterns": []
+}

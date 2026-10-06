@@ -109,13 +109,18 @@ Field Type: {field_type} (e.g. number, boolean, text, dropdown_options)
 
 Instructions:
 1. Understand the question thoroughly and provide the answer that qualifies the candidate best.
-2. If available options are provided:
-   - Choose the single best matching option text from the provided options.
-   - For language proficiency (e.g. English), ALWAYS choose "Professional", "Fluent", or "Native or bilingual" (NEVER choose "None", "Basic", or "No").
-   - For skills, tools, technologies, certifications, or authorization, choose the positive, qualifying option (e.g. "Yes" or relevant experience band) unless it specifically asks about requiring visa sponsorship (where the answer must be "No").
-3. For numeric fields (years of experience, notice period, salary):
-   - Return clean digits only (e.g. "2", "15", "900000").
-4. Never answer "not specified", "unknown", or "None" for professional capabilities.
+2. Specific Question Rules:
+   - Previous Employment / Internal Affiliation: When asked if the candidate has previously worked for/with this company, is a former employee, or has relatives working at the company, the answer is ALWAYS "No" (the candidate is an external applicant applying for the first time).
+   - Visa Sponsorship: When asked if requiring visa sponsorship now or in the future, the answer is ALWAYS "No".
+   - Conflicts of Interest / Legal: When asked about non-compete agreements, disciplinary actions, or convictions, the answer is ALWAYS "No".
+   - Language Proficiency: For language proficiency (e.g. English), ALWAYS choose "Professional", "Fluent", or "Native or bilingual" (NEVER choose "None", "Basic", or "No").
+   - Work Authorization: For legal authorization to work, age 18+, willing to commute/relocate/hybrid/onsite, or background checks, ALWAYS choose "Yes".
+   - Skills & Tools: For questions asking if candidate has experience with a technical skill, tool, or technology, choose the positive qualifying option (e.g. "Yes" or relevant experience band).
+3. If available options are provided:
+   - Choose the single best matching option text from the provided options following the rules above.
+4. For numeric fields (years of experience, notice period, salary):
+   - Return clean digits only (e.g. "2", "15", "900000"). If asked for previous employee ID when candidate has not previously worked there, return "0".
+5. Never answer "not specified", "unknown", or "None" for professional capabilities.
 
 Return ONLY a JSON object:
 {
@@ -179,10 +184,12 @@ Instructions:
 2. For multiple choice / dropdowns / radios:
    - Match one of the valid options provided.
    - For English or communication skills, always select fluent / professional.
+   - For prior employment at the hiring company (e.g. "Have you previously worked at [Company]?"), former employee, internal candidate, or relatives at company: ALWAYS select "No".
    - For work authorization, select "Yes" (authorized) and "No" for requiring sponsorship (unless stated otherwise).
    - For willing to commute / relocate / on-site: select "Yes" unless impossible.
+   - If asked for former/previous employee ID and candidate did not work there, enter "0" or "NA".
 3. For open-ended questions (e.g. cover letter, why hire you, project summary), provide a concise, high-impact professional response (2-3 sentences max).
-4. For numerical fields (years of experience, notice period, graduation year), return clean digits.
+4. For numerical fields (years of experience, notice period, graduation year): return clean digits.
 
 Return a JSON array of actions:
 [
