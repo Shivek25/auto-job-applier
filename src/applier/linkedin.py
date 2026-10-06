@@ -13,6 +13,7 @@ from src.scraper.matcher import JobMatcher
 from src.resume.tailor import ResumeTailor
 from src.resume.compiler import ResumeCompiler
 from src.resume.models import MasterProfile
+from src.applier.brain import BrowserBrain
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class LinkedInApplier:
         tailor: Optional[ResumeTailor] = None,
         compiler: Optional[ResumeCompiler] = None,
         master_profile: Optional[MasterProfile] = None,
+        brain: Optional[BrowserBrain] = None,
         mode: str = "auto"
     ):
         self.bm = browser_manager
@@ -37,6 +39,9 @@ class LinkedInApplier:
         self.tailor = tailor
         self.compiler = compiler
         self.master_profile = master_profile
+        self.brain = brain
+        if not self.brain and hasattr(form_filler, "llm") and form_filler.llm:
+            self.brain = BrowserBrain(form_filler.llm, master_profile=master_profile)
         self.mode = mode
 
     async def extract_full_description(self, page: Page) -> str:
@@ -163,14 +168,17 @@ class LinkedInApplier:
                                 logger.info("✅ Login detected! Proceeding with Easy Apply...")
                                 break
 
-                if not apply_btn:
-                    try:
-                        apply_btn = await page.wait_for_selector(
-                            "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply'), button[aria-label*='Easy Apply']",
-                            timeout=3000
+                if not apply_btn and self.brain:
+                    logger.info("🧠 [Brain] Easy Apply button not found immediately. Activating autonomous diagnosis...")
+                    healed = await self.brain.diagnose_and_heal(
+                        page,
+                        goal="locate_easy_apply",
+                        context={"job_url": job_url, "company": company, "job_id": job_id}
+                    )
+                    if healed:
+                        apply_btn = await page.query_selector(
+                            "button.jobs-apply-button, button[data-job-id]:has-text('Easy Apply'), button:has-text('Easy Apply'), button[aria-label*='Easy Apply']"
                         )
-                    except Exception:
-                        pass
 
                 if not apply_btn:
                     logger.info(f"No Easy Apply button found for {job_id} (or sign-in required). Skipping.")
@@ -373,16 +381,31 @@ class LinkedInApplier:
                         logger.warning("Next button is disabled. Attempting to re-check fields...")
                         await self.filler.fill_current_modal(page)
                         await self.bm.random_delay(1, 2)
+                        is_disabled = await next_btn.is_disabled()
+                        if is_disabled and self.brain:
+                            logger.info("🧠 [Brain] Next button still disabled. Diagnosing missing required field or blocker...")
+                            await self.brain.diagnose_and_heal(
+                                page,
+                                goal="unblock_wizard_step",
+                                context={"step": step, "company": company, "job_id": job_id}
+                            )
                     
                     # Check for inline error messages on the form
                     error_el = await page.query_selector(
-                        "span.artdeco-inline-feedback__message, div.artdeco-inline-feedback--error, p.t-12.t-red, .jobs-easy-apply-form-section__error-text"
+                        "span.artdeco-inline-feedback__message, div.artdeco-inline-feedback--error, p.t-12.t-red, .jobs-easy-apply-form-section__error-text, [role='alert']"
                     )
                     if error_el:
                         err_text = await error_el.inner_text()
-                        logger.warning(f"Validation error on step {step+1}: '{err_text}'. Re-filling with clean numeric inputs...")
+                        logger.warning(f"Validation error on step {step+1}: '{err_text}'. Re-filling with clean inputs...")
                         await self.filler.fill_current_modal(page)
                         await self.bm.random_delay(1, 2)
+                        # If error still present, let brain heal
+                        if self.brain:
+                            await self.brain.diagnose_and_heal(
+                                page,
+                                goal="unblock_wizard_step",
+                                context={"step": step, "error": err_text, "company": company, "job_id": job_id}
+                            )
 
                     await next_btn.click()
                     await self.bm.random_delay(2, 3)

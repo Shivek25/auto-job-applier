@@ -22,6 +22,7 @@ from src.applier.browser import BrowserManager
 from src.applier.form_filler import FormFiller
 from src.applier.linkedin import LinkedInApplier
 from src.applier.indeed import IndeedApplier
+from src.applier.brain import BrowserBrain
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("AutoJobForge")
@@ -103,14 +104,17 @@ async def main():
     logger.info(f"Discovered {len(jobs)} candidate jobs across platforms.")
 
     filler = FormFiller(llm, master_profile)
+    brain = BrowserBrain(llm, master_profile=master_profile)
     linkedin_applier = LinkedInApplier(
         bm, filler, verifier, db,
         matcher=matcher, tailor=tailor, compiler=compiler, master_profile=master_profile,
+        brain=brain,
         mode=mode
     )
     indeed_applier = IndeedApplier(
         bm, filler, verifier, db,
         matcher=matcher, tailor=tailor, compiler=compiler, master_profile=master_profile,
+        brain=brain,
         mode=mode
     )
 

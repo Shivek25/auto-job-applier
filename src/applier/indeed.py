@@ -13,6 +13,7 @@ from src.scraper.matcher import JobMatcher
 from src.resume.tailor import ResumeTailor
 from src.resume.compiler import ResumeCompiler
 from src.resume.models import MasterProfile
+from src.applier.brain import BrowserBrain
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class IndeedApplier:
         tailor: Optional[ResumeTailor] = None,
         compiler: Optional[ResumeCompiler] = None,
         master_profile: Optional[MasterProfile] = None,
+        brain: Optional[BrowserBrain] = None,
         mode: str = "auto"
     ):
         self.bm = browser_manager
@@ -37,6 +39,9 @@ class IndeedApplier:
         self.tailor = tailor
         self.compiler = compiler
         self.master_profile = master_profile
+        self.brain = brain
+        if not self.brain and hasattr(form_filler, "llm") and form_filler.llm:
+            self.brain = BrowserBrain(form_filler.llm, master_profile=master_profile)
         self.mode = mode
 
     async def extract_full_description(self, page: Page) -> str:
@@ -85,6 +90,16 @@ class IndeedApplier:
                     self.compiler.compile_pdf(tailored_profile, tailored_pdf_path)
 
             apply_btn = await page.query_selector("button.ia-IndeedApplyButton, #indeedApplyButton, button:has-text('Apply now')")
+            if not apply_btn and self.brain:
+                logger.info("🧠 [Brain] Indeed Apply button not found immediately. Diagnosing...")
+                healed = await self.brain.diagnose_and_heal(
+                    page,
+                    goal="locate_indeed_apply",
+                    context={"job_url": job_url, "company": company, "job_id": job_id}
+                )
+                if healed:
+                    apply_btn = await page.query_selector("button.ia-IndeedApplyButton, #indeedApplyButton, button:has-text('Apply now')")
+
             if not apply_btn:
                 self.db.update_status(job_id, "SKIPPED", error_message="No Indeed Quick Apply button")
                 return False
