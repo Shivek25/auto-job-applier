@@ -83,15 +83,20 @@ class BrowserBrain:
                 
                 const dialogs = dialogNodes.map(d => (d.innerText || '').substring(0, 250).trim()).filter(Boolean);
 
-                // 2. Detect visible validation errors
-                const errorNodes = Array.from(document.querySelectorAll(
-                    '.artdeco-inline-feedback--error, [role="alert"], .form-error, .error, span.error-message'
-                )).filter(e => e.offsetParent !== null);
-                
-                const validationErrors = errorNodes.map(e => (e.innerText || '').trim()).filter(Boolean);
+                // Scope to the active application modal when one is open
+                const scope = dialogNodes.find(d => d.querySelector('input, select, textarea, button')) || document;
 
-                // 3. Extract visible interactive elements
-                const interactiveNodes = Array.from(document.querySelectorAll(
+                // 2. Detect visible validation errors (ignore toast notifications such as 'job alert created')
+                const toastRe = /job alert|alert was created|manage alerts|saved|copied/i;
+                const errorNodes = Array.from(scope.querySelectorAll(
+                    '.artdeco-inline-feedback--error, [role="alert"], .form-error, .error, span.error-message'
+                )).filter(e => e.offsetParent !== null && !e.closest('.artdeco-toasts, .artdeco-toast-item, [data-test-artdeco-toast]'));
+                
+                const validationErrors = errorNodes.map(e => (e.innerText || '').trim()).filter(t => t && !toastRe.test(t));
+
+                // 3. Extract visible interactive elements and stamp them so clicks hit the exact same node
+                document.querySelectorAll('[data-brain-idx]').forEach(el => el.removeAttribute('data-brain-idx'));
+                const interactiveNodes = Array.from(scope.querySelectorAll(
                     'button, input, select, textarea, [role="button"], [role="radio"], [role="checkbox"]'
                 )).filter(el => {
                     if (el.type === 'hidden') return false;
@@ -99,7 +104,7 @@ class BrowserBrain:
                     return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
                 });
 
-                const elements = interactiveNodes.slice(0, 35).map((el, idx) => ({
+                const elements = interactiveNodes.slice(0, 40).map((el, idx) => { el.setAttribute('data-brain-idx', String(idx)); return {
                     index: idx,
                     tag: el.tagName.toLowerCase(),
                     type: el.getAttribute('type') || el.type || '',
@@ -111,7 +116,7 @@ class BrowserBrain:
                     is_disabled: el.disabled || el.getAttribute('aria-disabled') === 'true',
                     is_checked: el.checked || el.getAttribute('aria-checked') === 'true',
                     required: el.required || el.getAttribute('aria-required') === 'true'
-                }));
+                }; });
 
                 return { dialogs, validationErrors, elements };
             }""")
@@ -193,6 +198,20 @@ class BrowserBrain:
                 "learned_rule": ""
             }
 
+    async def _is_forbidden_click(self, el) -> bool:
+        """Never let the brain click job alert, follow, save, or share controls."""
+        try:
+            desc = await el.evaluate(
+                "(e) => ((e.innerText || '') + ' ' + (e.getAttribute('aria-label') || '') + ' ' + (e.getAttribute('role') || '')).toLowerCase()"
+            )
+        except Exception:
+            return False
+        forbidden = ["alert", "follow", "save", "share", "switch", "premium", "manage alerts"]
+        if any(f in desc for f in forbidden):
+            logger.info(f"🧠 Brain refused to click forbidden control: '{desc.strip()[:60]}'")
+            return True
+        return False
+
     async def execute_recovery(self, page: Page, diagnosis: Dict[str, Any]) -> bool:
         strategy = diagnosis.get("recommended_strategy", "RETRY")
         details = diagnosis.get("action_details", {})
@@ -231,23 +250,15 @@ class BrowserBrain:
                 idx = details.get("element_index")
                 if sel:
                     el = await page.query_selector(sel)
-                    if el:
+                    if el and not await self._is_forbidden_click(el):
                         await el.scroll_into_view_if_needed()
                         await el.click()
                         await asyncio.sleep(1)
                         return True
                 if idx is not None:
-                    clicked = await page.evaluate("""(targetIndex) => {
-                        const nodes = Array.from(document.querySelectorAll(
-                            'button, [role="button"], input[type="submit"]'
-                        )).filter(el => el.offsetParent !== null);
-                        if (nodes[targetIndex]) {
-                            nodes[targetIndex].click();
-                            return true;
-                        }
-                        return false;
-                    }""", idx)
-                    if clicked:
+                    el = await page.query_selector(f"[data-brain-idx='{int(idx)}']")
+                    if el and not await self._is_forbidden_click(el):
+                        await el.click()
                         await asyncio.sleep(1)
                         return True
 
@@ -263,11 +274,8 @@ class BrowserBrain:
                         return True
                 if idx is not None and val:
                     filled = await page.evaluate("""({ targetIndex, textValue }) => {
-                        const inputs = Array.from(document.querySelectorAll(
-                            'input, textarea, select'
-                        )).filter(el => el.offsetParent !== null && el.type !== 'hidden');
-                        const target = inputs[targetIndex];
-                        if (target) {
+                        const target = document.querySelector(`[data-brain-idx="${targetIndex}"]`);
+                        if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) {
                             if (target.type === 'radio' || target.type === 'checkbox') {
                                 target.checked = true;
                                 target.dispatchEvent(new Event('input', { bubbles: true }));

@@ -614,13 +614,20 @@ class FormFiller:
                 logger.info(f"Radio answered: '{item.get('question', '')}' -> '{item.get('answer', '')}'")
 
             # 4. Handle checkboxes:
-            # - ALWAYS UNCHECK any "Follow company" / "Stay up to date" checkboxes
-            # - Check required agreements, terms, privacy checkboxes ONLY if they are NOT follow checkboxes
+            # - Strictly scoped to the active application modal
+            # - ALWAYS UNCHECK any "Follow company", "Job alert", "Stay up to date", or notification checkboxes
+            # - Check ONLY explicit agreement, terms, consent, or required checkboxes inside the modal
             await page.evaluate("""() => {
-                const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+                const modal = document.querySelector(
+                    'div.jobs-easy-apply-modal, div.jobs-easy-apply-content, div[data-test-modal], div[role="dialog"]'
+                );
+                if (!modal) return;
+                
+                const checkboxes = Array.from(modal.querySelectorAll('input[type="checkbox"]'));
                 for (const cb of checkboxes) {
                     const id = (cb.id || '').toLowerCase();
                     const name = (cb.name || '').toLowerCase();
+                    const aria = (cb.getAttribute('aria-label') || '').toLowerCase();
                     const lblText = (
                         (cb.id ? document.querySelector(`label[for="${cb.id}"]`)?.innerText : '') ||
                         cb.closest('label')?.innerText ||
@@ -628,11 +635,17 @@ class FormFiller:
                         cb.parentElement?.innerText || ''
                     ).toLowerCase();
                     
-                    const isFollow = id.includes('follow') || name.includes('follow') ||
-                                     lblText.includes('follow') || lblText.includes('stay up to date');
+                    const combined = `${id} ${name} ${aria} ${lblText}`;
                     
-                    if (isFollow) {
-                        // Ensure UNCHECKED
+                    const isForbidden = combined.includes('follow') || 
+                                        combined.includes('stay up to date') ||
+                                        combined.includes('alert') ||
+                                        combined.includes('notification') ||
+                                        combined.includes('marketing') ||
+                                        combined.includes('newsletter');
+                    
+                    if (isForbidden) {
+                        // Ensure UNCHECKED and never clicked
                         if (cb.checked) {
                             try {
                                 const clickable = (cb.id ? document.querySelector(`label[for="${cb.id}"]`) : null) || cb.closest('label') || cb;
@@ -645,8 +658,18 @@ class FormFiller:
                             }
                         }
                     } else {
-                        // Check agreement / terms / consent checkboxes if unchecked
-                        if (!cb.checked) {
+                        // Only check if it is explicitly an agreement / terms / consent / acknowledgement checkbox
+                        const isAgreement = combined.includes('agree') ||
+                                            combined.includes('term') ||
+                                            combined.includes('privacy') ||
+                                            combined.includes('consent') ||
+                                            combined.includes('acknowledge') ||
+                                            combined.includes('certif') ||
+                                            combined.includes('confirm') ||
+                                            cb.required ||
+                                            cb.getAttribute('aria-required') === 'true';
+                        
+                        if (isAgreement && !cb.checked) {
                             try {
                                 cb.scrollIntoView({ behavior: 'instant', block: 'center' });
                                 cb.checked = true;

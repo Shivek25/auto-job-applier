@@ -390,13 +390,25 @@ class LinkedInApplier:
                                 context={"step": step, "company": company, "job_id": job_id}
                             )
                     
-                    # Check for inline error messages on the form
-                    error_el = await page.query_selector(
-                        "span.artdeco-inline-feedback__message, div.artdeco-inline-feedback--error, p.t-12.t-red, .jobs-easy-apply-form-section__error-text, [role='alert']"
+                    # Check for inline error messages on the form (scoped strictly to modal, ignoring toast banners)
+                    modal_el = await page.query_selector(
+                        "div.jobs-easy-apply-modal, div.jobs-easy-apply-content, div[data-test-modal], div[role='dialog']"
                     )
-                    if error_el:
-                        err_text = await error_el.inner_text()
-                        logger.warning(f"Validation error on step {step+1}: '{err_text}'. Re-filling with clean inputs...")
+                    error_container = modal_el if modal_el else page
+
+                    error_nodes = await error_container.query_selector_all(
+                        "span.artdeco-inline-feedback__message, div.artdeco-inline-feedback--error, p.t-12.t-red, .jobs-easy-apply-form-section__error-text"
+                    )
+                    real_error = None
+                    for err in error_nodes:
+                        txt = (await err.inner_text() or "").strip()
+                        # Ignore non-validation messages like toast notifications
+                        if txt and not any(ign in txt.lower() for ign in ["alert", "manage alerts", "saved", "copied"]):
+                            real_error = txt
+                            break
+
+                    if real_error:
+                        logger.warning(f"Validation error on step {step+1}: '{real_error}'. Re-filling with clean inputs...")
                         await self.filler.fill_current_modal(page)
                         await self.bm.random_delay(1, 2)
                         # If error still present, let brain heal
@@ -404,11 +416,19 @@ class LinkedInApplier:
                             await self.brain.diagnose_and_heal(
                                 page,
                                 goal="unblock_wizard_step",
-                                context={"step": step, "error": err_text, "company": company, "job_id": job_id}
+                                context={"step": step, "error": real_error, "company": company, "job_id": job_id}
                             )
 
-                    await next_btn.click()
-                    await self.bm.random_delay(2, 3)
+                    # Re-query fresh next/review button to avoid detached DOM element error
+                    try:
+                        active_next = await (modal_el or page).query_selector(
+                            "button[aria-label='Continue to next step'], button[aria-label='Review your application'], button:has-text('Next'), button:has-text('Review'), button.artdeco-button--primary:has-text('Next'), button.artdeco-button--primary:has-text('Review')"
+                        )
+                        if active_next:
+                            await active_next.click()
+                            await self.bm.random_delay(2, 3)
+                    except Exception as click_err:
+                        logger.debug(f"Next button click note (step may have already progressed): {click_err}")
                 else:
                     # No next or submit button, break
                     break

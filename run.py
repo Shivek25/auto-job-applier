@@ -146,16 +146,23 @@ async def main():
             logger.info(f"Skipping {job['company']} - Match score: {eval_result['match_score']}% (below {config.app.min_match_score}% threshold): {eval_result.get('summary_reason', '')}")
             continue
 
-        logger.info(f"Eligible Match ({eval_result['match_score']}%)! Tailoring resume for {job['company']}...")
-        tailored_profile = tailor.tailor(master_profile, job["description"])
-
         # Format professional filename for LinkedIn upload (e.g. Shivek_Sharma_Honasa_Consumer_li-4473593785.pdf)
         clean_company = re.sub(r"[^a-zA-Z0-9]+", "_", job.get("company", "Company")).strip("_")
         clean_name = re.sub(r"[^a-zA-Z0-9]+", "_", getattr(master_profile.personal_info, "name", "Resume")).strip("_")
         clean_name = clean_name or "Resume"
         prof_filename = f"{clean_name}_{clean_company}_{job_id}.pdf"
         pdf_path = Path(f"storage/tailored_resumes/{prof_filename}")
-        compiler.compile_pdf(tailored_profile, pdf_path)
+
+        # If preliminary description is substantial, tailor now; otherwise compile base resume
+        # (Applier will re-tailor with the live full JD upon page expansion once eligibility is confirmed)
+        desc_len = len(job.get("description", "").strip())
+        if desc_len >= 150:
+            logger.info(f"Eligible Match ({eval_result['match_score']}%)! Tailoring resume for {job['company']}...")
+            tailored_profile = tailor.tailor(master_profile, job["description"])
+            compiler.compile_pdf(tailored_profile, pdf_path)
+        else:
+            logger.info(f"Eligible Match ({eval_result['match_score']}%)! Compiling base resume for {job['company']} (live JD will be used upon navigation)...")
+            compiler.compile_pdf(master_profile, pdf_path)
 
         # Also maintain job_id.pdf for backward compatibility
         legacy_path = Path(f"storage/tailored_resumes/{job_id}.pdf")

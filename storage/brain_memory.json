@@ -2,24 +2,44 @@
   "domain_rules": {
     "linkedin.com": {
       "VALIDATION_ERROR": {
-        "strategy": "ANSWER_FIELD",
+        "strategy": "CLICK_ELEMENT",
         "action_details": {
-          "action": "answer",
-          "element_index": 11,
-          "element_selector": "#_r_21_",
-          "value_to_fill": "0"
+          "action": "click",
+          "element_index": 8,
+          "element_selector": "button:has-text('Review')",
+          "value_to_fill": ""
         },
-        "rule": "When applying on WNS LinkedIn forms, ensure employee ID fields are correctly populated with '0' if the candidate has never worked there."
+        "rule": "On LinkedIn Easy Apply multi-page forms, click the Review button once all required questions on the current page are filled out to move to the final submission page."
       },
       "MODAL_OVERLAY": {
         "strategy": "CLICK_ELEMENT",
         "action_details": {
           "action": "click",
-          "element_index": 7,
-          "element_selector": "button:has-text('Next')",
+          "element_index": 9,
+          "element_selector": "button:has-text('Review')",
           "value_to_fill": ""
         },
-        "rule": "On LinkedIn Easy Apply modals, informational banners regarding job alerts can be ignored; proceed by clicking the Next button to continue through the application wizard."
+        "rule": "On LinkedIn Easy Apply flows, job alert creation notices may pop up but can be ignored or bypassed by clicking the primary navigation buttons like Review or Submit."
+      },
+      "MISSING_ACTION_BUTTON": {
+        "strategy": "CLICK_ELEMENT",
+        "action_details": {
+          "action": "click",
+          "element_index": 9,
+          "element_selector": "button:has-text('Review')",
+          "value_to_fill": ""
+        },
+        "rule": "On LinkedIn Easy Apply forms, once all mandatory text fields and questions on the additional questions pages are filled, click the Review button to proceed to the final submission step."
+      },
+      "DYNAMIC_QUESTION": {
+        "strategy": "CLICK_ELEMENT",
+        "action_details": {
+          "action": "click",
+          "element_index": 4,
+          "element_selector": "button:has-text('Review')",
+          "value_to_fill": ""
+        },
+        "rule": "On LinkedIn Easy Apply, when additional mandatory questions are completed and the Review button appears, click Review to proceed to the final application step."
       }
     }
   },
