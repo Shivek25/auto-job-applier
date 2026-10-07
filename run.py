@@ -164,11 +164,6 @@ async def main():
             logger.info(f"Eligible Match ({eval_result['match_score']}%)! Compiling base resume for {job['company']} (live JD will be used upon navigation)...")
             compiler.compile_pdf(master_profile, pdf_path)
 
-        # Also maintain job_id.pdf for backward compatibility
-        legacy_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
-        if legacy_path != pdf_path:
-            shutil.copyfile(pdf_path, legacy_path)
-
         # Track application as PENDING in database
         db.add_application(
             job_id=job_id,
@@ -192,6 +187,13 @@ async def main():
             submitted_count += 1
             logger.info(f"Progress today: {submitted_count}/{daily_limit} submitted.")
             await bm.random_delay(config.app.delay_between_applications_min, config.app.delay_between_applications_max)
+        else:
+            # Clean up unsubmitted / skipped / failed resume file so only submitted resumes remain
+            try:
+                if pdf_path.exists():
+                    pdf_path.unlink()
+            except Exception as e:
+                logger.debug(f"Could not remove unsubmitted resume {pdf_path}: {e}")
 
     await bm.close()
     logger.info("Job application run completed successfully.")

@@ -111,6 +111,11 @@ async def preview_pdf():
 
 @app.get("/resumes/{job_id}")
 async def get_tailored_resume(job_id: str):
+    app_record = db.get_application(job_id)
+    if app_record and app_record.get("resume_path"):
+        r_path = Path(app_record["resume_path"])
+        if r_path.exists():
+            return FileResponse(r_path, media_type="application/pdf", filename=r_path.name)
     pdf_path = Path(f"storage/tailored_resumes/{job_id}.pdf")
     if pdf_path.exists():
         return FileResponse(pdf_path, media_type="application/pdf", filename=pdf_path.name)
